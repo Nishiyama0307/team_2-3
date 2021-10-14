@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+# Others
+*.ini
+基盤/
+Data/
+External/
+Shader/
+bin/
+obj/
