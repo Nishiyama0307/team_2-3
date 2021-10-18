@@ -11,6 +11,8 @@ RareEnemy::RareEnemy()
 
 	// 幅、高さ設定
 	height = 2.0f;
+
+	model->PlayAnimation(0, true);
 }
 
 RareEnemy::~RareEnemy()
@@ -29,6 +31,9 @@ void RareEnemy::Update(float elapsedTime)
 
 	// モデル行列更新
 	model->UpdateTransform(transform);
+
+	// モデルアニメーション更新処理
+	model->UpdateAnimation(elapsedTime);
 
 }
 
