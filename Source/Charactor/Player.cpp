@@ -263,10 +263,10 @@ void Player::CollisionPlayerVsEnemies()
 		// 円柱と円柱の衝突処理
 		DirectX::XMFLOAT3 outPosition;
 		if (Collision3D::IntersectCylinderVsCylinder(
-			position,
+			hit_position,
 			radius,
 			height,
-			enemy->GetPosition(),
+			enemy->GetHitPosition(),
 			enemy->GetRadius(),
 			enemy->GetHeight(),
 			outPosition
@@ -306,8 +306,11 @@ void Player::DrawDebugPrimitive()
 	// デバッグプリミティブ描画
 	DebugRenderer* debugRenderer = Graphics::Instance().GetDebugRenderer();
 	
+	// 衝突判定用のデバッグ球を描画
+	//debugRenderer->DrawSphere(hit_position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
+
 	// 衝突判定用のデバッグ円柱を描画
-	debugRenderer->DrawSphere(hit_position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
+	debugRenderer->DrawCylinder(hit_position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 
 
 	debugRenderer->DrawSphere({ hit_position.x,hit_position.y + stepOffset,hit_position.z }, 0.1f, DirectX::XMFLOAT4(0, 0, 0, 1));

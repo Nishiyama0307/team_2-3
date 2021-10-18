@@ -9,10 +9,13 @@ void Enemy::DrawDebugPrimitive()
 	DebugRenderer* debugRenderer = Graphics::Instance().GetDebugRenderer();
 	
 	// 当たり判定の大きさ
-	radius = 2.0f;
+	radius = 1.0f;
 	
+	// 衝突判定用のデバッグ球を描画
+	//debugRenderer->DrawSphere(hit_position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
+
 	// 衝突判定用のデバッグ円柱を描画
-	debugRenderer->DrawSphere(hit_position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
+	debugRenderer->DrawCylinder(hit_position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 }
 
 

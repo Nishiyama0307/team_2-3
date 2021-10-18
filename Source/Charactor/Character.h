@@ -93,7 +93,7 @@ protected:
 	// •`‰æˆÊ’u
 	DirectX::XMFLOAT3	position = { 0, 0, 0 };
 	// “–‚½‚è”»’è‚ðŽæ‚éˆÊ’u
-	float hit_correction = 2.5f;
+	float hit_correction = 3.0f;
 	DirectX::XMFLOAT3	hit_position = { position.x, position.y + hit_correction, position.z };
 	DirectX::XMFLOAT3	angle = { 0,0,0 };
 	DirectX::XMFLOAT3	scale = { 1,1,1 };
