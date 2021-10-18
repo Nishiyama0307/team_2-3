@@ -40,6 +40,28 @@ void Game::Update(float elapsedTime)
 
 	EnemyManager::Instance().SortLengthSq(player->GetPosition());
 
+
+	//攻撃選択
+	Mouse& mouse = Input::Instance().GetMouse();
+	if (mouse.GetButtonDown() & Mouse::BTN_RIGHT)
+		attck_select_state++;
+	if (attck_select_state > 2)
+		attck_select_state = 0;
+	//攻撃分岐
+	switch (attck_select_state)
+	{
+	case 0:
+		attacSelectPos.x = 38;
+		break;
+	case 1:
+		attacSelectPos.x = 198;
+		break;
+
+	case 2:
+		attacSelectPos.x = 358;
+		break;
+	}
+
 	player->Update(elapsedTime);
 
 
@@ -162,6 +184,16 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0, 0,
 			0,
 			1, 1, 1, 1);
+
+		//攻撃選択
+		AttackSelect->Render2(dc,
+			attacSelectPos.x, attacSelectPos.y,
+			1.0f, 1.0f,
+			0, 0,
+			128, 128,
+			0, 0,
+			0,
+			1, 1, 1, 1);
 	}
 
 	ClearedSpriteRender(dc);
@@ -181,17 +213,6 @@ void Game::DeInit()
 	EnemyManager::Instance().Clear();
 
 	StageManager::Instance().AllClear();
-
-	//Ui終了化
-	safe_del(HpBar);
-	safe_del(HpBarFrame);
-	safe_del(StressBar);
-	safe_del(StressBarFrame);
-	safe_del(GoldBar);
-	safe_del(Minimap);
-	safe_del(Castlebar);
-	safe_del(CastlebarFrame);
-	safe_del(AttackSlot);
 }
  
 
@@ -206,6 +227,11 @@ void Game::Set()
 	black_band_timer = 0.0f;
 
 	smallest = false;
+
+	attacSelectPos.x = 38;
+	attacSelectPos.y = 865;
+
+	attck_select_state = 0;
 }
 
 
@@ -225,15 +251,16 @@ void Game::Load()
 	StageManager::Instance().AddStage(new StageRoom());
 
 	//UI初期化
-	HpBar = new Sprite("Data/Sprite/HP.png");
-	HpBarFrame = new Sprite("Data/Sprite/HP黒帯.png");
-	StressBar = new Sprite("Data/Sprite/ストレス.png");
-	StressBarFrame = new Sprite("Data/Sprite/ストレス黒帯.png");
-	GoldBar = new Sprite("Data/Sprite/ゴールド.png");
-	Minimap = new Sprite("Data/Sprite/ミニマップ.png");
-	Castlebar = new Sprite("Data/Sprite/城.png");
-	CastlebarFrame = new Sprite("Data/Sprite/城黒帯.png");
-	AttackSlot = new Sprite("Data/Sprite/攻撃スロット.png");
+	HpBar					= std::make_unique<Sprite>("Data/Sprite/HP.png");
+	HpBarFrame				= std::make_unique<Sprite>("Data/Sprite/HP黒帯.png");
+	StressBar				= std::make_unique<Sprite>("Data/Sprite/ストレス.png");
+	StressBarFrame			= std::make_unique<Sprite>("Data/Sprite/ストレス黒帯.png");
+	GoldBar					= std::make_unique<Sprite>("Data/Sprite/ゴールド.png");
+	Minimap					= std::make_unique<Sprite>("Data/Sprite/ミニマップ.png");
+	Castlebar				= std::make_unique<Sprite>("Data/Sprite/城.png");
+	CastlebarFrame			= std::make_unique<Sprite>("Data/Sprite/城黒帯.png");
+	AttackSlot				= std::make_unique<Sprite>("Data/Sprite/攻撃スロット.png");
+	AttackSelect			= std::make_unique<Sprite>("Data/Sprite/丸.png");
 }
 
 

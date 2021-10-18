@@ -149,7 +149,7 @@ void Title::Update(float elapsedTime)
 		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new Game());
 		break;
 
-	case 2: //ゲーム終了		仮でリザルトに飛ばしてます
+	case 2: //ゲーム終了	
 		//if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new (Result));
 		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT) exit(EXIT_SUCCESS);
 		break;
@@ -281,10 +281,10 @@ void Title::Load()
 	spr_end 			= std::make_unique<Sprite>("Data/Sprite/やめる（タイトル）.png");
 
 
-	spr_mouseCursor = std::make_unique<Sprite>("Data/Sprite/cursor.png");
-	spr_start = std::make_unique<Sprite>("Data/Sprite/スタート.png");
-	spr_frame = std::make_unique<Sprite>("Data/Sprite/frame.png");
-	spr_endbox = std::make_unique<Sprite>("Data/Sprite/終了.png");
+	spr_mouseCursor		= std::make_unique<Sprite>("Data/Sprite/cursor.png");
+	spr_start			= std::make_unique<Sprite>("Data/Sprite/スタート.png");
+	spr_frame			= std::make_unique<Sprite>("Data/Sprite/frame.png");
+	spr_endbox			= std::make_unique<Sprite>("Data/Sprite/終了.png");
 }			
 
 void Title::ImGui()

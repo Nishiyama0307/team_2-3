@@ -57,14 +57,18 @@ private:
 
     bool smallest = false;
 
+    Pos attacSelectPos;
+    int attck_select_state = 0;
+
     //UI達
-    Sprite* HpBar = nullptr;				//HP
-    Sprite* HpBarFrame = nullptr;			//
-    Sprite* StressBar = nullptr;			//ストレス
-    Sprite* StressBarFrame = nullptr;		//
-    Sprite* GoldBar = nullptr;				//お金
-    Sprite* Minimap = nullptr;				//ミニマップ
-    Sprite* Castlebar = nullptr;			//城
-    Sprite* CastlebarFrame = nullptr;		//
-    Sprite* AttackSlot = nullptr;			//攻撃スロット
+    std::unique_ptr<Sprite> HpBar               = nullptr;      //HP
+    std::unique_ptr<Sprite> HpBarFrame          = nullptr;      //
+    std::unique_ptr<Sprite> StressBar           = nullptr;      //ストレス
+    std::unique_ptr<Sprite> StressBarFrame      = nullptr;      //
+    std::unique_ptr<Sprite> GoldBar             = nullptr;      //お金
+    std::unique_ptr<Sprite> Minimap             = nullptr;      //ミニマップ
+    std::unique_ptr<Sprite> Castlebar           = nullptr;      //城
+    std::unique_ptr<Sprite> CastlebarFrame      = nullptr;      //
+    std::unique_ptr<Sprite> AttackSlot          = nullptr;      //攻撃スロット
+    std::unique_ptr<Sprite> AttackSelect        = nullptr;      //攻撃選択
 };
