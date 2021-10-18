@@ -61,7 +61,7 @@ void RareEnemy::SetInhaleParameter()
 	float total_scale_value = (scale.x + scale.y + scale.z);
 
 	// ìñÇΩÇËîªíËÇÃîºåa
-	radius = total_scale_value / 3;
+	//radius = total_scale_value / 3;
 
 	// ãzÇ¢çûÇﬂÇÈÇÊÇ§Ç…Ç»ÇÈç≈í·å¿ÇÃÉXÉPÅ[Éã
 	par.enough_total_scale_value = total_scale_value * 0.87f;

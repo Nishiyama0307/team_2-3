@@ -93,6 +93,43 @@ void Title::Update(float elapsedTime)
 	}
 	if (elapsedTime) select_timer++;*/
 
+
+	//マウスボックス
+	Mouse& mouse = Input::Instance().GetMouse();
+	mousePos.x = mouse.GetPositionX() - 32;
+	mousePos.y = mouse.GetPositionY() - 32;
+	MouseBox.left = mousePos.x;
+	MouseBox.top = mousePos.y;
+	C_OffsetBox(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right, 64, 64);
+
+	//スタートのボックス
+	StartBox.left = StartPos.x;
+	StartBox.top = StartPos.y;
+	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 512, 256);
+
+
+#if false
+	//何かののボックス
+	NoneBox.size.x = 512;
+	NoneBox.size.y = 256;
+	NoneBox.left = 300;
+	NoneBox.top = 1000;
+	NoneBox.right = NoneBox.left + NoneBox.size.x;
+	NoneBox.bottom = NoneBox.top + NoneBox.size.y;
+#endif
+	//判定
+	check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
+		StartBox.top, StartBox.left, StartBox.bottom, StartBox.right);
+
+	if (check)
+	{
+		hit = true;
+	}
+	else
+	{
+		hit = false;
+	}
+
 }
 
 
@@ -155,19 +192,47 @@ void Title::SpriteRender(ID3D11DeviceContext* dc)
 		angle,										// 角度
 		1, 1, 1, 1);								// 色情報(r,g,b,a)
 	
+	{
+		//スタート
+		start->Render(dc,
+			StartPos.x, StartPos.y, 512, 256,
+			0, 0, 512, 256,
+			0,
+			1, 1, 1, 1);
 
+		if (hit)
+		{
+			frame->Render(dc,
+				300, 700, 512, 256,
+				0, 0, 512, 256,
+				0,
+				1, 1, 1, 1);
+		}
+
+		//マウスカーソル
+		mouseCursor->Render(dc,
+			mousePos.x, mousePos.y, 64, 64,
+			0, 0, 64, 64,
+			0,
+			1, 1, 1, 1);
+	}
 }
 
 
 void Title::DeInit()
 {
-
+	safe_del(mouseCursor);
+	safe_del(start);
+	safe_del(frame);
 }
 
 
 void Title::Set()
 {
-	
+	check = false;
+
+	StartPos.x = 300;
+	StartPos.y = 700;
 }
 
 
@@ -177,6 +242,11 @@ void Title::Load()
 	spr_space			= std::make_unique<Sprite>("Data/Sprite/space（タイトル）.png");
 	spr_play			= std::make_unique<Sprite>("Data/Sprite/スタート（タイトル）.png");
 	spr_end 			= std::make_unique<Sprite>("Data/Sprite/やめる（タイトル）.png");
+
+
+	mouseCursor = new Sprite("Data/Sprite/cursor.png");
+	start = new Sprite("Data/Sprite/スタート.png");
+	frame = new Sprite("Data/Sprite/frame.png");
 }
 
 

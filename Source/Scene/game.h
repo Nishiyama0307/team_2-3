@@ -13,7 +13,7 @@
 #include "Charactor/Enemy_Arrangement.h"
 #include "pause.h"
 #include "coutdown.h"
-
+#include "C_function.h"
 
 
 // ゲームシーン
@@ -56,4 +56,15 @@ private:
     float black_band_timer = 0.0f;
 
     bool smallest = false;
+
+    //UI達
+    Sprite* HpBar = nullptr;				//HP
+    Sprite* HpBarFrame = nullptr;			//
+    Sprite* StressBar = nullptr;			//ストレス
+    Sprite* StressBarFrame = nullptr;		//
+    Sprite* GoldBar = nullptr;				//お金
+    Sprite* Minimap = nullptr;				//ミニマップ
+    Sprite* Castlebar = nullptr;			//城
+    Sprite* CastlebarFrame = nullptr;		//
+    Sprite* AttackSlot = nullptr;			//攻撃スロット
 };

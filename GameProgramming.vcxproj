@@ -230,6 +230,7 @@
     <ClInclude Include="Source\Charactor\BombEnemy.h" />
     <ClInclude Include="Source\Charactor\Player.h" />
     <ClInclude Include="Source\Charactor\RareEnemy.h" />
+    <ClInclude Include="Source\C_function.h" />
     <ClInclude Include="Source\easy_math.h" />
     <ClInclude Include="Source\GameSource\Camera.h" />
     <ClInclude Include="Source\GameSource\CameraController.h" />
@@ -293,6 +294,7 @@
     <ClCompile Include="Source\Charactor\BombEnemy.cpp" />
     <ClCompile Include="Source\Charactor\Player.cpp" />
     <ClCompile Include="Source\Charactor\RareEnemy.cpp" />
+    <ClCompile Include="Source\C_function.cpp" />
     <ClCompile Include="Source\GameSource\Camera.cpp" />
     <ClCompile Include="Source\GameSource\CameraController.cpp" />
     <ClCompile Include="Source\GameSource\collision.cpp" />

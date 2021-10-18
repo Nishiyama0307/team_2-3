@@ -44,8 +44,9 @@ void Game::Update(float elapsedTime)
 	player->Update(elapsedTime);
 
 
-	DirectX::XMFLOAT3 player_pos = player->GetPosition();
-	CameraController::Instance()->SetTarget(float3SUM({player_pos.x, player_pos.y + 3, player_pos.z}, float3Scaling(player->GetFront(), 4.5f)));
+	//DirectX::XMFLOAT3 player_pos = player->GetPosition();
+	//CameraController::Instance()->SetTarget(float3SUM({player_pos.x, player_pos.y + 3, player_pos.z}, float3Scaling(player->GetFront(), 4.5f)));
+	CameraController::Instance()->SetTarget({ player->GetPosition().x, player->GetPosition().y + 10, player->GetPosition().z - 3});
 	CameraController::Instance()->Update(elapsedTime);
 
 
@@ -73,6 +74,97 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 
 	pause->SpriteRender(dc);
 
+	//UIレンダー
+	{
+		//HPフレーム
+		HpBarFrame->Render2(dc,
+			20, 30,				//表示位置
+			1.0f, 1.0f,			//スケール
+			0, 0,				// 画像切り抜き位置
+			640, 64,			// 画像切り抜きサイズ
+			0, 0,				//画像基準点
+			0,					// 角度
+			1, 1, 1, 1);		// 色情報(r,g,b,a)
+
+		//HP
+		HpBar->Render2(dc,
+			20, 30,
+			1.0f, 1.0f,
+			0, 0,
+			640, 64,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+
+		//ストレスフレーム
+		StressBarFrame->Render2(dc,
+			20, 95,
+			1.0f, 1.0f,
+			0, 0,
+			512, 64,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+		//ストレス
+		StressBar->Render2(dc,
+			20, 95,
+			1.0f, 1.0f,
+			0, 0,
+			512, 64,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+
+		//お金
+		GoldBar->Render2(dc,
+			20, 159,
+			1.0f, 1.0f,
+			0, 0,
+			384, 64,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+
+		//ミニマップ
+		Minimap->Render2(dc,
+			1600, 10,
+			1.0f, 1.0f,
+			0, 0,
+			256, 256,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+
+		//城フレーム
+		CastlebarFrame->Render2(dc,
+			1600, 276,
+			1.0f, 1.0f,
+			0, 0,
+			256, 64,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+		//城
+		Castlebar->Render2(dc,
+			1600, 276,
+			1.0f, 1.0f,
+			0, 0,
+			256, 64,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+
+		//攻撃スロット
+		AttackSlot->Render2(dc,
+			20, 850,
+			1.0f, 1.0f,
+			0, 0,
+			480, 160,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+	}
+
 	ClearedSpriteRender(dc);
 }
 
@@ -90,6 +182,17 @@ void Game::DeInit()
 	EnemyManager::Instance().Clear();
 
 	StageManager::Instance().AllClear();
+
+	//Ui終了化
+	safe_del(HpBar);
+	safe_del(HpBarFrame);
+	safe_del(StressBar);
+	safe_del(StressBarFrame);
+	safe_del(GoldBar);
+	safe_del(Minimap);
+	safe_del(Castlebar);
+	safe_del(CastlebarFrame);
+	safe_del(AttackSlot);
 }
  
 
@@ -113,7 +216,7 @@ void Game::Load()
 
 	// プレイヤー初期化
 	player = new Player();
-	player->SetPosition(DirectX::XMFLOAT3(0, 0, 0));
+	player->SetPosition(DirectX::XMFLOAT3(0, 0, 15));
 
 	enemy_Arrangement = new Enemy_Arrangement();
 	enemy_Arrangement->enemy_produce();
@@ -121,6 +224,17 @@ void Game::Load()
 	black_band = std::make_unique<Sprite>();
 
 	StageManager::Instance().AddStage(new StageRoom());
+
+	//UI初期化
+	HpBar = new Sprite("Data/Sprite/HP.png");
+	HpBarFrame = new Sprite("Data/Sprite/HP黒帯.png");
+	StressBar = new Sprite("Data/Sprite/ストレス.png");
+	StressBarFrame = new Sprite("Data/Sprite/ストレス黒帯.png");
+	GoldBar = new Sprite("Data/Sprite/ゴールド.png");
+	Minimap = new Sprite("Data/Sprite/ミニマップ.png");
+	Castlebar = new Sprite("Data/Sprite/城.png");
+	CastlebarFrame = new Sprite("Data/Sprite/城黒帯.png");
+	AttackSlot = new Sprite("Data/Sprite/攻撃スロット.png");
 }
 
 

@@ -37,6 +37,9 @@ public:
 	// エネミー削除
 	void Remove(Enemy* enemy);
 
+	// 当たり判定の位置更新
+	void HitPositionUpdate();
+
 	void SortLengthSq(const DirectX::XMFLOAT3& playerPos);
 
 private:

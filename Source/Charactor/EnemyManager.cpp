@@ -9,6 +9,11 @@ void EnemyManager::Update(float elapsedTime)
 		enemy->Update(elapsedTime);
 	}
 
+	for (auto& enemy : enemies)
+	{
+		enemy->SetHitPosition(enemy->GetPosition());
+	}
+
 	// 破棄処理
 	// ※enemiesの範囲for文中でerase()すると不具合が発生してしまうため、
 	// 　更新処理が終わった後に破棄リストに積まれたオブジェクトを削除する。
@@ -94,6 +99,16 @@ void EnemyManager::Remove(Enemy* enemy)
 	removes.emplace_back(enemy);
 }
 
+
+// 当たり判定の位置更新
+void EnemyManager::HitPositionUpdate()
+{
+	for (auto& enemy : enemies)
+	{
+		enemy->HitPositionUpdate();
+	}
+}
+
 // エネミー同士の衝突判定
 void EnemyManager::CollisionEnemyVsEnemies()
 {
@@ -107,10 +122,10 @@ void EnemyManager::CollisionEnemyVsEnemies()
 
 			DirectX::XMFLOAT3 outPosition;
 			if (Collision3D::IntersectCylinderVsCylinder(
-				enemyA->GetPosition(),
+				enemyA->GetHitPosition(),
 				enemyA->GetRadius(),
 				enemyA->GetHeight(),
-				enemyB->GetPosition(),
+				enemyB->GetHitPosition(),
 				enemyB->GetRadius(),
 				enemyB->GetHeight(),
 				outPosition

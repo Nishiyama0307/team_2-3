@@ -6,7 +6,7 @@
 
 StageRoom::StageRoom()
 {
-    mdl_stage = std::make_unique<Model>("Data/Model/LongStage.mdl");
+    mdl_stage = std::make_unique<Model>("Data/Model/stage/LongStage.mdl");
 }
 
 StageRoom::~StageRoom()

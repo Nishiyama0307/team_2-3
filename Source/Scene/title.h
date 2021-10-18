@@ -3,7 +3,7 @@
 #include "scene.h"
 #include "Graphics/Graphics.h"
 #include "Graphics/Sprite.h"
-
+#include "C_function.h"
 
 
 // タイトルシーン
@@ -46,5 +46,19 @@ private:
         TUTORIAL,
         GAME,
     };
+
+    Sprite* mouseCursor = nullptr;
+    Pos mousePos;
+
+    Sprite* start = nullptr;
+    Sprite* frame = nullptr;
+
+    //当たり判定
+    C_Hitbox MouseBox;
+    C_Hitbox StartBox;
+    bool hit = false;
+    bool check = false;
+
+    Pos StartPos;
     
 };

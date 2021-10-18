@@ -13,10 +13,13 @@
 // コンストラクタ
 Player::Player()
 {
-	model = new Model("Data/Model/enemy4.mdl");
+	model = new Model("Data/Model/player/test_player.mdl");
 
-	// モデルが大きいのでスケーリング
 	scale.x = scale.y = scale.z = 1.0f;
+
+	radius = 5.0f;
+
+	hit_correction = 5.0f;
 
 	inhale = new Inhale(this);
 
@@ -111,6 +114,7 @@ void Player::Update(float elapsedTime, bool explaining)
 
 	inhale->Update(elapsedTime);				// 掃除機機能の更新
 
+	SetHitPosition(position);
 
 	// プレイヤーとエネミーとの衝突処理
 	CollisionPlayerVsEnemies();
@@ -303,10 +307,10 @@ void Player::DrawDebugPrimitive()
 	DebugRenderer* debugRenderer = Graphics::Instance().GetDebugRenderer();
 	
 	// 衝突判定用のデバッグ円柱を描画
-	debugRenderer->DrawSphere(position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
+	debugRenderer->DrawSphere(hit_position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
 
 
-	debugRenderer->DrawSphere({ position.x,position.y + stepOffset,position.z }, 0.1f, DirectX::XMFLOAT4(0, 0, 0, 1));
+	debugRenderer->DrawSphere({ hit_position.x,hit_position.y + stepOffset,hit_position.z }, 0.1f, DirectX::XMFLOAT4(0, 0, 0, 1));
 
 	inhale->DebugRender();
 }

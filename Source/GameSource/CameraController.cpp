@@ -172,11 +172,15 @@ void CameraController::PadControl(float elapsedTime, bool explaining = false)
 
 
     //âÒì]ëÄçÏ
-    if(explaining == false)
+    Mouse& mouse = Input::Instance().GetMouse();
+    if (explaining == false)
     {
         GamePad& gamePad = Input::Instance().GetGamePad();
         float ax = gamePad.GetAxisRX();
         float ay = gamePad.GetAxisRY();
+
+        //float ax = mouse.GetPositionX();
+        //float ay = mouse.GetPositionY();
 
         angle.x += ay * speed;
         angle.y += ax * speed;
