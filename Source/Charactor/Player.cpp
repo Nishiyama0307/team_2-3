@@ -19,11 +19,11 @@ Player::Player()
 
 	radius = 5.0f;
 
-	hit_correction = 5.0f;
-
 	inhale = new Inhale(this);
 
 	position.y = scale.y + scale.y * 1.7f;
+
+	height = 10.0f;
 
 	//音
 	/*Audio& audio1 = Audio::Instance();
@@ -113,8 +113,6 @@ void Player::Update(float elapsedTime, bool explaining)
 	}
 
 	inhale->Update(elapsedTime);				// 掃除機機能の更新
-
-	SetHitPosition(position);
 
 	// プレイヤーとエネミーとの衝突処理
 	CollisionPlayerVsEnemies();
@@ -263,10 +261,10 @@ void Player::CollisionPlayerVsEnemies()
 		// 円柱と円柱の衝突処理
 		DirectX::XMFLOAT3 outPosition;
 		if (Collision3D::IntersectCylinderVsCylinder(
-			hit_position,
+			position,
 			radius,
 			height,
-			enemy->GetHitPosition(),
+			enemy->GetPosition(),
 			enemy->GetRadius(),
 			enemy->GetHeight(),
 			outPosition
@@ -310,10 +308,10 @@ void Player::DrawDebugPrimitive()
 	//debugRenderer->DrawSphere(hit_position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
 
 	// 衝突判定用のデバッグ円柱を描画
-	debugRenderer->DrawCylinder(hit_position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+	debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 
 
-	debugRenderer->DrawSphere({ hit_position.x,hit_position.y + stepOffset,hit_position.z }, 0.1f, DirectX::XMFLOAT4(0, 0, 0, 1));
+	debugRenderer->DrawSphere({ position.x,position.y + stepOffset,position.z }, 0.1f, DirectX::XMFLOAT4(0, 0, 0, 1));
 
 	inhale->DebugRender();
 }

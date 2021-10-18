@@ -33,9 +33,6 @@ public:
 	// ”jŠü
 	void Destroy();
 
-	// “–‚½‚è”»’è‚ÌˆÊ’uXV
-	void HitPositionUpdate();
-
 public: // GetŠÖ”
 	float EnoughTotalScaleValue() { return par.enough_total_scale_value; }
 	float CanBeDigestionTotalScaleValue() { return par.can_be_digestion_total_scale_value; }

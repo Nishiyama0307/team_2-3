@@ -26,10 +26,6 @@ public:
 
 	void SetPosition(const DirectX::XMFLOAT3& position) { this->position = position; }
 
-	const DirectX::XMFLOAT3& GetHitPosition() const { return hit_position; }
-
-	void SetHitPosition(const DirectX::XMFLOAT3& hit_position) { this->hit_position = { position.x, position.y + hit_correction, position.z }; }
-
 	const DirectX::XMFLOAT3& GetAngle() const { return angle; }
 
 	void SetAngle(const DirectX::XMFLOAT3& angle) { this->angle = angle; }
@@ -92,9 +88,6 @@ protected:
 protected:
 	// •`‰æˆÊ’u
 	DirectX::XMFLOAT3	position = { 0, 0, 0 };
-	// “–‚½‚è”»’è‚ðŽæ‚éˆÊ’u
-	float hit_correction = 3.0f;
-	DirectX::XMFLOAT3	hit_position = { position.x, position.y + hit_correction, position.z };
 	DirectX::XMFLOAT3	angle = { 0,0,0 };
 	DirectX::XMFLOAT3	scale = { 1,1,1 };
 	DirectX::XMFLOAT4X4	transform = {
