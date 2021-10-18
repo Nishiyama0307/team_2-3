@@ -47,18 +47,23 @@ private:
         GAME,
     };
 
-    Sprite* mouseCursor = nullptr;
+    std::unique_ptr<Sprite> spr_mouseCursor = nullptr;
     Pos mousePos;
 
-    Sprite* start = nullptr;
-    Sprite* frame = nullptr;
+    std::unique_ptr<Sprite> spr_start = nullptr;
+    std::unique_ptr<Sprite> spr_frame = nullptr;
+    std::unique_ptr<Sprite> spr_endbox = nullptr;
 
     //“–‚½‚è”»’è
     C_Hitbox MouseBox;
     C_Hitbox StartBox;
+    C_Hitbox EndBox;
     bool hit = false;
-    bool check = false;
+    bool start_check = false;
+    bool end_check = false;
+    int check_state = 0;
 
-    Pos StartPos;
-    
+    Pos startPos;
+    Pos endPos;
+    Pos frame_pos;
 };

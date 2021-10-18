@@ -6,6 +6,7 @@
 #include "sceneManager.h"
 #include "common.h"
 #include "Input/Input.h"
+#include "result.h"
 
 // 追加
 #include "gameSystem.h"
@@ -18,7 +19,7 @@ void Title::Update(float elapsedTime)
 {
 
 	GamePad& gamePad = Input::Instance().GetGamePad();
-	Mouse& mouseB = Input::Instance().GetMouse();
+	Mouse& mouseButton = Input::Instance().GetMouse();
 
 	// 決定キー
 	/*if (gamePad.GetButtonDown() & GamePad::BTN_SPACE)
@@ -97,40 +98,62 @@ void Title::Update(float elapsedTime)
 
 	//マウスボックス
 	Mouse& mouse = Input::Instance().GetMouse();
-	mousePos.x = mouse.GetPositionX() - 32;
-	mousePos.y = mouse.GetPositionY() - 32;
+	mousePos.x = mouse.GetPositionX() - 16;
+	mousePos.y = mouse.GetPositionY() - 26;
 	MouseBox.left = mousePos.x;
 	MouseBox.top = mousePos.y;
-	C_OffsetBox(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right, 64, 64);
+	C_OffsetBox(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right, 32, 53);
 
 	//スタートのボックス
-	StartBox.left = StartPos.x;
-	StartBox.top = StartPos.y;
+	StartBox.left = startPos.x;
+	StartBox.top = startPos.y;
 	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 512, 256);
 
+	//終了ボックス
+	EndBox.left = endPos.x;
+	EndBox.top = endPos.y;
+	C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 512, 256);
 
-#if false
-	//何かののボックス
-	NoneBox.size.x = 512;
-	NoneBox.size.y = 256;
-	NoneBox.left = 300;
-	NoneBox.top = 1000;
-	NoneBox.right = NoneBox.left + NoneBox.size.x;
-	NoneBox.bottom = NoneBox.top + NoneBox.size.y;
-#endif
-	//判定
-	check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
+	//判定 (マウスとゲームへのボックス)
+	start_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
 		StartBox.top, StartBox.left, StartBox.bottom, StartBox.right);
 
-	if (check)
+	//判定 (マウスと終了とのボックス)
+	end_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
+		EndBox.top, EndBox.left, EndBox.bottom, EndBox.right);
+	
+	//当たった時の処理
+	if (start_check)
 	{
 		hit = true;
+		frame_pos.x = startPos.x;
+		frame_pos.y = startPos.y;
+		check_state = 1;
+	}
+	else if (end_check)
+	{
+		hit = true;
+		frame_pos.x = endPos.x;
+		frame_pos.y = endPos.y;
+		check_state = 2;
 	}
 	else
 	{
 		hit = false;
+		check_state = 0;
 	}
+	
+	switch (check_state)
+	{
+	case 1:	//ゲームシーンへ
+		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new Game());
+		break;
 
+	case 2: //ゲーム終了		仮でリザルトに飛ばしてます
+		//if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new (Result));
+		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT) exit(EXIT_SUCCESS);
+		break;
+	}
 }
 
 
@@ -195,25 +218,33 @@ void Title::SpriteRender(ID3D11DeviceContext* dc)
 	
 	{
 		//スタート
-		start->Render(dc,
-			StartPos.x, StartPos.y, 512, 256,
+		spr_start->Render(dc,
+			startPos.x, startPos.y, 512, 256,
+			0, 0, 512, 256,
+			0,
+			1, 1, 1, 1);
+
+		//終了
+		spr_endbox->Render(dc,
+			endPos.x, endPos.y, 512, 256,
 			0, 0, 512, 256,
 			0,
 			1, 1, 1, 1);
 
 		if (hit)
 		{
-			frame->Render(dc,
-				300, 700, 512, 256,
+			//確認用フレーム
+			spr_frame->Render(dc,
+				frame_pos.x, frame_pos.y, 512, 256,
 				0, 0, 512, 256,
 				0,
 				1, 1, 1, 1);
 		}
 
 		//マウスカーソル
-		mouseCursor->Render(dc,
-			mousePos.x, mousePos.y, 64, 64,
-			0, 0, 64, 64,
+		spr_mouseCursor->Render(dc,
+			mousePos.x, mousePos.y, 32, 53,
+			0, 0, 32, 53,
 			0,
 			1, 1, 1, 1);
 	}
@@ -222,18 +253,23 @@ void Title::SpriteRender(ID3D11DeviceContext* dc)
 
 void Title::DeInit()
 {
-	safe_del(mouseCursor);
-	safe_del(start);
-	safe_del(frame);
+
 }
 
 
 void Title::Set()
 {
-	check = false;
+	start_check = false;
+	end_check = false;
 
-	StartPos.x = 300;
-	StartPos.y = 700;
+	startPos.x = 300;
+	startPos.y = 700;
+
+	endPos.x = 1000;
+	endPos.y = 700;
+
+	frame_pos.x = 0;
+	frame_pos.y = 0;
 }
 
 
@@ -245,11 +281,11 @@ void Title::Load()
 	spr_end 			= std::make_unique<Sprite>("Data/Sprite/やめる（タイトル）.png");
 
 
-	mouseCursor = new Sprite("Data/Sprite/cursor.png");
-	start = new Sprite("Data/Sprite/スタート.png");
-	frame = new Sprite("Data/Sprite/frame.png");
-}
-
+	spr_mouseCursor = std::make_unique<Sprite>("Data/Sprite/cursor.png");
+	spr_start = std::make_unique<Sprite>("Data/Sprite/スタート.png");
+	spr_frame = std::make_unique<Sprite>("Data/Sprite/frame.png");
+	spr_endbox = std::make_unique<Sprite>("Data/Sprite/終了.png");
+}			
 
 void Title::ImGui()
 {
