@@ -13,11 +13,12 @@
 
 extern bool game_exit;
 
-
+//////////////////////////////////
 void Title::Update(float elapsedTime)
 {
 
 	GamePad& gamePad = Input::Instance().GetGamePad();
+	Mouse& mouseB = Input::Instance().GetMouse();
 
 	// åàíËÉLÅ[
 	/*if (gamePad.GetButtonDown() & GamePad::BTN_SPACE)
