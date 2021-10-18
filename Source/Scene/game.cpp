@@ -22,7 +22,7 @@ void Game::Update(float elapsedTime)
 	// シーン変更
 	ChangeScene(elapsedTime);
 
-
+	//
 	// ポーズ
 	if (pause->Update(elapsedTime)) return;
 
