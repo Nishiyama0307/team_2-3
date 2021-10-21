@@ -368,6 +368,60 @@ void CameraController::Update(float elapsdTime)
     const MouseButton& anyButton =
         VK_LBUTTON;
 
+    //Mouse& mouse = Input::Instance().GetMouse();
+    // カメラの回転速度
+    if (mouse.GetOldPositionX() > mouse.GetPositionX())
+    {
+        rollSpeed = DirectX::XMConvertToRadians(float(mouse.GetOldPositionX() - mouse.GetPositionX()));
+        float speed = rollSpeed * elapsdTime;
+        this->angle.y -= speed * 0.2f;
+    }
+    if (mouse.GetOldPositionX() < mouse.GetPositionX())
+    {
+        rollSpeed = DirectX::XMConvertToRadians(float(mouse.GetPositionX() - mouse.GetOldPositionX()));
+        float speed = rollSpeed * elapsdTime;
+        this->angle.y += speed * 0.2f;
+    }
+    //::SetCursorPos(960, 540);
+    //int differenceX = mouse.GetOldPositionX() - mouse.GetPositionX();
+    //int differenceY = mouse.GetOldPositionY() - mouse.GetPositionY();
+    //rollSpeed = differenceX * elapsdTime;
+    //this->angle.y -= rollSpeed;
+
+
+    //if (mouse.GetPositionX() < 10)
+    //{
+    //    SetCursorPos(960, 540);
+    //    mouse.SetOldPositionX(960);
+    //    mouse.SetPositionX(960);
+    //}
+    if (mouse.GetPositionX() <= 940)
+    {
+        SetCursorPos(940, 540);
+        mouse.SetOldPositionX(940);
+        mouse.SetPositionX(940);
+    }
+    if (mouse.GetPositionX() >= 980)
+    {
+        SetCursorPos(980, 540);
+        mouse.SetOldPositionX(980);
+        mouse.SetPositionX(980);
+    }
+
+    // X軸のカメラ回転を制限	
+    //if (this->angle.x >= maxAngleX)angle.x = maxAngleX;
+    //if (this->angle.x <= minAngleX)angle.x = minAngleX;
+    //// Y軸の回転値を-3.14~3.14に収まるようにする
+    //if (angle.y < -DirectX::XM_PI)
+    //{
+    //    angle.y += DirectX::XM_2PI;
+    //}
+    //if (angle.y > DirectX::XM_PI)
+    //{
+    //    angle.y -= DirectX::XM_2PI;
+    //}
+
+#if false
     //if (mouse.GetButton() & anyButton)
     //{
         //ax = mouse.GetPositionX();
@@ -377,14 +431,23 @@ void CameraController::Update(float elapsdTime)
     //float ax = gamepad.GetAxisRX();
     //float ay = gamepad.GetAxisRY();
 
-    float ax = mouse.GetPositionX();
-    float ay = mouse.GetPositionY();
+    //float ax = mouse.GetPositionX();
+    //float ay = mouse.GetPositionY();
+
+   /* float ax2 = ax - 10;
+    float ay2 = ay - 10;
+
+    if (ax2 > 1910) ax += 5;
+    if (ax2 < 20) ax -= 5;
+    if (ay2 > 1060) ay += 5;
+    if (ay2 < 20) ay -= 5;*/
+
     //カメラの回転速度
     float speed = rollSpeed * elapsdTime;
 
     //スティックの入力値に合わせてx軸とｙ軸を回転
-    angle.x = ay * speed;
-    angle.y = ax * speed;
+    //angle.x = ay * speed;
+    //angle.y = ax * speed;
 
     //X軸のカメラ回転を制限
     //if (angle.x > maxAngleX)
@@ -401,6 +464,7 @@ void CameraController::Update(float elapsdTime)
     //{
     //	angle.y -= DirectX::XM_2PI;
     //}
+#endif
 
     //カメラ回転値を回転行列に変換
     DirectX::XMMATRIX Transform = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);

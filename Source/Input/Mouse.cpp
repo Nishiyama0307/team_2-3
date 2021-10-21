@@ -45,6 +45,7 @@ void Mouse::Update()
 	buttonDown = ~buttonState[1] & newButtonState;	// 押した瞬間
 	buttonUp = ~newButtonState & buttonState[1];	// 離した瞬間
 
+
 	// カーソル位置の取得
 	POINT cursor;
 	::GetCursorPos(&cursor);
@@ -57,6 +58,7 @@ void Mouse::Update()
 	UINT screenH = rc.bottom - rc.top;
 	UINT viewportW = screenWidth;
 	UINT viewportH = screenHeight;
+
 
 	// 画面補正
 	positionX[1] = positionX[0];
@@ -75,8 +77,11 @@ void Mouse::Update()
 		break;
 
 	case Scene::SCENE_GAME:
+		//::SetCursorPos(960, 540);
 		positionX[0] = (LONG)(cursor.x - 960 / static_cast<float>(viewportW) * static_cast<float>(screenW));
 		positionY[0] = (LONG)(cursor.y - 540 / static_cast<float>(viewportH) * static_cast<float>(screenH));
+		
+
 		break;
 	}
 }
