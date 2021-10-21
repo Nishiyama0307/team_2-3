@@ -35,8 +35,8 @@ void Tutorial::Update(float elapsedTime)
 
 	player->Update(elapsedTime, explaining);
 
-	CameraController::Instance()->SetTarget(float3SUM(player->GetPosition(), float3Scaling(player->GetFront(), 5.0f)));
-	CameraController::Instance()->Update(elapsedTime, explaining);
+	//CameraController::Instance()->SetTarget(float3SUM(player->GetPosition(), float3Scaling(player->GetFront(), 5.0f)));
+	//CameraController::Instance()->Update(elapsedTime, explaining);
 
 	// s“®§ŒÀ
 	if (player->GetPosition().x > 15.0f) player->SetPosition({ 15.0f, player->GetPosition().y, player->GetPosition().z });
@@ -226,7 +226,7 @@ void Tutorial::ImGui()
 {
 	ImGui::Text("scene : Tutorial");
 
-	ImGui::SliderFloat("camera range", &CameraController::Instance()->GerRange(), 1, 1000);
+	//ImGui::SliderFloat("camera range", &CameraController::Instance()->GerRange(), 1, 1000);
 
 	ImGui::Spacing();
 
@@ -259,9 +259,9 @@ void Tutorial::CameraSet()
 		1000.0f
 	);
 
-	CameraController::Instance()->init();
-	CameraController::Instance()->SetCameraBehavior(CAMERA::PADCONTROL);
-	CameraController::Instance()->SetRange(15.0f);
+	//CameraController::Instance()->init();
+	//CameraController::Instance()->SetCameraBehavior(CAMERA::PADCONTROL);
+	//CameraController::Instance()->SetRange(15.0f);
 }
 
 void Tutorial::End_of_explanation(float elapsedTime)

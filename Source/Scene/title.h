@@ -65,5 +65,5 @@ private:
 
     Pos startPos;
     Pos endPos;
-    Pos frame_pos;
+    Pos framePos;
 };

@@ -151,5 +151,5 @@ void Inhale::KnockBack(DirectX::XMFLOAT3 pos_a, DirectX::XMFLOAT3 pos_b)
 
 	player->AddImpact(impact);
 
-	CameraController::Instance()->SetCameraShake();
+	//CameraController::Instance()->SetCameraShake();
 }

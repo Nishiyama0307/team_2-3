@@ -49,8 +49,6 @@ void Title::Update(float elapsedTime)
 	if (gamePad.GetButtonDown() & GamePad::BTN_SPACE)	ChangeNextScene(new Game());
 
 
-
-
 	//	↓	　入力処理とかいろいろ書く　	↓	　//
 
 	// TODO: タイトル処理
@@ -126,15 +124,15 @@ void Title::Update(float elapsedTime)
 	if (start_check)
 	{
 		hit = true;
-		frame_pos.x = startPos.x;
-		frame_pos.y = startPos.y;
+		framePos.x = startPos.x;
+		framePos.y = startPos.y;
 		check_state = 1;
 	}
 	else if (end_check)
 	{
 		hit = true;
-		frame_pos.x = endPos.x;
-		frame_pos.y = endPos.y;
+		framePos.x = endPos.x;
+		framePos.y = endPos.y;
 		check_state = 2;
 	}
 	else
@@ -235,7 +233,7 @@ void Title::SpriteRender(ID3D11DeviceContext* dc)
 		{
 			//確認用フレーム
 			spr_frame->Render(dc,
-				frame_pos.x, frame_pos.y, 512, 256,
+				framePos.x, framePos.y, 512, 256,
 				0, 0, 512, 256,
 				0,
 				1, 1, 1, 1);
@@ -268,8 +266,8 @@ void Title::Set()
 	endPos.x = 1000;
 	endPos.y = 700;
 
-	frame_pos.x = 0;
-	frame_pos.y = 0;
+	framePos.x = 0;
+	framePos.y = 0;
 }
 
 

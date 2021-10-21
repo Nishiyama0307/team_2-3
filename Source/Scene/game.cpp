@@ -40,6 +40,14 @@ void Game::Update(float elapsedTime)
 
 	EnemyManager::Instance().SortLengthSq(player->GetPosition());
 
+	//カメラコントローラー更新処理
+	DirectX::XMFLOAT3 target = player->GetPosition();
+	target.y += 12.0f;
+	target.z -= 10.0f;
+	cameraController->SetTarget(target);
+	cameraController->Update(elapsedTime);
+
+
 
 	//攻撃選択
 	Mouse& mouse = Input::Instance().GetMouse();
@@ -56,7 +64,6 @@ void Game::Update(float elapsedTime)
 	case 1:
 		attacSelectPos.x = 198;
 		break;
-
 	case 2:
 		attacSelectPos.x = 358;
 		break;
@@ -67,8 +74,8 @@ void Game::Update(float elapsedTime)
 
 	//DirectX::XMFLOAT3 player_pos = player->GetPosition();
 	//CameraController::Instance()->SetTarget(float3SUM({player_pos.x, player_pos.y + 3, player_pos.z}, float3Scaling(player->GetFront(), 4.5f)));
-	CameraController::Instance()->SetTarget({ player->GetPosition().x, player->GetPosition().y + 10, player->GetPosition().z - 3});
-	CameraController::Instance()->Update(elapsedTime);
+	//CameraController::Instance()->SetTarget({ player->GetPosition().x, player->GetPosition().y + 10, player->GetPosition().z - 3});
+	//CameraController::Instance()->Update(elapsedTime);
 
 
 	GameSystem::Instance().Update(elapsedTime);
@@ -213,6 +220,13 @@ void Game::DeInit()
 	EnemyManager::Instance().Clear();
 
 	StageManager::Instance().AllClear();
+
+	//カメラコントローラー終了化
+	if (cameraController != nullptr)
+	{
+		delete cameraController;
+		cameraController = nullptr;
+	}
 }
  
 
@@ -268,7 +282,7 @@ void Game::ImGui()
 {
 	ImGui::Text("scene : Game");
 
-	ImGui::SliderFloat("camera range", &CameraController::Instance()->GerRange(), 1, 1000);
+	//ImGui::SliderFloat("camera range", &CameraController::Instance()->GerRange(), 1, 1000);
 
 	ImGui::Spacing();
 
@@ -295,6 +309,7 @@ void Game::DebugRender()
 
 void Game::CameraSet()
 {
+#if false
 	//カメラ初期設定
 	Graphics& graphics = Graphics::Instance();
 	Camera& camera = Camera::Instance();
@@ -313,6 +328,26 @@ void Game::CameraSet()
 	CameraController::Instance()->init();
 	CameraController::Instance()->SetCameraBehavior(CAMERA::PADCONTROL);
 	CameraController::Instance()->SetRange(15.0f);
+#endif
+
+	//カメラ初期設定
+	Graphics& graphics = Graphics::Instance();
+	Camera& camera = Camera::Instance();	//&つけ忘れない!!
+	camera.SetLookAt(
+		DirectX::XMFLOAT3(0, 10, -10),
+		DirectX::XMFLOAT3(0, 0, 0),
+		DirectX::XMFLOAT3(0, 1, 0)
+	);
+
+	camera.SetPerspectiveFov(
+		DirectX::XMConvertToRadians(45),
+		graphics.GetScreenWidth() / graphics.GetScreenHeight(),
+		0.1f,
+		1000.0f
+	);
+
+	//カメラコントローラー初期化
+	cameraController = new CameraController();
 }
 
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <DirectXMath.h>
-#include "common.h"
+//#include <DirectXMath.h>
+//#include "common.h"
 
 enum class CAMERA
 {
@@ -15,6 +15,7 @@ enum class CAMERA
 
 // カメラ操作クラス (シングルトン)
 
+#if false
 class CameraController
 {
 private:
@@ -57,8 +58,8 @@ private:
 private: //      カメラの挙動      //
     void Behavior(float elapsedTime, bool explaining = false);
     void PadControl(float elapsedTime, bool explaining);             // カメラの直接回転操作
-    void NormalTracking(float elapsedTime);         // 追うだけ
-    void TranslationTracking(float elapsedTime);    // 平行移動しながら追う
+    //void NormalTracking(float elapsedTime);         // 追うだけ
+    //void TranslationTracking(float elapsedTime);    // 平行移動しながら追う
 
 private: //      カメラに掛ける効果    //
     void Shake(float elapsedTime);                  // カメラシェイク
@@ -90,4 +91,30 @@ private: // 変数
 
     DirectX::XMFLOAT3 new_position = {};
     DirectX::XMFLOAT3 new_target = {};
+};
+#endif
+
+#include<DirectXMath.h>
+
+//カメラコントローラー
+class CameraController
+{
+public:
+    CameraController() {}
+    ~CameraController() {}
+
+    //更新処理
+    void Update(float elapsedTime);
+
+    //ターゲット位置設
+    void SetTarget(const DirectX::XMFLOAT3& target) { this->target = target; }
+
+private:
+    DirectX::XMFLOAT3  target = { 0, 0, 0 };
+    DirectX::XMFLOAT3  angle = { 0, 0, 0 };
+    float			   rollSpeed = DirectX::XMConvertToRadians(10);
+    float			   range = 10.0f;
+
+    float				maxAngleX = DirectX::XMConvertToRadians(45);
+    float				minAngleX = DirectX::XMConvertToRadians(-45);
 };

@@ -1,13 +1,13 @@
 
 
-#include "CameraController.h"
-#include "Camera.h"
-#include "Input/Input.h"
-#include "stageManager.h"
-#include "collision.h"
+//#include "CameraController.h"
+//#include "Camera.h"
+//#include "Input/Input.h"
+//#include "stageManager.h"
+//#include "collision.h"
 
 
-
+#if false
 void CameraController::Update(float elapsedTime, bool explaining)
 {
     // カメラ挙動の切り替えの有無
@@ -42,12 +42,18 @@ void CameraController::Update(float elapsedTime, bool explaining)
 
     // 徐々に目標に近づける
     static	constexpr	float	Speed = 1.0f / 8.0f;
-    position.x += (new_position.x - position.x) * Speed;
-    position.y += (new_position.y - position.y) * Speed;
-    position.z += (new_position.z - position.z) * Speed;
-    target.x += (new_target.x - target.x) * Speed;
-    target.y += (new_target.y - target.y) * Speed;
-    target.z += (new_target.z - target.z) * Speed;
+    //position.x += (new_position.x - position.x) * Speed;
+    //position.y += (new_position.y - position.y) * Speed;
+    //position.z += (new_position.z - position.z) * Speed;
+    position.x = (new_position.x);
+    position.y = (new_position.y);
+    position.z = (new_position.z);
+    //target.x += (new_target.x - target.x) * Speed;
+    //target.y += (new_target.y - target.y) * Speed;
+    //target.z += (new_target.z - target.z) * Speed;
+    target.x = (new_target.x );
+    target.y = (new_target.y );
+    target.z = (new_target.z );
 
 
     Camera::Instance().SetLookAt(position, target, up);
@@ -167,7 +173,7 @@ void CameraController::Collision()
 void CameraController::PadControl(float elapsedTime, bool explaining = false)
 {
 
-    constexpr float rollspeed = DirectX::XMConvertToRadians(90);
+    constexpr float rollspeed = DirectX::XMConvertToRadians(10);
     float speed = rollspeed * elapsedTime;
 
 
@@ -176,11 +182,11 @@ void CameraController::PadControl(float elapsedTime, bool explaining = false)
     if (explaining == false)
     {
         GamePad& gamePad = Input::Instance().GetGamePad();
-        float ax = gamePad.GetAxisRX();
-        float ay = gamePad.GetAxisRY();
+        //float ax = gamePad.GetAxisRX();
+        //float ay = gamePad.GetAxisRY();
 
-        //float ax = mouse.GetPositionX();
-        //float ay = mouse.GetPositionY();
+        float ax = mouse.GetPositionX();
+        float ay = mouse.GetPositionY();
 
         angle.x += ay * speed;
         angle.y += ax * speed;
@@ -191,12 +197,12 @@ void CameraController::PadControl(float elapsedTime, bool explaining = false)
     constexpr float minAngle = DirectX::XMConvertToRadians(0);
 
     //X軸カメラ回転の制限
-    if (angle.x > maxAngle) angle.x = maxAngle;
-    if (angle.x < minAngle) angle.x = minAngle;
-
-    //X軸カメラ回転の制限
-    if (angle.y < -DirectX::XM_PI) angle.y += DirectX::XM_2PI;
-    if (angle.y > DirectX::XM_PI)  angle.y -= DirectX::XM_2PI;
+    //if (angle.x > maxAngle) angle.x = maxAngle;
+    //if (angle.x < minAngle) angle.x = minAngle;
+    //
+    ////X軸カメラ回転の制限
+    //if (angle.y < -DirectX::XM_PI) angle.y += DirectX::XM_2PI;
+    //if (angle.y > DirectX::XM_PI)  angle.y -= DirectX::XM_2PI;
 
 
     DirectX::XMMATRIX Transform = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
@@ -208,6 +214,7 @@ void CameraController::PadControl(float elapsedTime, bool explaining = false)
     new_position.x = target.x - front.x * range;
     new_position.y = target.y - front.y * range;
     new_position.z = target.z - front.z * range;
+   
 }
 
 
@@ -221,15 +228,15 @@ void CameraController::Behavior(float elapsedTime, bool explaining)
         PadControl(elapsedTime, explaining);
 
     // 通常追尾
-    if (now_camera_state == CAMERA::NORMAL_TRACKING)
-        NormalTracking(elapsedTime);
+    //if (now_camera_state == CAMERA::NORMAL_TRACKING)
+       // NormalTracking(elapsedTime);
 
     // 平行移動追尾
-    if (now_camera_state == CAMERA::TRANSLATION_TRACKING)
-        TranslationTracking(elapsedTime);
+    //if (now_camera_state == CAMERA::TRANSLATION_TRACKING)
+        //TranslationTracking(elapsedTime);
 }
 
-
+#if false
 void CameraController::NormalTracking(float elapsedTime)
 {
     // 軸回転から姿勢行列を作り直しているので、向きを変えたい場合は軸角度を変更する
@@ -275,6 +282,7 @@ void CameraController::TranslationTracking(float elapsedTime)
     new_position.y = target.y - front.y * range;
     new_position.z = target.z - front.z * range;
 }
+#endif
 
 
 void CameraController::Shake(float elapsedTime)
@@ -340,4 +348,75 @@ void CameraController::SetRange(float range_)
     if (range_ < 0) return;
 
     range = range_;
+}
+#endif
+
+#include "CameraController.h"
+#include "Camera.h"
+#include "Input/Input.h"
+#include "Input/Mouse.h"
+//float ax = 0;
+//float ay = 0;
+
+//更新処理
+void CameraController::Update(float elapsdTime)
+{
+    GamePad& gamepad = Input::Instance().GetGamePad();
+
+    Mouse& mouse = Input::Instance().GetMouse();
+
+    const MouseButton& anyButton =
+        VK_LBUTTON;
+
+    //if (mouse.GetButton() & anyButton)
+    //{
+        //ax = mouse.GetPositionX();
+        //ay = mouse.GetPositionY();
+    //}
+
+    //float ax = gamepad.GetAxisRX();
+    //float ay = gamepad.GetAxisRY();
+
+    float ax = mouse.GetPositionX();
+    float ay = mouse.GetPositionY();
+    //カメラの回転速度
+    float speed = rollSpeed * elapsdTime;
+
+    //スティックの入力値に合わせてx軸とｙ軸を回転
+    angle.x = ay * speed;
+    angle.y = ax * speed;
+
+    //X軸のカメラ回転を制限
+    //if (angle.x > maxAngleX)
+    //	angle.x = maxAngleX ;
+    //if (angle.x < minAngleX)
+    //	angle.x = minAngleX;
+    //
+    ////y軸の回転値を-3.14~3.14に収まるようにする
+    //if (angle.y < -DirectX::XM_PI)
+    //{
+    //	angle.y += DirectX::XM_2PI;
+    //}
+    //if (angle.y > DirectX::XM_PI)
+    //{
+    //	angle.y -= DirectX::XM_2PI;
+    //}
+
+    //カメラ回転値を回転行列に変換
+    DirectX::XMMATRIX Transform = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
+
+    //回転行列から前方向ベクトルを取り出す
+    DirectX::XMVECTOR Front = Transform.r[2];
+    DirectX::XMFLOAT3 front;
+    DirectX::XMStoreFloat3(&front, Front);
+
+    //注意点から後ろベクトル方向にい一定距離離れたカメラ視点を求める
+    DirectX::XMFLOAT3 eye;
+    eye.x = target.x - front.x * range;
+    eye.y = target.y - front.y * range;
+    eye.z = target.z - front.z * range;
+
+    //カメラの視点と注意点を設定
+    Camera::Instance().SetLookAt(eye, target, DirectX::XMFLOAT3(0, 1, 0));
+
 }
