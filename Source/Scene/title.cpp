@@ -172,10 +172,6 @@ void Title::SpriteRender(ID3D11DeviceContext* dc)
 	float screenHeight = CAST_F(graphics.GetScreenHeight());
 	float title_logoWidth = CAST_F(spr_title_logo->GetTextureWidth());
 	float title_logoHeight = CAST_F(spr_title_logo->GetTextureHeight());
-	float spr_playWidth = CAST_F(spr_play->GetTextureWidth());
-	float spr_playHeight = CAST_F(spr_play->GetTextureHeight());
-	float spr_endWidth = CAST_F(spr_end->GetTextureWidth());
-	float spr_endHeight = CAST_F(spr_end->GetTextureHeight());
 
 	spr_title_logo->Render2(dc,
 		0, 0,						// 表示位置
@@ -186,35 +182,6 @@ void Title::SpriteRender(ID3D11DeviceContext* dc)
 		angle,										// 角度
 		1, 1, 1, 1);								// 色情報(r,g,b,a)
 
-	spr_space->Render2(dc,
-		0, 0,						// 表示位置
-		1.0f, 1.0f,									// スケール
-		0, 0,										// 画像切り抜き位置
-		title_logoWidth, title_logoHeight,				// 画像切り抜きサイズ
-		0, 0,	// 画像基準点
-		angle,										// 角度
-		1, 1, 1, 1);								// 色情報(r,g,b,a)
-
-
-
-	spr_play->Render2(dc,
-		0, 0,						// 表示位置
-		1.0f, 1.0f,									// スケール
-		0, 0,										// 画像切り抜き位置
-		spr_playWidth, spr_playHeight,				// 画像切り抜きサイズ
-		0, 0,	// 画像基準点
-		angle,										// 角度
-		1, 1, 1, 1);								// 色情報(r,g,b,a)
-
-	spr_end->Render2(dc,
-		0, 0,						// 表示位置
-		1.0f, 1.0f,									// スケール
-		0, 0,										// 画像切り抜き位置
-		spr_endWidth, spr_endHeight,				// 画像切り抜きサイズ
-		0, 0,	// 画像基準点
-		angle,										// 角度
-		1, 1, 1, 1);								// 色情報(r,g,b,a)
-	
 	{
 		//スタート
 		spr_start->Render(dc,
@@ -277,9 +244,6 @@ void Title::Set()
 void Title::Load()
 {
 	spr_title_logo		= std::make_unique<Sprite>("Data/Sprite/タイトルロゴ付き背景画像.png");
-	spr_space			= std::make_unique<Sprite>("Data/Sprite/space（タイトル）.png");
-	spr_play			= std::make_unique<Sprite>("Data/Sprite/スタート（タイトル）.png");
-	spr_end 			= std::make_unique<Sprite>("Data/Sprite/やめる（タイトル）.png");
 
 
 	spr_mouseCursor		= std::make_unique<Sprite>("Data/Sprite/cursor.png");

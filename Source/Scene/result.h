@@ -32,7 +32,6 @@ private:
 private:
 
     std::unique_ptr<Sprite> spr_back = nullptr;
-    std::unique_ptr<Sprite> spr_class = nullptr;
     std::unique_ptr<Sprite> spr_retry = nullptr;
     std::unique_ptr<Sprite> spr_end = nullptr;
     std::unique_ptr<Sprite> spr_font = nullptr;
@@ -57,7 +56,4 @@ private:
     bool did_first = false;
     bool did = false;
 
-    // ƒtƒO
-    std::unique_ptr<Sprite> spr_hugu_icon = nullptr;
-    std::unique_ptr<Sprite> spr_hugu_font = nullptr;
 };

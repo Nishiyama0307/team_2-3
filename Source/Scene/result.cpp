@@ -82,8 +82,6 @@ void Result::SpriteRender(ID3D11DeviceContext* dc)
 
 	float screenWidth = CAST_F(graphics.GetScreenWidth());
 	float screenHeight = CAST_F(graphics.GetScreenHeight());
-	float spr_classWidth = CAST_F(spr_class->GetTextureWidth());
-	float spr_classHeight = CAST_F(spr_class->GetTextureHeight());
 	float spr_retryWidth = CAST_F(spr_retry->GetTextureWidth());
 	float spr_retryHeight = CAST_F(spr_retry->GetTextureHeight());
 	float spr_endWidth = CAST_F(spr_end->GetTextureWidth());
@@ -93,16 +91,7 @@ void Result::SpriteRender(ID3D11DeviceContext* dc)
 		0, 0,						// 表示位置
 		1.0f, 1.0f,									// スケール
 		0, 0,										// 画像切り抜き位置
-		spr_classWidth, spr_classHeight,				// 画像切り抜きサイズ
-		0, 0,	// 画像基準点
-		angle,										// 角度
-		1, 1, 1, 1);								// 色情報(r,g,b,a)
-
-	spr_class->Render2(dc,
-		0, 0,						// 表示位置
-		1.0f, 1.0f,									// スケール
-		0, 0,										// 画像切り抜き位置
-		spr_classWidth, spr_classHeight,				// 画像切り抜きサイズ
+		screenWidth, screenHeight,				// 画像切り抜きサイズ
 		0, 0,	// 画像基準点
 		angle,										// 角度
 		1, 1, 1, 1);								// 色情報(r,g,b,a)
@@ -159,10 +148,6 @@ void Result::SpriteRender(ID3D11DeviceContext* dc)
 			1, 1, 1, 1);								// 色情報(r,g,b,a)
 	}
 
-	// フグのアイコンとフォントの表示
-	spr_hugu_icon->Render2(dc, { 0,0 }, { 1,1 }, { 0,0 }, { screenWidth,screenHeight }, { 0,0 }, 0, { 1,1,1,1 });
-	spr_hugu_font->Render2(dc, { 0,0 }, { 1,1 }, { 0,0 }, { screenWidth,screenHeight }, { 0,0 }, 0, { 1,1,1,1 });
-
 
 	
 	
@@ -199,13 +184,10 @@ void Result::Set()
 void Result::Load()
 {
 	spr_back = std::make_unique<Sprite>("Data/Sprite/タイトルロゴなし背景画像（リザルト）.png");
-	spr_class = std::make_unique<Sprite>("Data/Sprite/あなたは～です。＆スコア＆ランキング（リザルト）.png");
 	spr_retry = std::make_unique<Sprite>("Data/Sprite/リトライ（リザルト）.png");
 	spr_end = std::make_unique<Sprite>("Data/Sprite/やめる（リザルト）.png");
 	spr_font = std::make_unique<Sprite>("Data/Sprite/数字.png");
 
-	spr_hugu_icon = std::make_unique<Sprite>("Data/Sprite/くさふぐ画像（リザルト）.png");
-	spr_hugu_font = std::make_unique<Sprite>("Data/Sprite/くさふぐ（リザルト）.png");
 
 	black_band = std::make_unique<Sprite>();
 }
