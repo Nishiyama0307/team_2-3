@@ -57,4 +57,15 @@ public:
     // BGM—p
     bool bgm_normal = false;
     bool bgm_caution = false;
+
+public:
+    enum SceneTag
+    {
+        SCENE_TITLE = 0,
+        SCENE_GAME,
+        SCENE_RESULT,
+        SCENE_PAUSE
+    };
+
+    //int GetSceneTag() { return scene_tag; };
 };

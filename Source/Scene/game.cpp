@@ -14,13 +14,16 @@
 #include "easy_math.h"
 #include "audioManager.h"
 
-
+extern int scene_tag;
 
 void Game::Update(float elapsedTime)
 {
 
 	// シーン変更
 	ChangeScene(elapsedTime);
+
+	//
+	scene_tag = Scene::SCENE_GAME;
 
 	// ポーズ
 	if (pause->Update(elapsedTime)) return;
@@ -43,7 +46,7 @@ void Game::Update(float elapsedTime)
 	//カメラコントローラー更新処理
 	DirectX::XMFLOAT3 target = player->GetPosition();
 	target.y += 12.0f;
-	target.z -= 10.0f;
+	//target.z -= 10.0f;
 	cameraController->SetTarget(target);
 	cameraController->Update(elapsedTime);
 

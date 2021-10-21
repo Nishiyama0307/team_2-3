@@ -1,4 +1,7 @@
 #include "Input/Mouse.h"
+#include "Scene/scene.h"
+
+extern int scene_tag;
 
 static const int KeyMap[] =
 {
@@ -58,6 +61,22 @@ void Mouse::Update()
 	// âÊñ ï‚ê≥
 	positionX[1] = positionX[0];
 	positionY[1] = positionY[0];
-	positionX[0] = (LONG)(cursor.x / static_cast<float>(viewportW) * static_cast<float>(screenW));
-	positionY[0] = (LONG)(cursor.y / static_cast<float>(viewportH) * static_cast<float>(screenH));
+
+	sceneTag = scene_tag;
+	switch (sceneTag)
+	{
+	case Scene::SCENE_RESULT:
+
+	case Scene::SCENE_PAUSE:
+
+	case Scene::SCENE_TITLE:
+		positionX[0] = (LONG)(cursor.x / static_cast<float>(viewportW) * static_cast<float>(screenW));
+		positionY[0] = (LONG)(cursor.y / static_cast<float>(viewportH) * static_cast<float>(screenH));
+		break;
+
+	case Scene::SCENE_GAME:
+		positionX[0] = (LONG)(cursor.x - 960 / static_cast<float>(viewportW) * static_cast<float>(screenW));
+		positionY[0] = (LONG)(cursor.y - 540 / static_cast<float>(viewportH) * static_cast<float>(screenH));
+		break;
+	}
 }

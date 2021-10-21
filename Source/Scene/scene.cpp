@@ -4,6 +4,7 @@
 #include "sceneManager.h"
 
 
+int scene_tag = 0;
 
 void Scene::Init(SceneManager* scene_manager_)
 {

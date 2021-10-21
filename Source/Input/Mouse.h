@@ -68,4 +68,6 @@ private:
 	int				screenWidth = 0;
 	int				screenHeight = 0;
 	HWND			hWnd = nullptr;
+
+	int sceneTag = 0;
 };

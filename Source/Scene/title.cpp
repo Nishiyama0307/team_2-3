@@ -13,6 +13,7 @@
 #include "audioManager.h"
 
 extern bool game_exit;
+extern int scene_tag;
 
 //////////////////////////////////
 void Title::Update(float elapsedTime)
@@ -268,6 +269,8 @@ void Title::Set()
 
 	framePos.x = 0;
 	framePos.y = 0;
+
+	scene_tag = Scene::SCENE_TITLE;
 }
 
 
