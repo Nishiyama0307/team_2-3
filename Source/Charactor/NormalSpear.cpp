@@ -1,27 +1,27 @@
-#include "RareEnemy.h"
+#include "NormalSpear.h"
 #include "EnemyManager.h"
 
-RareEnemy::RareEnemy()
+NormalSpear::NormalSpear()
 {
-	model = new Model("Data/Model/knight/knight.mdl");
+	model = new Model("Data/Model/spear/spear.mdl");
 
-	enemy_tag = RARE;
+	enemy_tag = NORMAL_SPEAR;
 
 	scale.x = scale.y = scale.z = 1.0f;
 
-	// 幅、高さ設定
-	height = 2.0f;
-
 	model->PlayAnimation(0, true);
+
+	// {hp, attack, money}
+	par = { 10, 5, 5 };
 }
 
-RareEnemy::~RareEnemy()
+NormalSpear::~NormalSpear()
 {
 	delete model;
 	model = NULL;
 }
 
-void RareEnemy::Update(float elapsedTime)
+void NormalSpear::Update(float elapsedTime)
 {
 	// 速力処理更新
 	UpdateVelocity(elapsedTime, KIND::RARE_ENEMY);
@@ -37,12 +37,12 @@ void RareEnemy::Update(float elapsedTime)
 
 }
 
-void RareEnemy::Render(ID3D11DeviceContext* dc, Shader* shader)
+void NormalSpear::Render(ID3D11DeviceContext* dc, Shader* shader)
 {
 	shader->Draw(dc, model);
 }
 
-DirectX::XMFLOAT3 RareEnemy::inhaled()
+DirectX::XMFLOAT3 NormalSpear::inhaled()
 {
 	constexpr float STAGE_1_SCALING_VALUE = 0.5f;
 
@@ -51,15 +51,16 @@ DirectX::XMFLOAT3 RareEnemy::inhaled()
 	case 1:
 		Is_inhaling = true;
 		EnemyManager::Instance().Remove(this);
-		par.scaling_value = { STAGE_1_SCALING_VALUE * scale.x, STAGE_1_SCALING_VALUE * scale.y, STAGE_1_SCALING_VALUE * scale.z };
-		return par.scaling_value;
+		//par.scaling_value = { STAGE_1_SCALING_VALUE * scale.x, STAGE_1_SCALING_VALUE * scale.y, STAGE_1_SCALING_VALUE * scale.z };
+		//return par.scaling_value;
+		return { 0,0,0 };
 		break;
 	default:
 		break;
 	}
 }
 
-void RareEnemy::SetInhaleParameter()
+void NormalSpear::SetInhaleParameter()
 // 吸い込み用のパラメータ設定
 {
 
@@ -69,9 +70,9 @@ void RareEnemy::SetInhaleParameter()
 	//radius = total_scale_value / 3;
 
 	// 吸い込めるようになる最低限のスケール
-	par.enough_total_scale_value = total_scale_value * 0.87f;
+	//par.enough_total_scale_value = total_scale_value * 0.87f;
 
 	// 消化できるようになる最低限のスケール
 	// ※ありえない数値を入れておく
-	par.can_be_digestion_total_scale_value = FLT_MAX;
+	//par.can_be_digestion_total_scale_value = FLT_MAX;
 }

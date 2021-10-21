@@ -11,6 +11,7 @@ void Enemy::DrawDebugPrimitive()
 	// 当たり判定の大きさ
 	radius = 1.0f;
 
+	// 幅、高さ設定
 	height = 6.0f;
 	
 	// 衝突判定用のデバッグ球を描画

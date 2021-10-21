@@ -3,11 +3,11 @@
 #include "Graphics/Model.h"
 #include "Enemy.h"
 
-class RareEnemy : public Enemy
+class NormalSpear : public Enemy
 {
 public:
-	RareEnemy();
-	~RareEnemy() override;
+	NormalSpear();
+	~NormalSpear() override;
 
 	void Update(float elapsedTime) override;
 	void Render(ID3D11DeviceContext* dc, Shader* shader) override;
@@ -15,6 +15,7 @@ public:
 	DirectX::XMFLOAT3 inhaled() override;
 
 	void SetInhaleParameter();
+	void SetParameter(Parameter param) { this->par = param; };
 
 private:
 	Model* model = nullptr;

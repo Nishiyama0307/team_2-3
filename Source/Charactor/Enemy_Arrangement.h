@@ -2,9 +2,13 @@
 
 #include "Charactor/Enemy.h"
 #include "Charactor/EnemyManager.h"
-#include "Charactor/NormalEnemy.h"
-#include "Charactor/BombEnemy.h"
-#include "Charactor/RareEnemy.h"
+//#include "Charactor/NormalEnemy.h"
+//#include "Charactor/BombEnemy.h"
+//#include "Charactor/RareEnemy.h"
+#include "Charactor/NormalSword.h"
+#include "Charactor/StrongSword.h"
+#include "Charactor/NormalSpear.h"
+#include "Charactor/StrongSpear.h"
 
 using namespace std;
 #include <string>
@@ -32,7 +36,7 @@ private:
     //------< 変数 >------------------------------------------------------------
 
     Block Arrangement[CHIP_NUM_Y][CHIP_NUM_X];                   // 敵の配置データ
-    int normal_enemy_limit_num = 30;
+    /*int normal_enemy_limit_num = 30;
     int bomb_enemy_limit_num = 20;
     int normal_enemy_num[3] = {0};
     int bomb_enemy_num[3] = {0};
@@ -42,15 +46,13 @@ private:
     int random_angle = 0;
 
     int normal_random = 0;
-    bool bomb_random = false;
+    bool bomb_random = false;*/
 
 
 public:
     Enemy_Arrangement() {};
     ~Enemy_Arrangement() {};
 
-    void random_scaling(int Arrangement_num);
-    void random_angling();
 
     enum csv_file_num
     {

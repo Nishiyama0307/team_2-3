@@ -4,12 +4,7 @@
 
 
 
-struct Parameter
-{
-	DirectX::XMFLOAT3 scaling_value = {0,0,0};		// 吸い込んだ物によって＋or－
-	float enough_total_scale_value = 0.0f;			// 吸い込める最低ライン
-	float can_be_digestion_total_scale_value = 0.0f;// 消化できる最低ライン
-};
+
 
 
 // キャラクター	
@@ -129,6 +124,13 @@ protected:
 	};
 
 	bool wall_hit = false;
+
+	struct Parameter
+	{
+		int hp{ 10 };
+		int power{ 5 };
+		int money{ 5 };
+	};
 
 public:
 	Parameter par;

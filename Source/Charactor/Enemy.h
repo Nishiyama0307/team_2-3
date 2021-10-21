@@ -7,9 +7,10 @@ class Player;
 
 enum ENEMYTAG
 {
-	NORMAL,
-	BOMB,
-	RARE,
+	NORMAL_SWORD,
+	STRONG_SWORD,
+	NORMAL_SPEAR,
+	STRONG_SPEAR,
 };
 
 
@@ -34,9 +35,6 @@ public:
 	void Destroy();
 
 public: // Getä÷êî
-	float EnoughTotalScaleValue() { return par.enough_total_scale_value; }
-	float CanBeDigestionTotalScaleValue() { return par.can_be_digestion_total_scale_value; }
-
 public: // Setä÷êî
 	void SetPlayerAddress(Player* player_) { player = player_; }
 	virtual void SetInhaleParameter() = 0;

@@ -98,116 +98,38 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
             //    }
             //    enemyManager.Register(bombEnemy, ENEMYTAG::BOMB);
             //}
-            if (Arrangement[y][x].num == ENEMYTAG::RARE)
+            if (Arrangement[y][x].num == ENEMYTAG::NORMAL_SWORD)
             {
 
-                RareEnemy* rareEnemy = new RareEnemy();
-                rareEnemy->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
-                enemyManager.Register(rareEnemy, ENEMYTAG::RARE);
+                NormalSword* normalSword = new NormalSword();
+                normalSword->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
+                normalSword->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
+                enemyManager.Register(normalSword, ENEMYTAG::NORMAL_SWORD);
+            }
+            if (Arrangement[y][x].num == ENEMYTAG::STRONG_SWORD)
+            {
+
+                StrongSword* strongSword = new StrongSword();
+                strongSword->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
+                strongSword->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
+                enemyManager.Register(strongSword, ENEMYTAG::STRONG_SWORD);
+            }
+            if (Arrangement[y][x].num == ENEMYTAG::NORMAL_SPEAR)
+            {
+
+                NormalSpear* normalSpear = new NormalSpear();
+                normalSpear->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
+                normalSpear->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
+                enemyManager.Register(normalSpear, ENEMYTAG::NORMAL_SPEAR);
+            }
+            if (Arrangement[y][x].num == ENEMYTAG::STRONG_SPEAR)
+            {
+
+                StrongSpear* strongSpear = new StrongSpear();
+                strongSpear->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
+                strongSpear->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
+                enemyManager.Register(strongSpear, ENEMYTAG::STRONG_SPEAR);
             }
         }
     }
-}
-
-void Enemy_Arrangement::random_scaling(int Arrangement_num)
-{
-    /*if (ENEMYTAG::NORMAL == Arrangement_num)
-    {   
-        if (normal_random >= 2)
-        {
-            random_num = -1;
-            normal_random = 0;
-        }
-        else
-        {
-            random_num = rand() % 3;
-            if ((normal_enemy_num[SMALL_SIZE] != normal_enemy_num[MEDIUM_SIZE]) || (normal_enemy_num[SMALL_SIZE] != normal_enemy_num[LARGE_SIZE]))
-            {
-                if (normal_enemy_num[SMALL_SIZE] <= normal_enemy_num[MEDIUM_SIZE])
-                {
-                    if (normal_enemy_num[SMALL_SIZE] < normal_enemy_num[LARGE_SIZE]) random_num = SMALL_SIZE;
-                    else random_num = LARGE_SIZE;
-                }
-                else if (normal_enemy_num[MEDIUM_SIZE] <= normal_enemy_num[LARGE_SIZE]) random_num = MEDIUM_SIZE;
-                else random_num = LARGE_SIZE;
-            }
-            normal_random++;
-        }
-
-        switch (random_num)
-        {
-        case SMALL_SIZE:
-            if (normal_enemy_num[SMALL_SIZE] < normal_enemy_limit_num)
-            {
-                random_scale = 2;
-                normal_enemy_num[SMALL_SIZE]++;
-                 break;
-            }
-        case MEDIUM_SIZE:
-            if (normal_enemy_num[MEDIUM_SIZE] < normal_enemy_limit_num)
-            {
-                random_scale = 3;
-                normal_enemy_num[MEDIUM_SIZE]++;
-                break;
-            }
-        case LARGE_SIZE:
-            if (normal_enemy_num[LARGE_SIZE] < normal_enemy_limit_num)
-            {
-                random_scale = 4;
-                normal_enemy_num[LARGE_SIZE]++;
-                break;
-            }
-        default:
-            random_scale = 1;
-            break;
-        }
-
-    }
-
-    if (ENEMYTAG::BOMB == Arrangement_num)
-    {
-        if (bomb_random == true)
-        {
-            random_num = rand() % 3;
-            bomb_random = false;
-        }
-        else
-        {
-            random_num = -1;
-            bomb_random = true;
-        }
-
-        switch (random_num)
-        {
-        case SMALL_SIZE:
-            if (bomb_enemy_num[SMALL_SIZE] < bomb_enemy_limit_num)
-            {
-                random_scale = 2;
-                bomb_enemy_num[SMALL_SIZE]++;
-                break;
-            }
-        case MEDIUM_SIZE:
-            if (bomb_enemy_num[MEDIUM_SIZE] < bomb_enemy_limit_num)
-            {
-                random_scale = 3;
-                bomb_enemy_num[MEDIUM_SIZE]++;
-                break;
-            }
-        case LARGE_SIZE:
-            if (bomb_enemy_num[LARGE_SIZE] < bomb_enemy_limit_num)
-            {
-                random_scale = 4;
-                bomb_enemy_num[LARGE_SIZE]++;
-                break;
-            }
-        default:
-            random_scale = 1;
-            break;
-        }
-    }*/
-}
-
-void Enemy_Arrangement::random_angling()
-{
-    random_angle = rand() % 16;
 }

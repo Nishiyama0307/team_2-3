@@ -92,7 +92,7 @@ void Inhale::Collision()
 		))
 		{
 			// ‹z‚¢‚ß‚é‚Å‚©‚³‚É’B‚µ‚Ä‚¢‚È‚¯‚ê‚Î@‹z‚¢‚Ü‚¸’e‚«•Ô‚·
-			if (3 < enemy->EnoughTotalScaleValue())
+			//if (3 < enemy->EnoughTotalScaleValue())
 			{
 				KnockBack(player->GetPosition(), enemy->GetPosition());
 
@@ -106,7 +106,7 @@ void Inhale::Collision()
 			DirectX::XMFLOAT3 add_scale = enemy->inhaled();
 
 			float factor = 1.0f;
-			if (3 >= enemy->CanBeDigestionTotalScaleValue()) factor *= -1.0f;
+			//if (3 >= enemy->CanBeDigestionTotalScaleValue()) factor *= -1.0f;
 
 			// TODO: ƒXƒRƒA‰ÁZ‚Ì‰¼À‘•, •ÏX‚·‚é
 			//GameSystem::Instance().AddScore(static_cast<int>(sum_add_scale * 10.0f));
@@ -115,25 +115,25 @@ void Inhale::Collision()
 
 
 
-			if (enemy->enemy_tag == ENEMYTAG::NORMAL)
-			{
-				// Normal‚Ì‹z‚¢‚İ‰¹
-				AudioManager::Instance().GetAudio(Audio_INDEX::SE_INHALE_NORMAL)->Stop();
-				AudioManager::Instance().GetAudio(Audio_INDEX::SE_INHALE_NORMAL)->Play(false);
-			}
-			if (enemy->enemy_tag == ENEMYTAG::BOMB)
-			{
-				// Bomb‚Ì‹z‚¢‚İ‰¹
-				AudioManager::Instance().GetAudio(Audio_INDEX::SE_INHALE_BOMB)->Stop();
-				AudioManager::Instance().GetAudio(Audio_INDEX::SE_INHALE_BOMB)->Play(false);
+			//if (enemy->enemy_tag == ENEMYTAG::NORMAL)
+			//{
+			//	// Normal‚Ì‹z‚¢‚İ‰¹
+			//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_INHALE_NORMAL)->Stop();
+			//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_INHALE_NORMAL)->Play(false);
+			//}
+			//if (enemy->enemy_tag == ENEMYTAG::BOMB)
+			//{
+			//	// Bomb‚Ì‹z‚¢‚İ‰¹
+			//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_INHALE_BOMB)->Stop();
+			//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_INHALE_BOMB)->Play(false);
 
-			}
-			if (enemy->enemy_tag == ENEMYTAG::RARE)
-			{
-				// Rare‚Ì‹z‚¢‚İ‰¹
-				AudioManager::Instance().GetAudio(Audio_INDEX::SE_INHALE_NORMAL)->Stop();
-				AudioManager::Instance().GetAudio(Audio_INDEX::SE_INHALE_NORMAL)->Play(false);
-			}
+			//}
+			//if (enemy->enemy_tag == ENEMYTAG::RARE)
+			//{
+			//	// Rare‚Ì‹z‚¢‚İ‰¹
+			//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_INHALE_NORMAL)->Stop();
+			//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_INHALE_NORMAL)->Play(false);
+			//}
 
 
 
