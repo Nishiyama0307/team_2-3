@@ -8,8 +8,6 @@
 // ’Ç‰Á
 #include "Charactor/Player.h"
 #include "Charactor/EnemyManager.h"
-#include "Charactor/NormalEnemy.h"
-#include "Charactor/BombEnemy.h"
 #include "Charactor/Enemy_Arrangement.h"
 
 
