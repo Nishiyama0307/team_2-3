@@ -355,8 +355,10 @@ void CameraController::SetRange(float range_)
 #include "Camera.h"
 #include "Input/Input.h"
 #include "Input/Mouse.h"
+#include "C_function.h"
 //float ax = 0;
 //float ay = 0;
+bool setpos;
 
 //更新処理
 void CameraController::Update(float elapsdTime)
@@ -365,48 +367,130 @@ void CameraController::Update(float elapsdTime)
 
     Mouse& mouse = Input::Instance().GetMouse();
 
-    const MouseButton& anyButton =
-        VK_LBUTTON;
+    const MouseButton& anyButton = VK_LBUTTON;
 
-    //Mouse& mouse = Input::Instance().GetMouse();
+#if false
+    float mouseSpeedX, mouseSpeedY, nowMousePosX, nowMousePosY, oldMousePosX, oldMousePosY;
+    nowMousePosX = mouse.GetPositionX();
+    nowMousePosY = mouse.GetPositionY();
+    oldMousePosX = mouse.GetOldPositionX();
+    oldMousePosY = mouse.GetOldPositionY();
+    float speed = rollSpeed * elapsdTime;
+
+    mouseSpeedX = oldMousePosX - nowMousePosX;
+    mouseSpeedY = oldMousePosY - nowMousePosY;
+
+    //angle.x = mouseSpeedX * speed;
+    //if (angle.x > 360) angle.x = 0;
+    //if (angle.x < 0) angle.x = 360;
+
+    //angle.y = mouseSpeedY * speed;
+    //if (angle.y > 360) angle.y = 0;
+    //if (angle.y < 0) angle.y = 360;
+#endif
+
+    float mouseSpeedX, mouseSpeedY, nowMousePosX, nowMousePosY, oldMousePosX, oldMousePosY;
+    nowMousePosX = mouse.GetPositionX();
+    nowMousePosY = mouse.GetPositionY();
+    oldMousePosX = mouse.GetOldPositionX();
+    oldMousePosY = mouse.GetOldPositionY();
     // カメラの回転速度
-    if (mouse.GetOldPositionX() > mouse.GetPositionX())
+    
+    if (oldMousePosX > nowMousePosX)
     {
-        rollSpeed = DirectX::XMConvertToRadians(float(mouse.GetOldPositionX() - mouse.GetPositionX()));
+        rollSpeed = DirectX::XMConvertToRadians(float(oldMousePosX - nowMousePosX));
         float speed = rollSpeed * elapsdTime;
-        this->angle.y -= speed * 0.2f;
+        if (!setpos)
+        {
+            this->angle.y -= speed * 7.0f;
+        }
+        setpos = false;
     }
-    if (mouse.GetOldPositionX() < mouse.GetPositionX())
+    if (oldMousePosX < nowMousePosX)
     {
-        rollSpeed = DirectX::XMConvertToRadians(float(mouse.GetPositionX() - mouse.GetOldPositionX()));
+        rollSpeed = DirectX::XMConvertToRadians(float(nowMousePosX - oldMousePosX));
         float speed = rollSpeed * elapsdTime;
-        this->angle.y += speed * 0.2f;
+        if (!setpos)
+        {
+            this->angle.y += speed * 7.0f;
+        }
+        setpos = false;
     }
+    //結局マウスの移動量が端につくと無くなるのでは?
+    if (0 == oldMousePosX - nowMousePosX)
+    {
+        ::SetCursorPos(960, 540);
+        setpos = true;
+        //this->angle.y -=  0.01f;
+    }
+    if (nowMousePosX < 10)
+    {
+        if (0 == oldMousePosX - nowMousePosX)
+        {
+            ::SetCursorPos(960, 540);
+            setpos = true;
+            //this->angle.y -=  0.01f;
+        }
+    }
+    if (nowMousePosX > 1910)
+    {
+        if (0 == oldMousePosX - nowMousePosX)
+        {
+            ::SetCursorPos(960, 540);
+            setpos = true;
+            //this->angle.y += 0.01f;
+        }
+    }
+
+    //Y軸
+    //if (oldMousePosY > nowMousePosY)
+    //{
+    //    rollSpeed = DirectX::XMConvertToRadians(float(oldMousePosY - nowMousePosY));
+    //    float speed = rollSpeed * elapsdTime;
+    //    this->angle.x -= speed * 7.0f;
+    //
+    //}
+    //if (oldMousePosY < nowMousePosY)
+    //{
+    //    rollSpeed = DirectX::XMConvertToRadians(float(nowMousePosY - oldMousePosY));
+    //    float speed = rollSpeed * elapsdTime;
+    //    this->angle.x += speed * 7.0f;
+    //}
+
+
     //::SetCursorPos(960, 540);
     //int differenceX = mouse.GetOldPositionX() - mouse.GetPositionX();
     //int differenceY = mouse.GetOldPositionY() - mouse.GetPositionY();
     //rollSpeed = differenceX * elapsdTime;
     //this->angle.y -= rollSpeed;
 
-
+#if false
     //if (mouse.GetPositionX() < 10)
     //{
     //    SetCursorPos(960, 540);
     //    mouse.SetOldPositionX(960);
     //    mouse.SetPositionX(960);
     //}
-    if (mouse.GetPositionX() <= 940)
-    {
-        SetCursorPos(940, 540);
-        mouse.SetOldPositionX(940);
-        mouse.SetPositionX(940);
-    }
-    if (mouse.GetPositionX() >= 980)
-    {
-        SetCursorPos(980, 540);
-        mouse.SetOldPositionX(980);
-        mouse.SetPositionX(980);
-    }
+    //if (mouse.GetPositionX() >= 1700)
+    //{
+    //    SetCursorPos(940, 540);
+    //    mouse.SetOldPositionX(940);
+    //    mouse.SetPositionX(940);
+    //}
+    //else if (mouse.GetPositionX() >= 940)
+    //{
+    //
+    //}
+    //else if (mouse.GetPositionX() <= 940)
+    //{
+    //   
+    //}
+    //else if (mouse.GetPositionX() <= 100)
+    //{
+    //    SetCursorPos(980, 540);
+    //    mouse.SetOldPositionX(980);
+    //    mouse.SetPositionX(980);
+    //}
 
     // X軸のカメラ回転を制限	
     //if (this->angle.x >= maxAngleX)angle.x = maxAngleX;
@@ -420,6 +504,7 @@ void CameraController::Update(float elapsdTime)
     //{
     //    angle.y -= DirectX::XM_2PI;
     //}
+#endif
 
 #if false
     //if (mouse.GetButton() & anyButton)

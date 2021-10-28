@@ -78,8 +78,8 @@ void Mouse::Update()
 
 	case Scene::SCENE_GAME:
 		//::SetCursorPos(960, 540);
-		positionX[0] = (LONG)(cursor.x - 960 / static_cast<float>(viewportW) * static_cast<float>(screenW));
-		positionY[0] = (LONG)(cursor.y - 540 / static_cast<float>(viewportH) * static_cast<float>(screenH));
+		positionX[0] = (LONG)(cursor.x /*- 960*/ / static_cast<float>(viewportW) * static_cast<float>(screenW));
+		positionY[0] = (LONG)(cursor.y /*- 540*/ / static_cast<float>(viewportH) * static_cast<float>(screenH));
 		
 
 		break;
