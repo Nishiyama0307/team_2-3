@@ -34,11 +34,6 @@ void NormalSword::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 	// 無敵時間更新
 	UpdateInvicibleTimer(elapsedTime);
 
-	GamePad& gamePad = Input::Instance().GetGamePad();
-	if (gamePad.GetButtonDown() & GamePad::BTN_B) this->ApplyDamage(par.power, 0.5f);
-
-	//HomingMove(elapsedTime, playerPos);
-
 	// モデル行列更新
 	model->UpdateTransform(transform);
 
