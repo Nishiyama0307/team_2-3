@@ -101,10 +101,6 @@ void Enemy::HomingMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 	if (distance < Sensing_range) is_detection_ = true;
 	else is_detection_ = false;
 
-	if (is_tracking_) is_group_behavior_ = false;
-
-	
-
 	if (is_detection_ == false && is_tracking_) // 範囲外で追跡中なら通る
 	{
 		is_tracking_ = false; // 検知範囲外に逃げられたら追跡をやめる
@@ -165,15 +161,6 @@ void Enemy::HomingMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 				Direction = DirectX::XMVector3Normalize(Transform.r[2]);
 				DirectX::XMStoreFloat3(&direction, Direction);
 
-				// 移動
-				if (is_tracking_ || is_group_behavior_) // 追跡中か団体行動時のみ移動
-				{
-					float moveSpeed = this->moveSpeed * elapsedTime;
-					position.x += direction.x * moveSpeed;
-					position.y += direction.y * moveSpeed;
-					position.z += direction.z * moveSpeed;
-				}
-
 				if (is_detection_ && is_tracking_ == false) // 範囲内で追跡中でなければ通る
 				{
 					is_tracking_ = true; // 前側に居たら追跡を開始する
@@ -183,6 +170,14 @@ void Enemy::HomingMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 				}
 			}
 		}
+	}
+
+	if (is_tracking_ || is_group_behavior_)
+	{
+		float moveSpeed = this->moveSpeed * elapsedTime;
+		position.x += direction.x * moveSpeed;
+		position.y += direction.y * moveSpeed;
+		position.z += direction.z * moveSpeed;
 	}
 
 }

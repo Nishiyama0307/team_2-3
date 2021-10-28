@@ -35,6 +35,8 @@ public:
 	// リソース取得
 	const ModelResource* GetResource() const { return resource.get(); }
 
+	int GetIndex() const { return currentAnimationIndex; }
+
 	// アニメーション更新処理
 	void UpdateAnimation(float elapsedTime);
 
