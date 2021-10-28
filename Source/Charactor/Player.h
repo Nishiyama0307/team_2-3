@@ -117,7 +117,7 @@ private:
 		State_Damage,
 	};
 	AnimeState state = AnimeState::State_Idel;
-
+	
 	//待機ステートへ
 	void Idel_chage();
 	//待機ステート更新

@@ -359,9 +359,13 @@ void CameraController::SetRange(float range_)
 //float ax = 0;
 //float ay = 0;
 
+#include<Windows.h>
+
 //更新処理
 void CameraController::Update(float elapsdTime)
 {
+    ShowCursor(false);
+
     GamePad& gamepad = Input::Instance().GetGamePad();
 
     Mouse& mouse = Input::Instance().GetMouse();
@@ -394,7 +398,7 @@ void CameraController::Update(float elapsdTime)
     oldMousePosX = mouse.GetOldPositionX();
     oldMousePosY = mouse.GetOldPositionY();
     // カメラの回転速度
-    
+    //左右回転
     if (oldMousePosX > nowMousePosX)
     {
         rollSpeed = DirectX::XMConvertToRadians(float(oldMousePosX - nowMousePosX));
@@ -403,7 +407,6 @@ void CameraController::Update(float elapsdTime)
         {
             this->angle.y -= speed * 7.0f;
         }
-        setpos = false;
     }
     if (oldMousePosX < nowMousePosX)
     {
@@ -413,22 +416,41 @@ void CameraController::Update(float elapsdTime)
         {
             this->angle.y += speed * 7.0f;
         }
-        setpos = false;
     }
-    //結局マウスの移動量が端につくと無くなるのでは?
+    //上下回転
+    if (oldMousePosY > nowMousePosY)
+    {
+        rollSpeed = DirectX::XMConvertToRadians(float(oldMousePosY - nowMousePosY));
+        float speed = rollSpeed * elapsdTime;
+        if (!setpos)
+        {
+            this->angle.x -= speed * 7.0f;
+        }
+    }
+    if (oldMousePosY < nowMousePosY)
+    {
+        rollSpeed = DirectX::XMConvertToRadians(float(nowMousePosY - oldMousePosY));
+        float speed = rollSpeed * elapsdTime;
+        if (!setpos)
+        {
+            this->angle.x += speed * 7.0f;
+        }
+    }
+    setpos = false;
+    //移動量が0の時真ん中に戻す
     if (0 == oldMousePosX - nowMousePosX)
     {
         ::SetCursorPos(960, 540);
         setpos = true;
         //this->angle.y -=  0.01f;
     }
+    //結局マウスの移動量が端につくと無くなるのでは?
     if (nowMousePosX < 10)
     {
         if (0 == oldMousePosX - nowMousePosX)
         {
             ::SetCursorPos(960, 540);
             setpos = true;
-            //this->angle.y -=  0.01f;
         }
     }
     if (nowMousePosX > 1910)
@@ -437,25 +459,15 @@ void CameraController::Update(float elapsdTime)
         {
             ::SetCursorPos(960, 540);
             setpos = true;
-            //this->angle.y += 0.01f;
         }
     }
 
-    //Y軸
-    //if (oldMousePosY > nowMousePosY)
-    //{
-    //    rollSpeed = DirectX::XMConvertToRadians(float(oldMousePosY - nowMousePosY));
-    //    float speed = rollSpeed * elapsdTime;
-    //    this->angle.x -= speed * 7.0f;
-    //
-    //}
-    //if (oldMousePosY < nowMousePosY)
-    //{
-    //    rollSpeed = DirectX::XMConvertToRadians(float(nowMousePosY - oldMousePosY));
-    //    float speed = rollSpeed * elapsdTime;
-    //    this->angle.x += speed * 7.0f;
-    //}
-
+    //上下のカメラ回転を制限
+    if (angle.x > maxAngleX)
+    	angle.x = maxAngleX ;
+    if (angle.x < minAngleX)
+    	angle.x = minAngleX;
+   
 #if false
     //if (mouse.GetPositionX() < 10)
     //{
