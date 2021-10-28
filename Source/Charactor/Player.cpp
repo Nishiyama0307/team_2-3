@@ -7,13 +7,14 @@
 #include "EnemyManager.h"
 #include "collision.h"
 #include "easy_math.h"
+#include "Input/Mouse.h"
 
-
+extern int attck_select_state;
 
 // コンストラクタ
 Player::Player()
 {
-	model = new Model("Data/Model/player/test_player.mdl");
+	model = new Model("Data/Model/player/player.mdl");
 
 	scale.x = scale.y = scale.z = 1.0f;
 
@@ -24,6 +25,11 @@ Player::Player()
 	position.y = scale.y + scale.y * 1.7f;
 
 	height = 10.0f;
+
+	//アニメーション再生
+	Idel_chage();
+	//model->PlayAnimation(Anim_Idel, true);
+
 
 	//音
 	/*Audio& audio1 = Audio::Instance();
@@ -100,8 +106,8 @@ void Player::Update(float elapsedTime, bool explaining)
 {
 	if (explaining == false)
 	{
-		Input(elapsedTime);							// 入力処理
-		UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+		//Input(elapsedTime);							// 入力処理
+		//UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
 	}
 	// 速力をなしにする (速力が摩擦以下)
 	else
@@ -113,6 +119,33 @@ void Player::Update(float elapsedTime, bool explaining)
 	}
 
 	inhale->Update(elapsedTime);				// 掃除機機能の更新
+
+	//アニメーション再生
+	Mouse& mouse = Input::Instance().GetMouse();
+	const MouseButton& anyButton = Mouse::BTN_LEFT;
+
+	switch (state)
+	{
+	case AnimeState::State_Idel:
+		UpdateIdel(elapsedTime);
+		break;
+
+	case AnimeState::State_Attack1:
+		UpdateAttack1(elapsedTime);
+		break;
+
+	case AnimeState::State_Attack2:
+		UpdateAttack3(elapsedTime);
+		break;
+
+	case AnimeState::State_Attack3:
+		UpdateAttack3(elapsedTime);
+		break;
+	}
+
+	// モデルアニメーション更新処理
+	model->UpdateAnimation(elapsedTime);
+
 
 	// プレイヤーとエネミーとの衝突処理
 	CollisionPlayerVsEnemies();
@@ -329,4 +362,94 @@ void Player::AddImpact(const DirectX::XMFLOAT3 impact_)
 	this->velocity.x += impact_.x;
 	this->velocity.y += impact_.y;
 	this->velocity.z += impact_.z;
+}
+
+
+////アニメーションのステート関係
+//待機ステートへ
+void Player::Idel_chage()
+{
+	state = AnimeState::State_Idel;
+	model->PlayAnimation(Anim_Idel, true);
+}
+
+//待機ステート更新
+void Player::UpdateIdel(float elapsedTime)
+{
+	Input(elapsedTime);							// 入力処理
+	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+
+	Mouse& mouse = Input::Instance().GetMouse();
+	const MouseButton& anyButton = Mouse::BTN_LEFT;
+	if (mouse.GetButtonDown() & anyButton)
+	{
+		switch (attck_select_state)
+		{
+		case 0:
+			Attack1_chage();
+			break;
+		case 1:
+			Attack2_chage();
+			break;
+		case 2:
+			Attack3_chage();
+			break;
+		}
+	}
+
+}
+
+float timer = 0;
+//攻撃ステートへ
+void Player::Attack1_chage()
+{
+	state = AnimeState::State_Attack1;
+	model->PlayAnimation(Anim_Attack1, false);
+	timer = 0;
+}
+
+//攻撃ステート更新
+void Player::UpdateAttack1(float elapsedTime)
+{
+	Input(elapsedTime);							// 入力処理
+	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+
+	timer++;
+	if (timer > 30.0f) Idel_chage();
+}
+
+//攻撃ステートへ
+void Player::Attack2_chage()
+{
+	state = AnimeState::State_Attack2;
+	model->PlayAnimation(Anim_Attack2, false);
+	timer = 0;
+}
+
+//攻撃ステート更新
+void Player::UpdateAttack2(float elapsedTime)
+{
+	Input(elapsedTime);							// 入力処理
+	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+
+	timer++;
+	if (timer > 103.98f) Idel_chage();
+}
+
+//攻撃ステートへ
+void Player::Attack3_chage()
+{
+	state = AnimeState::State_Attack3;
+	model->PlayAnimation(Anim_Attack3, false);
+	timer = 0;
+}
+
+//攻撃ステート更新
+void Player::UpdateAttack3(float elapsedTime)
+{
+	Input(elapsedTime);							// 入力処理
+	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+
+	timer++;
+	if (timer > 108.0f) Idel_chage();
 }

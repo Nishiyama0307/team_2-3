@@ -57,7 +57,7 @@ private:
     bool smallest = false;
 
     Pos attacSelectPos;
-    int attck_select_state = 0;
+    
 
     //UI’B
     std::unique_ptr<Sprite> HpBar               = nullptr;      //HP

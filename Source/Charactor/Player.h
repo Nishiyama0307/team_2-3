@@ -91,4 +91,49 @@ public:
 	/*std::unique_ptr<AudioSource> Shot;
 	std::unique_ptr<AudioSource> Hit;*/
 
+private:
+	//アニメーション遷移
+	enum AnimationPlayer
+	{
+		Anim_Idel,
+		Anim_walk,
+		Anim_Run,
+		Anim_deth,
+		Anim_Attack1,
+		Anim_Attack2,
+		Anim_Attack3,
+		Anim_Damage,
+	};
+	int anime_state = 0;
+	enum class AnimeState
+	{
+		State_Idel,
+		State_walk,
+		State_Run,
+		State_deth,
+		State_Attack1,
+		State_Attack2,
+		State_Attack3,
+		State_Damage,
+	};
+	AnimeState state = AnimeState::State_Idel;
+
+	//待機ステートへ
+	void Idel_chage();
+	//待機ステート更新
+	void UpdateIdel(float elapsedTime);
+
+	//1攻撃ステートへ
+	void Attack1_chage();
+	//1攻撃ステート更新
+	void UpdateAttack1(float elapsedTime);
+	//2攻撃ステートへ
+	void Attack2_chage();
+	//2攻撃ステート更新
+	void UpdateAttack2(float elapsedTime);
+	//3攻撃ステートへ
+	void Attack3_chage();
+	//3攻撃ステート更新
+	void UpdateAttack3(float elapsedTime);
+
 };

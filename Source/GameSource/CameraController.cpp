@@ -358,7 +358,6 @@ void CameraController::SetRange(float range_)
 #include "C_function.h"
 //float ax = 0;
 //float ay = 0;
-bool setpos;
 
 //XVˆ—
 void CameraController::Update(float elapsdTime)
@@ -456,13 +455,6 @@ void CameraController::Update(float elapsdTime)
     //    float speed = rollSpeed * elapsdTime;
     //    this->angle.x += speed * 7.0f;
     //}
-
-
-    //::SetCursorPos(960, 540);
-    //int differenceX = mouse.GetOldPositionX() - mouse.GetPositionX();
-    //int differenceY = mouse.GetOldPositionY() - mouse.GetPositionY();
-    //rollSpeed = differenceX * elapsdTime;
-    //this->angle.y -= rollSpeed;
 
 #if false
     //if (mouse.GetPositionX() < 10)

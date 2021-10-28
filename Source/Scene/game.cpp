@@ -15,6 +15,7 @@
 #include "audioManager.h"
 
 extern int scene_tag;
+int attck_select_state = 0;
 
 void Game::Update(float elapsedTime)
 {
