@@ -1,6 +1,7 @@
 #include "StrongSword.h"
 #include "EnemyManager.h"
 
+#include "Input/Input.h"
 StrongSword::StrongSword()
 {
 	model = new Model("Data/Model/strongsword/strongsword.mdl");
@@ -21,7 +22,7 @@ StrongSword::~StrongSword()
 	model = NULL;
 }
 
-void StrongSword::Update(float elapsedTime)
+void StrongSword::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 {
 	// 速力処理更新
 	UpdateVelocity(elapsedTime, KIND::RARE_ENEMY);
@@ -29,6 +30,11 @@ void StrongSword::Update(float elapsedTime)
 	// オブジェクト行列を更新
 	UpdateTransform();
 
+	// 無敵時間更新
+	UpdateInvicibleTimer(elapsedTime);
+
+	GamePad& gamePad = Input::Instance().GetGamePad();
+	if (gamePad.GetButtonDown() & GamePad::BTN_Y) this->ApplyDamage(par.power, 0.5f);
 	// モデル行列更新
 	model->UpdateTransform(transform);
 

@@ -16,11 +16,15 @@ public:
 		return instance;
 	}
 
-	void Update(float elapsedTime);
+	void Init(const DirectX::XMFLOAT3& playerPos);
+	void Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos);
 	void Render(ID3D11DeviceContext* dc, Shader* shader);
 
 	// デバッグプリミティブ描画
 	void DrawDebugPrimitive();
+
+	// デバッグ用GUI描画
+	void DrawDebugGUI();
 
 	// エネミー登録
 	void Register(Enemy* enemy, int tag);
@@ -36,9 +40,6 @@ public:
 
 	// エネミー削除
 	void Remove(Enemy* enemy);
-
-	// 当たり判定の位置更新
-	void HitPositionUpdate();
 
 	void SortLengthSq(const DirectX::XMFLOAT3& playerPos);
 

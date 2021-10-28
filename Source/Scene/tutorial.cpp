@@ -31,7 +31,7 @@ void Tutorial::Update(float elapsedTime)
 	StageManager::Instance().Update(elapsedTime);
 
 	// エネミー更新処理
-	EnemyManager::Instance().Update(elapsedTime);
+	EnemyManager::Instance().Update(elapsedTime, player->GetPosition());
 
 	player->Update(elapsedTime, explaining);
 

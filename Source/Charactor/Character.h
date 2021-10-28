@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 
 
+#include "Graphics/Model.h"
 
 
 
@@ -15,7 +16,7 @@ public:
 	virtual ~Character() {}
 
 	// s—ñXVˆ—
-	void UpdateTransform();
+	virtual void UpdateTransform();
 
 	const DirectX::XMFLOAT3& GetPosition() const { return position; }
 
@@ -100,7 +101,7 @@ protected:
 
 	bool				isGround = false;
 
-	int					health = 5;
+	//int					health = 5;
 
 	float				height = 2.0f;
 
@@ -127,11 +128,13 @@ protected:
 
 	struct Parameter
 	{
-		int hp{ 10 };
+		int health{ 10 };
 		int power{ 5 };
 		int money{ 5 };
 	};
 
 public:
 	Parameter par;
+
+	Model* model = nullptr;
 };

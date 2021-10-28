@@ -1,6 +1,7 @@
 #include "StrongSpear.h"
 #include "EnemyManager.h"
 
+#include "Input/Input.h"
 StrongSpear::StrongSpear()
 {
 	model = new Model("Data/Model/strongspear/strongspear.mdl");
@@ -21,7 +22,7 @@ StrongSpear::~StrongSpear()
 	model = NULL;
 }
 
-void StrongSpear::Update(float elapsedTime)
+void StrongSpear::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 {
 	// 速力処理更新
 	UpdateVelocity(elapsedTime, KIND::RARE_ENEMY);
@@ -29,6 +30,11 @@ void StrongSpear::Update(float elapsedTime)
 	// オブジェクト行列を更新
 	UpdateTransform();
 
+	// 無敵時間更新
+	UpdateInvicibleTimer(elapsedTime);
+
+	GamePad& gamePad = Input::Instance().GetGamePad();
+	if (gamePad.GetButtonDown() & GamePad::BTN_X) this->ApplyDamage(par.power, 0.5f);
 	// モデル行列更新
 	model->UpdateTransform(transform);
 

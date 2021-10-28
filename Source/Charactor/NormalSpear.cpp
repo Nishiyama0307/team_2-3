@@ -1,6 +1,7 @@
 #include "NormalSpear.h"
 #include "EnemyManager.h"
 
+#include "Input/Input.h"
 NormalSpear::NormalSpear()
 {
 	model = new Model("Data/Model/spear/spear.mdl");
@@ -21,7 +22,7 @@ NormalSpear::~NormalSpear()
 	model = NULL;
 }
 
-void NormalSpear::Update(float elapsedTime)
+void NormalSpear::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 {
 	// 速力処理更新
 	UpdateVelocity(elapsedTime, KIND::RARE_ENEMY);
@@ -29,6 +30,11 @@ void NormalSpear::Update(float elapsedTime)
 	// オブジェクト行列を更新
 	UpdateTransform();
 
+	// 無敵時間更新
+	UpdateInvicibleTimer(elapsedTime);
+
+	GamePad& gamePad = Input::Instance().GetGamePad();
+	if (gamePad.GetButtonDown() & GamePad::BTN_B) this->ApplyDamage(par.power, 0.5f);
 	// モデル行列更新
 	model->UpdateTransform(transform);
 

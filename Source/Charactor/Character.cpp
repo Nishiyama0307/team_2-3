@@ -27,17 +27,17 @@ bool Character::ApplyDamage(int damage, float invincibleTime)
     if (damage == 0) return false;
 
     // 死亡している場合は健康状態を変更しない
-    if (health == 0) return false;
+    if (par.health == 0) return false;
 
     // ダメージ処理
     if (invincibleTimer < 0.1f)
     {
-        health -= damage;
+        par.health -= damage;
         invincibleTimer = invincibleTime;
     }
 
     // 死亡通知
-    if (health == 0)
+    if (par.health == 0)
     {
         OnDead();
     }

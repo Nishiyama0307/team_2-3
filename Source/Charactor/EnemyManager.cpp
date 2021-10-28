@@ -2,11 +2,77 @@
 #include "Graphics/Graphics.h"
 #include "Collision.h"
 
-void EnemyManager::Update(float elapsedTime)
+
+void EnemyManager::Init(const DirectX::XMFLOAT3& playerPos)
 {
+	/*for (auto& enemy : enemies)
+	{
+		enemy->target = playerPos;
+	}*/
+}
+
+void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
+{
+
 	for (auto& enemy : enemies)
 	{
-		enemy->Update(elapsedTime);
+		enemy->Update(elapsedTime, playerPos);
+	}
+	for (auto& enemy : enemies)
+	{
+		enemy->HomingMove(elapsedTime, playerPos);
+	}
+
+	constexpr int range = 50;
+
+	for (auto& enemy1 : enemies)
+	{
+		if (enemy1->is_tracking_) // 1l‚ªplayer‚É‹C‚Ã‚¢‚½‚ç
+		{
+			DirectX::XMFLOAT3 Benchmark = enemy1->GetPosition(); // Šî€‚Ìposition‚ðŽæ‚Á‚Ä
+
+
+			for (auto& enemy : enemies) // ‘S‚Ä‚Ì“G‚Æ
+			{
+				if(enemy->is_tracking_) continue; // ’Ç”ö’†‚È‚çcontinue
+				if(enemy->is_group_behavior_) continue; // ’c‘Ìs“®’†‚È‚çcontinue
+
+				float distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&Benchmark), DirectX::XMLoadFloat3(&enemy->GetPosition()))));
+
+				if (distance < range) // ”ÍˆÍ“à‚È‚ç
+				{
+					enemy->is_group_behavior_ = true; // ’c‘Ìs“®‚·‚é
+					enemy->target = enemy1->GetPosition(); // ƒ^[ƒQƒbƒg‚Íplayer‚ðŒ©‚Â‚¯‚½l‚É
+				}
+			}
+		}
+
+		if(enemy1->is_group_behavior_) // ’c‘Ìs“®‚µ‚Ä‚¢‚½‚ç
+		{
+			DirectX::XMFLOAT3 Benchmark = enemy1->GetPosition(); // Šî€‚Ìposition‚ðŽæ‚Á‚Ä
+			int i = 0;
+
+			for (auto& enemy : enemies) // ‘S‚Ä‚Ì“G‚Æ
+			{
+				if (enemy->is_group_behavior_) continue;
+
+				if (enemy->is_tracking_) // ’ÇÕ’†‚Ìl‚ª‚¢‚é‚©
+				{
+					float distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&Benchmark), DirectX::XMLoadFloat3(&enemy->GetPosition()))));
+
+					if (distance < range) // ’ÇÕ’†‚Ìl‚ª‹‚ÄA‚³‚ç‚É’c‘Ìs“®‚Ì”ÍˆÍ“à‚È‚ç
+					{
+						i++;
+						if(i > 0) break; // 1l‚Å‚à‚¢‚½‚ç’c‘Ìs“®‚ðŒp‘±‚·‚é
+					}
+				}
+			}
+
+			if (i == 0) // ”ÍˆÍ“à‚Å’ÇÕ’†‚Ìl‚ª‚¢‚È‚¯‚ê‚Î
+			{
+				enemy1->is_group_behavior_ = false; // ’c‘Ìs“®‚ð‚â‚ß‚é
+			}
+		}
 	}
 
 	// ”jŠüˆ—
@@ -64,6 +130,17 @@ void EnemyManager::DrawDebugPrimitive()
 	for (auto& enemy : enemies)
 	{
 		enemy->DrawDebugPrimitive();
+	}
+}
+
+// ƒfƒoƒbƒO—pGUI•`‰æ
+void EnemyManager::DrawDebugGUI()
+{
+	int i = 0;
+	for (auto& enemy : enemies)
+	{
+		enemy->DrawDebugGUI(i);
+		i++;
 	}
 }
 

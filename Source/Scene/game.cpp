@@ -39,7 +39,7 @@ void Game::Update(float elapsedTime)
 
 	StageManager::Instance().Update(elapsedTime);
 
-	EnemyManager::Instance().Update(elapsedTime);
+	EnemyManager::Instance().Update(elapsedTime, player->GetPosition());
 
 	EnemyManager::Instance().SortLengthSq(player->GetPosition());
 
@@ -241,6 +241,8 @@ void Game::Set()
 
 	GameSystem::Instance().GameStart();
 
+	EnemyManager::Instance().Init(player->GetPosition());
+
 	black_band_timer = 0.0f;
 
 	smallest = false;
@@ -300,6 +302,11 @@ void Game::ImGui()
 
 	DirectX::XMFLOAT3 velo = player->GetVelocity();
 	ImGui::Text("player velo %.1f, %.1f, %.1f", velo.x, velo.y, velo.z);
+
+	if (ImGui::CollapsingHeader("enemy", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		EnemyManager::Instance().DrawDebugGUI();
+	}
 }
 
 
