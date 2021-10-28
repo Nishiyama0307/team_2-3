@@ -43,7 +43,6 @@ void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 				if (distance < range) // 範囲内なら
 				{
 					enemy->is_group_behavior_ = true; // 団体行動する
-					//enemy->target = enemy1->GetPosition(); // ターゲットはplayerを見つけた人に
 					if(enemy->model->GetIndex() != 2) enemy->model->PlayAnimation(2, true); // 走るモーション
 				}
 			}

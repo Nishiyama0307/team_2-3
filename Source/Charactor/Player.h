@@ -99,10 +99,10 @@ private:
 		Anim_walk,
 		Anim_Run,
 		Anim_deth,
+		Anim_Damage,
 		Anim_Attack1,
 		Anim_Attack2,
 		Anim_Attack3,
-		Anim_Damage,
 	};
 	int anime_state = 0;
 	enum class AnimeState
