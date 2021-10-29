@@ -3,20 +3,15 @@
 #include "Collision.h"
 
 
-void EnemyManager::Init(const DirectX::XMFLOAT3& playerPos)
-{
-	/*for (auto& enemy : enemies)
-	{
-		enemy->target = playerPos;
-	}*/
-}
-
 void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 {
 
 	for (auto& enemy : enemies)
 	{
-		enemy->HomingMove(elapsedTime, playerPos);
+		if (enemy->is_dead_ == false)
+		{
+			enemy->UpdateMove(elapsedTime, playerPos);
+		}
 	}
 	for (auto& enemy : enemies)
 	{
@@ -27,53 +22,56 @@ void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 
 	for (auto& enemy1 : enemies)
 	{
-		if (enemy1->is_tracking_) // 1人がplayerに気づいたら
+		if (enemy1->is_dead_ == false)
 		{
-			DirectX::XMFLOAT3 Benchmark = enemy1->GetPosition(); // 基準のpositionを取って
-
-
-			for (auto& enemy : enemies) // 全ての敵と
+			if (enemy1->is_tracking_) // 1人がplayerに気づいたら
 			{
-				if(enemy->is_tracking_) continue; // 追尾中ならcontinue
-				// target更新のためコメントアウト
-				if(enemy->is_group_behavior_) continue; // 団体行動中ならcontinue
+				DirectX::XMFLOAT3 Benchmark = enemy1->GetPosition(); // 基準のpositionを取って
 
-				float distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&Benchmark), DirectX::XMLoadFloat3(&enemy->GetPosition()))));
 
-				if (distance < range) // 範囲内なら
+				for (auto& enemy : enemies) // 全ての敵と
 				{
-					enemy->is_group_behavior_ = true; // 団体行動する
-					if(enemy->model->GetIndex() != 2) enemy->model->PlayAnimation(2, true); // 走るモーション
-				}
-			}
-		}
+					if (enemy->is_tracking_) continue; // 追尾中ならcontinue
+					// target更新のためコメントアウト
+					if (enemy->is_group_behavior_) continue; // 団体行動中ならcontinue
 
-		if(enemy1->is_group_behavior_) // 団体行動していたら
-		{
-			DirectX::XMFLOAT3 Benchmark = enemy1->GetPosition(); // 基準のpositionを取って
-			int i = 0;
-
-			for (auto& enemy : enemies) // 全ての敵と
-			{
-				if (enemy->is_group_behavior_) continue;
-
-				if (enemy->is_tracking_) // 追跡中の人がいるか
-				{
 					float distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&Benchmark), DirectX::XMLoadFloat3(&enemy->GetPosition()))));
 
-					if (distance < range) // 追跡中の人が居て、さらに団体行動の範囲内なら
+					if (distance < range) // 範囲内なら
 					{
-						enemy1->target = enemy->GetPosition(); // ターゲットは追跡中の人に更新し続ける
-						i++;
-						if(i > 0) break; // 1人でもいたら団体行動を継続する
+						enemy->is_group_behavior_ = true; // 団体行動する
+						if (enemy->model->GetIndex() != 2) enemy->model->PlayAnimation(ANIMINDEX::RUN, true); // 走るモーション
 					}
 				}
 			}
 
-			if (i == 0) // 範囲内で追跡中の人がいなければ
+			if (enemy1->is_group_behavior_) // 団体行動していたら
 			{
-				enemy1->is_group_behavior_ = false; // 団体行動をやめる
-				enemy1->model->PlayAnimation(0, true);
+				DirectX::XMFLOAT3 Benchmark = enemy1->GetPosition(); // 基準のpositionを取って
+				int i = 0;
+
+				for (auto& enemy : enemies) // 全ての敵と
+				{
+					if (enemy->is_group_behavior_) continue;
+
+					if (enemy->is_tracking_) // 追跡中の人がいるか
+					{
+						float distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&Benchmark), DirectX::XMLoadFloat3(&enemy->GetPosition()))));
+
+						if (distance < range) // 追跡中の人が居て、さらに団体行動の範囲内なら
+						{
+							enemy1->target = enemy->GetPosition(); // ターゲットは追跡中の人に更新し続ける
+							i++;
+							if (i > 0) break; // 1人でもいたら団体行動を継続する
+						}
+					}
+				}
+
+				if (i == 0) // 範囲内で追跡中の人がいなければ
+				{
+					enemy1->is_group_behavior_ = false; // 団体行動をやめる
+					enemy1->model->PlayAnimation(ANIMINDEX::IDLE, true);
+				}
 			}
 		}
 	}
@@ -148,8 +146,9 @@ void EnemyManager::DrawDebugGUI()
 }
 
 // エネミー登録
-void EnemyManager::Register(Enemy* enemy, int tag)
+void EnemyManager::Register(Enemy* enemy, ENEMYTAG tag)
 {
+	enemy->start_position = enemy->GetPosition();
 	enemy->SetInhaleParameter();
 	enemies.emplace_back(enemy);
 	enemy->enemy_tag = tag;

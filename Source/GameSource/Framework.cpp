@@ -87,12 +87,12 @@ void Framework::CalculateFrameStats()
 	// Compute averages over one second period.
 	if ((timer.TimeStamp() - time_tlapsed) >= 1.0f)
 	{
-		//float fps = static_cast<float>(frames); // fps = frameCnt / 1
-		//float mspf = 1000.0f / fps;
+		float fps = static_cast<float>(frames); // fps = frameCnt / 1
+		float mspf = 1000.0f / fps;
 		std::ostringstream outs;
 		outs.precision(6);
-		//outs << "FPS : " << fps << " / " << "Frame Time : " << mspf << " (ms)";
-		outs << "Grow up Fugu-tama";
+		outs << "FPS : " << fps << " / " << "Frame Time : " << mspf << " (ms)";
+		//outs << "ƒ^ƒCƒgƒ‹";
 		SetWindowTextA(hWnd, outs.str().c_str());
 
 		// Reset for next average.

@@ -11,7 +11,7 @@ NormalSword::NormalSword()
 
 	scale.x = scale.y = scale.z = 1.0f;
 
-	model->PlayAnimation(0, true);
+	model->PlayAnimation(ANIMINDEX::IDLE, true);
 
 	// {hp, attack, money}
 	par = {10, 5, 5};

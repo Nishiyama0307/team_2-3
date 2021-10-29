@@ -40,7 +40,7 @@ public:
 	bool IsGround() const { return isGround; }
 
 	// ƒ_ƒ[ƒW‚ğ—^‚¦‚é
-	bool ApplyDamage(int damage, float invincibleTime);
+	bool ApplyDamage(int damage, float invincibleTime = 0.2f);
 
 	// ÕŒ‚‚ğ—^‚¦‚é
 	void AddImpulse(const DirectX::XMFLOAT3& impulse);
@@ -134,6 +134,9 @@ protected:
 	};
 
 public:
+
+	bool is_dead_ = false;
+
 	Parameter par;
 
 	Model* model = nullptr;

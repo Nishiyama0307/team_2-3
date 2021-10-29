@@ -15,8 +15,6 @@ public:
 		static EnemyManager instance;
 		return instance;
 	}
-
-	void Init(const DirectX::XMFLOAT3& playerPos);
 	void Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos);
 	void Render(ID3D11DeviceContext* dc, Shader* shader);
 
@@ -27,7 +25,7 @@ public:
 	void DrawDebugGUI();
 
 	// エネミー登録
-	void Register(Enemy* enemy, int tag);
+	void Register(Enemy* enemy, ENEMYTAG tag);
 
 	// エネミー数取得
 	int GetEnemyCount() const { return static_cast<int>(enemies.size()); }

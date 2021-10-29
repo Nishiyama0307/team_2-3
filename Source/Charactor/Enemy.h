@@ -5,6 +5,10 @@
 class Player;
 
 
+constexpr float				kSensing_Range = 50;									// 検知範囲
+constexpr float				kAttack_Range = 10;										// 攻撃範囲
+constexpr float				kAction_Range = 20;										// 行動範囲
+
 enum ENEMYTAG
 {
 	NORMAL_SWORD,
@@ -13,6 +17,14 @@ enum ENEMYTAG
 	STRONG_SPEAR,
 };
 
+enum ANIMINDEX
+{
+	IDLE,
+	WALK,
+	RUN,
+	ATTACK,
+	DETH,
+};
 
 class Enemy : public Character
 {
@@ -35,8 +47,17 @@ public:
 	// デバッグ用GUI描画
 	void DrawDebugGUI(int i);
 
+	// プレイヤーに対しての動作の更新
+	void UpdateMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos);
+
+	// ランダムな警邏移動
+	void RandomMove(float elapsedTime);
+
 	// プレイヤーに対しての追尾動作
 	void HomingMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos);
+
+	// プレイヤーに対しての攻撃
+	void AttackMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos);
 
 	// 行列更新処理
 	void UpdateTransform();
@@ -46,9 +67,6 @@ public:
 
 	// 死亡
 	void OnDead();
-
-	//// 追跡が外れた
-	//void OnNonTracking();
 
 public: // Get関数
 public: // Set関数
@@ -60,7 +78,7 @@ public: // length
 	float GetLengthSq() const { return lengthSq; }
 
 public:
-	int enemy_tag;
+	ENEMYTAG enemy_tag;
 
 	float lengthSq;
 
@@ -68,15 +86,23 @@ public:
 	Player* player = nullptr;
 
 
+	DirectX::XMFLOAT3	start_position = { 0, 0, 0 };					// 初期位置
 	DirectX::XMFLOAT3	target = { 0, 0, 0 };	
 	DirectX::XMFLOAT3	direction = { 0,0,-1 };							// 見ている方向
+	DirectX::XMFLOAT3	random_target = { 0,0,0 };							// 見ている方向
 	float				moveSpeed = 10.0f;										// 移動速度
 	float				turnSpeed = DirectX::XMConvertToRadians(180);	// 回転速度
 	float				distance = 100;											// playerとenemyの距離
-	float				Sensing_range = 50;										// 検知範囲
 
 	bool is_tracking_ = false;													// 追跡してるかどうか
 	bool is_detection_ = false;													// 検知範囲に居るかどうか
-	bool is_group_behavior_ = false;
+	bool is_group_behavior_ = false;											// 団体行動してるかどうか
+	bool is_attacking_ = false;													// 攻撃してるかどうか
+	bool is_walking = false;													// 歩いているかどうか
+	bool is_change_direction_ = false;											// 歩く方向を変えれるかどうか
+	bool is_action_range_ = true;												// 行動範囲にいるかどうか
+
+	int timer{ 0 };
+	int random_direction{ 0 };
 	
 };

@@ -242,8 +242,6 @@ void Game::Set()
 
 	GameSystem::Instance().GameStart();
 
-	EnemyManager::Instance().Init(player->GetPosition());
-
 	black_band_timer = 0.0f;
 
 	smallest = false;

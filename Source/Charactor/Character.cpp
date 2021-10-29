@@ -37,7 +37,7 @@ bool Character::ApplyDamage(int damage, float invincibleTime)
     }
 
     // Ž€–S’Ê’m
-    if (par.health == 0)
+    if (par.health <= 0)
     {
         OnDead();
     }
