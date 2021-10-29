@@ -150,7 +150,8 @@ void Title::Update(float elapsedTime)
 
 	case 2: //ÉQÅ[ÉÄèIóπ	
 		//if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new (Result));
-		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT) exit(EXIT_SUCCESS);
+		//if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT) exit(EXIT_SUCCESS);
+		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT) game_exit = true;
 		break;
 	}
 }

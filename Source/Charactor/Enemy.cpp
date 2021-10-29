@@ -366,7 +366,7 @@ void Enemy::HomingMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 		}
 	}
 
-	if (is_tracking_ || is_group_behavior_|| is_attacking_ == false)
+	if ((is_tracking_ || is_group_behavior_) && is_attacking_ == false)
 	{
 		float RunSpeed = this->moveSpeed * elapsedTime;
 		position.x += direction.x * RunSpeed;
