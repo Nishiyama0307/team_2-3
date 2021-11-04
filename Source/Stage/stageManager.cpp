@@ -5,12 +5,13 @@
 
 
 
-void StageManager::Update(float elapsedTime)
+void StageManager::Update(float elapsedTime, int stage_num)
 {
     for (auto& stage : stages)
     {
         stage->Update(elapsedTime);
     }
+    this->stage_num = stage_num;
 }
 
 
@@ -33,7 +34,7 @@ bool StageManager::RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOA
 
     for (auto& stage : stages)
     {
-        if (stage->RayPick(start, end, hit) == false) continue;
+        if (stage->RayPick(start, end, hit, this->stage_num) == false) continue;
 
 
         if (hit.distance > hit_result.distance) continue;

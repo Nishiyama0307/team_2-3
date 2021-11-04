@@ -5,28 +5,34 @@
 struct HitResult;
 
 
+enum STAGETYPE
+{
+	STAGE1_VOLCANO,
+	STAGE2_DESERT,
+	STAGE3_,
+	STAGE4_,
+};
 
 // ステージクラス ※抽象クラス
 
 class Stage
 {
 public:
-    Stage() = default;
-    virtual ~Stage() {};
+    Stage() {}
+    virtual ~Stage() {}
 
 public:
     virtual void Update(float elapsedTime) {};
 
     void ModelRender(ID3D11DeviceContext* dc, Shader* shader)
     {
-        if (mdl_stage.get() == nullptr) return;
-
         shader->Draw(dc, mdl_stage.get());
     }
 
 public: // Get関数
-    bool RayPick(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit);
+    bool RayPick(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit, int stage_num);
 
 protected:
+    STAGETYPE stage_type;
     std::unique_ptr<Model> mdl_stage = nullptr;
 };

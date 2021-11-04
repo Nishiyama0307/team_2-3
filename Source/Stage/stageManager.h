@@ -5,7 +5,7 @@
 #include "Stage.h"
 
 // í«â¡
-#include "stage_room.h"
+#include "stage_type.h"
 
 
 
@@ -25,7 +25,7 @@ public:
     }
 
 public:
-    void Update(float elapsedTime);
+    void Update(float elapsedTime, int stage_num);
     void ModelRender(ID3D11DeviceContext* dc, Shader* shader);
 
 public: // Getä÷êî
@@ -37,5 +37,6 @@ public: // Setä÷êî
     void AllClear();
 
 private:
+    int stage_num = {};
     std::vector<Stage*> stages = {};
 };

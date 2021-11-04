@@ -76,13 +76,23 @@ private:
 private:
 	Model* model = nullptr;
 
+#if _DEBUG
+	float	moveSpeed = 100.0f;
+#else
 	float	moveSpeed = 25.0f;
+#endif
+
 	float	turnSpeed = DirectX::XMConvertToRadians(720);
 
 	float			jumpspeed = 20.0f;
 
 	int				jumpCount = 0;
+
+#if _DEBUG
+	int				jumpLimit = 50;
+#else
 	int				jumpLimit = 1;
+#endif
 
 	Inhale* inhale = nullptr;				// ‹z‚¢‚İŠÖŒW‚Ìˆ—ƒNƒ‰ƒX
 

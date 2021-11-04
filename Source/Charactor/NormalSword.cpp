@@ -9,8 +9,6 @@ NormalSword::NormalSword()
 
 	enemy_tag = NORMAL_SWORD;
 
-	scale.x = scale.y = scale.z = 1.0f;
-
 	model->PlayAnimation(ANIMINDEX::IDLE, true);
 
 	// {hp, attack, money}

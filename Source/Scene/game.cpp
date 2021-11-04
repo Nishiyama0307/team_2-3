@@ -39,7 +39,9 @@ void Game::Update(float elapsedTime)
 
 	GameSystem::Instance().HitStopUpdate(elapsedTime);
 
-	StageManager::Instance().Update(elapsedTime);
+	StageNumUpdate();
+
+	StageManager::Instance().Update(elapsedTime, stage_num);
 
 	EnemyManager::Instance().Update(elapsedTime, player->GetPosition());
 
@@ -301,6 +303,8 @@ void Game::Set()
 
 	attck_select_state = 0;
 	stress = 0;
+
+	stage_num = STAGENUM::N_STAGE1_VOLCANO;
 }
 
 
@@ -317,7 +321,10 @@ void Game::Load()
 
 	black_band = std::make_unique<Sprite>();
 
-	StageManager::Instance().AddStage(new StageRoom());
+	StageManager::Instance().AddStage(new Stage1_Volcano());
+	StageManager::Instance().AddStage(new Stage2_Desert());
+	StageManager::Instance().AddStage(new Stage3_Volcano());
+	StageManager::Instance().AddStage(new Stage4_Volcano());
 
 	//UIèâä˙âª
 	HpBar					= std::make_unique<Sprite>("Data/Sprite/G_HP.png");
@@ -369,6 +376,21 @@ void Game::DebugRender()
 	EnemyManager::Instance().DrawDebugPrimitive();
 }
 
+void Game::StageNumUpdate()
+{
+	constexpr int STAGE2_start_position{ 565 };
+	constexpr int STAGE3_start_position{ 1240 };
+	constexpr int STAGE4_start_position{ 1920 };
+
+	if (STAGE3_start_position > player->GetPosition().z && player->GetPosition().z >= STAGE2_start_position) stage_num = N_STAGE2_DESERT; // 1240 > p >= 565
+	if (player->GetPosition().z < STAGE2_start_position) stage_num = N_STAGE1_VOLCANO;						  // p < 565
+
+	if (STAGE4_start_position > player->GetPosition().z && player->GetPosition().z >= STAGE3_start_position) stage_num = N_STAGE3_;	  // 1910 > p >= 1240
+	if (STAGE2_start_position < player->GetPosition().z && player->GetPosition().z < STAGE3_start_position) stage_num = N_STAGE2_DESERT; // 565 < p < 1240
+
+	if (player->GetPosition().z >= STAGE4_start_position) stage_num = N_STAGE4_;							  // p >= 1920
+	if (STAGE3_start_position < player->GetPosition().z && player->GetPosition().z < STAGE4_start_position) stage_num = N_STAGE3_;		  // 1240 < p < 1920
+}
 
 void Game::CameraSet()
 {

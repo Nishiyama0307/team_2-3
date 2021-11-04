@@ -269,7 +269,7 @@
     <ClInclude Include="Source\Scene\tutorial.h" />
     <ClInclude Include="Source\Stage\stage.h" />
     <ClInclude Include="Source\Stage\stageManager.h" />
-    <ClInclude Include="Source\Stage\stage_room.h" />
+    <ClInclude Include="Source\Stage\stage_type.h" />
     <ClInclude Include="Source\System\audioManager.h" />
     <ClInclude Include="Source\System\coutdown.h" />
     <ClInclude Include="Source\System\digits.h" />
@@ -329,7 +329,7 @@
     <ClCompile Include="Source\Scene\tutorial.cpp" />
     <ClCompile Include="Source\Stage\stage.cpp" />
     <ClCompile Include="Source\Stage\stageManager.cpp" />
-    <ClCompile Include="Source\Stage\stage_room.cpp" />
+    <ClCompile Include="Source\Stage\stage_type.cpp" />
     <ClCompile Include="Source\System\audioManager.cpp" />
     <ClCompile Include="Source\System\countdown.cpp" />
     <ClCompile Include="Source\System\fileIO.cpp" />

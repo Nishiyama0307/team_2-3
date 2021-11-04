@@ -177,9 +177,6 @@
     <ClInclude Include="Source\Stage\stage.h">
       <Filter>Source\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Stage\stage_room.h">
-      <Filter>Source\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Stage\stageManager.h">
       <Filter>Source\Stage</Filter>
     </ClInclude>
@@ -254,6 +251,9 @@
     </ClInclude>
     <ClInclude Include="Source\Scene\story.h">
       <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Stage\stage_type.h">
+      <Filter>Source\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -350,9 +350,6 @@
     <ClCompile Include="Source\System\fileIO.cpp">
       <Filter>Source\System</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Stage\stage_room.cpp">
-      <Filter>Source\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Stage\stage.cpp">
       <Filter>Source\Stage</Filter>
     </ClCompile>
@@ -427,6 +424,9 @@
     </ClCompile>
     <ClCompile Include="Source\Scene\story.cpp">
       <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Stage\stage_type.cpp">
+      <Filter>Source\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

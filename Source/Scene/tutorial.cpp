@@ -28,7 +28,7 @@ void Tutorial::Update(float elapsedTime)
 	if (explaining && explanation < 18 && gamePad.GetButtonDown() & GamePad::BTN_SPACE)
 		explanation++;
 
-	StageManager::Instance().Update(elapsedTime);
+	//StageManager::Instance().Update(elapsedTime);
 
 	// エネミー更新処理
 	EnemyManager::Instance().Update(elapsedTime, player->GetPosition());
@@ -218,7 +218,7 @@ void Tutorial::Load()
 
 	enemy_Arrangement = new Enemy_Arrangement();
 
-	StageManager::Instance().AddStage(new StageRoom());
+	StageManager::Instance().AddStage(new Stage1_Volcano());
 }
 
 

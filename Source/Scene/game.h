@@ -13,7 +13,16 @@
 #include "coutdown.h"
 #include "C_function.h"
 #include "CameraController.h"
+#include "stage.h"
 
+
+enum STAGENUM
+{
+    N_STAGE1_VOLCANO,
+    N_STAGE2_DESERT,
+    N_STAGE3_,
+    N_STAGE4_,
+};
 
 // ゲームシーン
 
@@ -37,6 +46,7 @@ public:
     void DebugRender()override;
 
 private:
+    void StageNumUpdate();
     void CameraSet();
     void ChangeScene(float elapsedTime);
     void ClearedSpriteRender(ID3D11DeviceContext* dc);
@@ -59,6 +69,8 @@ private:
     Pos attacSelectPos;
 
     float stress = 0;
+
+    STAGENUM stage_num;
     
 
     //UI達
