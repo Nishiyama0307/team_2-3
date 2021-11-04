@@ -30,6 +30,7 @@ public:	// Getä÷êî
 	DirectX::XMFLOAT3 GetRight() { return ConvertToIdentityVec(transform._11, transform._12, transform._13); }
 	DirectX::XMFLOAT3 GetVelocity() { return velocity; }
 	
+	DirectX::XMFLOAT3 front;
 public: // Setä÷êî
 	void AddImpact(const DirectX::XMFLOAT3 impact_);
 	void ResetTransform()

@@ -57,14 +57,19 @@ private:
     bool smallest = false;
 
     Pos attacSelectPos;
+
+    float stress = 0;
     
 
     //UI達
     std::unique_ptr<Sprite> HpBar               = nullptr;      //HP
     std::unique_ptr<Sprite> HpBarFrame          = nullptr;      //
+    std::unique_ptr<Sprite> HpIcon              = nullptr;      //
     std::unique_ptr<Sprite> StressBar           = nullptr;      //ストレス
     std::unique_ptr<Sprite> StressBarFrame      = nullptr;      //
+    std::unique_ptr<Sprite> StressIcon          = nullptr;      //
     std::unique_ptr<Sprite> GoldBar             = nullptr;      //お金
+    std::unique_ptr<Sprite> GoldIcon            = nullptr;      //お金
     std::unique_ptr<Sprite> Minimap             = nullptr;      //ミニマップ
     std::unique_ptr<Sprite> Castlebar           = nullptr;      //城
     std::unique_ptr<Sprite> CastlebarFrame      = nullptr;      //

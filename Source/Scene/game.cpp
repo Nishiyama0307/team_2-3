@@ -17,6 +17,7 @@
 extern int scene_tag;
 int attck_select_state = 0;
 
+
 void Game::Update(float elapsedTime)
 {
 
@@ -51,7 +52,9 @@ void Game::Update(float elapsedTime)
 	cameraController->SetTarget(target);
 	cameraController->Update(elapsedTime);
 
-
+	stress++;
+	if (stress > 512)
+		stress = 512;
 
 	//攻撃選択
 	Mouse& mouse = Input::Instance().GetMouse();
@@ -136,6 +139,16 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0, 0,
 			0,
 			1, 1, 1, 1);
+		//HPアイコン
+		HpIcon->Render2(dc,
+			26, 38,
+			1.0f, 1.0f,
+			0, 0,
+			83, 52,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+
 
 		//ストレスフレーム
 		StressBarFrame->Render2(dc,
@@ -146,22 +159,50 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0, 0,
 			0,
 			1, 1, 1, 1);
+
 		//ストレス
 		StressBar->Render2(dc,
 			20, 95,
 			1.0f, 1.0f,
 			0, 0,
-			512, 64,
+			stress, 64,
 			0, 0,
+			0,
+			1, 1, 1, 1);
+
+		//ストレスアイコン
+		StressIcon->Render2(dc,
+			26, 103,
+			1.0f, 1.0f,
+			0, 0,
+			48, 49,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+
+		//お金のフレーム
+		StressBarFrame->Render(dc,
+			20, 160, 384, 64,
+			0, 0, 384, 64,
 			0,
 			1, 1, 1, 1);
 
 		//お金
 		GoldBar->Render2(dc,
-			20, 159,
+			20, 160,
 			1.0f, 1.0f,
 			0, 0,
 			384, 64,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+
+		//お金アイコン
+		GoldIcon->Render2(dc,
+			28, 168,
+			1.0f, 1.0f,
+			0, 0,
+			59, 51,
 			0, 0,
 			0,
 			1, 1, 1, 1);
@@ -171,7 +212,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			1600, 10,
 			1.0f, 1.0f,
 			0, 0,
-			256, 256,
+			248, 248,
 			0, 0,
 			0,
 			1, 1, 1, 1);
@@ -259,6 +300,7 @@ void Game::Set()
 	attacSelectPos.y = 865;
 
 	attck_select_state = 0;
+	stress = 0;
 }
 
 
@@ -278,12 +320,15 @@ void Game::Load()
 	StageManager::Instance().AddStage(new StageRoom());
 
 	//UI初期化
-	HpBar					= std::make_unique<Sprite>("Data/Sprite/HP.png");
+	HpBar					= std::make_unique<Sprite>("Data/Sprite/G_HP.png");
 	HpBarFrame				= std::make_unique<Sprite>("Data/Sprite/HP黒帯.png");
+	HpIcon					= std::make_unique<Sprite>("Data/Sprite/I_HP.png");
 	StressBar				= std::make_unique<Sprite>("Data/Sprite/ストレス.png");
 	StressBarFrame			= std::make_unique<Sprite>("Data/Sprite/ストレス黒帯.png");
-	GoldBar					= std::make_unique<Sprite>("Data/Sprite/ゴールド.png");
-	Minimap					= std::make_unique<Sprite>("Data/Sprite/ミニマップ.png");
+	StressIcon				= std::make_unique<Sprite>("Data/Sprite/I_box.png");
+	GoldBar					= std::make_unique<Sprite>("Data/Sprite/G_gold.png");
+	GoldIcon				= std::make_unique<Sprite>("Data/Sprite/I_gold.png");
+	Minimap					= std::make_unique<Sprite>("Data/Sprite/map.png");
 	Castlebar				= std::make_unique<Sprite>("Data/Sprite/城.png");
 	CastlebarFrame			= std::make_unique<Sprite>("Data/Sprite/城黒帯.png");
 	AttackSlot				= std::make_unique<Sprite>("Data/Sprite/G_attack.png");

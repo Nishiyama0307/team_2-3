@@ -122,6 +122,8 @@ void Player::Update(float elapsedTime, bool explaining)
 
 	inhale->Update(elapsedTime);				// ‘|œ‹@‹@”\‚ÌXV
 
+	front = GetFront();
+
 	//ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
 	Mouse& mouse = Input::Instance().GetMouse();
 	const MouseButton& anyButton = Mouse::BTN_LEFT;
@@ -364,7 +366,7 @@ void Player::DrawDebugPrimitive()
 
 	//UŒ‚‚P
 	if(colstion_check1)
-	debugRenderer->DrawCylinder({ position.x,position.y,position.z + radius * 2  }, 
+		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 2)) },
 		radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 	//UŒ‚‚Q
 	if (colstion_check2)
@@ -372,7 +374,7 @@ void Player::DrawDebugPrimitive()
 			12.5, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 	//UŒ‚‚R
 	if (colstion_check3)
-		debugRenderer->DrawCylinder({ position.x,position.y,position.z + radius * 2 },
+		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 2)) },
 			radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 
 	inhale->DebugRender();
@@ -432,6 +434,7 @@ void Player::UpdateIdel(float elapsedTime)
 //UŒ‚ƒXƒe[ƒg‚Ö  1
 void Player::Attack1_change()
 {
+	animeTimer = 0;
 	state = AnimeState::State_Attack1;
 	model->PlayAnimation(Anim_Attack1, false);
 }
@@ -439,16 +442,21 @@ void Player::Attack1_change()
 //UŒ‚ƒXƒe[ƒgXV  1
 void Player::UpdateAttack1(float elapsedTime)
 {
-
-	colstion_check1 = true;
+	animeTimer++;
+	//colstion_check1 = true;
 	EnemyManager& enemyManager = EnemyManager::Instance();
 	int enemyCount = enemyManager.GetEnemyCount();
 
 	DirectX::XMFLOAT3 attackPosition;
-	attackPosition.x = position.x;
-	attackPosition.y = position.y;
-	attackPosition.z = position.z + radius *2;
+	//attackPosition.x = position.x;
+	//attackPosition.y = position.y;
+	//attackPosition.z = position.z + radius *2;
 
+	attackPosition = { float3SUM(position,float3Scaling(GetFront(), radius * 2)) };
+	if (animeTimer > 12.0f)colstion_check1 = true;
+	if (animeTimer > 33.0f)colstion_check1 = false;
+
+	if (colstion_check1)
 	for (int i = 0; i < enemyCount; ++i)
 	{
 		Enemy* enemy = enemyManager.GetEnemy(i);
@@ -486,15 +494,20 @@ void Player::Attack2_change()
 void Player::UpdateAttack2(float elapsedTime)
 {
 	animeTimer++;
-	colstion_check2 = true;
 	EnemyManager& enemyManager = EnemyManager::Instance();
 	int enemyCount = enemyManager.GetEnemyCount();
 
 	DirectX::XMFLOAT3 attackPosition;
 	attackPosition.x = position.x;
 	attackPosition.y = position.y;
-	attackPosition.z = position.z + radius * 2;
+	attackPosition.z = position.z;
 
+	//attackPosition = { float3SUM(position,float3Scaling(GetFront(), radius * 2)) };
+
+	if (animeTimer > 24.0f)colstion_check2 = true;
+	if (animeTimer > 87.0f)colstion_check2 = false;
+
+	if(colstion_check2)
 	for (int i = 0; i < enemyCount; ++i)
 	{
 		Enemy* enemy = enemyManager.GetEnemy(i);
@@ -533,11 +546,11 @@ void Player::UpdateAttack3(float elapsedTime)
 	int enemyCount = enemyManager.GetEnemyCount();
 
 	DirectX::XMFLOAT3 attackPosition;
-	attackPosition.x = position.x;
-	attackPosition.y = position.y;
-	attackPosition.z = position.z + radius * 2;
+	attackPosition = { float3SUM(position,float3Scaling(GetFront(), radius * 2)) };
 
 	if(animeTimer > 135.98f)colstion_check3 = true;
+	if(animeTimer > 148.98f)colstion_check3 = false;
+
 
 	if(colstion_check3)
 	for (int i = 0; i < enemyCount; ++i)

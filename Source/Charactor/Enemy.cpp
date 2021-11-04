@@ -137,20 +137,20 @@ void Enemy::UpdateTransform()
 // プレイヤーに対しての動作の更新
 void Enemy::UpdateMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 {
-	Mouse& mouse = Input::Instance().GetMouse();
-	if (mouse.GetButtonDown() & Mouse::BTN_LEFT)
+	//Mouse& mouse = Input::Instance().GetMouse();
+	//if (mouse.GetButtonDown() & Mouse::BTN_LEFT)
 		//ApplyDamage(player->par.power);
-		ApplyDamage(0);
+		//ApplyDamage(0);
 
 	if (is_dead_ == false)
 	{
 		distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&position), DirectX::XMLoadFloat3(&playerPos))));
 
-		AttackMove(elapsedTime, playerPos);
-
-		RandomMove(elapsedTime);
-
-		HomingMove(elapsedTime, playerPos);
+		//AttackMove(elapsedTime, playerPos);
+		//
+		//RandomMove(elapsedTime);
+		//
+		//HomingMove(elapsedTime, playerPos);
 	}
 }
 
