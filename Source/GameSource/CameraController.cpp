@@ -442,7 +442,6 @@ void CameraController::Update(float elapsdTime)
     {
         ::SetCursorPos(960, 540);
         setpos = true;
-        //this->angle.y -=  0.01f;
     }
     //結局マウスの移動量が端につくと無くなるのでは?
     if (nowMousePosX < 10)

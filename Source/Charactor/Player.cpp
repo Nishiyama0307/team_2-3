@@ -27,8 +27,11 @@ Player::Player()
 	height = 10.0f;
 
 	//アニメーション再生
-	Idel_chage();
+	Idel_change();
 
+	colstion_check1 = false;
+	colstion_check2 = false;
+	colstion_check3 = false;
 
 	//音
 	/*Audio& audio1 = Audio::Instance();
@@ -125,20 +128,34 @@ void Player::Update(float elapsedTime, bool explaining)
 
 	switch (state)
 	{
+		//待機
 	case AnimeState::State_Idel:
 		UpdateIdel(elapsedTime);
 		break;
 
+		//攻撃1
 	case AnimeState::State_Attack1:
 		UpdateAttack1(elapsedTime);
 		break;
 
+		//攻撃2
 	case AnimeState::State_Attack2:
 		UpdateAttack2(elapsedTime);
 		break;
 
+		//攻撃3
 	case AnimeState::State_Attack3:
 		UpdateAttack3(elapsedTime);
+		break;
+
+		//死亡
+	case AnimeState::State_deth:
+		UpdateDeth(elapsedTime);
+		break;
+
+		//走り
+	case AnimeState::State_Run:
+		UpdateRun(elapsedTime);
 		break;
 	}
 
@@ -320,7 +337,7 @@ void Player::CollisionPlayerVsEnemies()
 			{
 				Jump(jumpspeed * 0.75f); // ジャンプ量
 				// ダメージを与える
-				enemy->ApplyDamage(1, 0.5f);
+				//enemy->ApplyDamage(1, 0.5f);
 			}
 			else
 			{
@@ -345,6 +362,19 @@ void Player::DrawDebugPrimitive()
 
 	debugRenderer->DrawSphere({ position.x,position.y + stepOffset,position.z }, 0.1f, DirectX::XMFLOAT4(0, 0, 0, 1));
 
+	//攻撃１
+	if(colstion_check1)
+	debugRenderer->DrawCylinder({ position.x,position.y,position.z + radius * 2  }, 
+		radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+	//攻撃２
+	if (colstion_check2)
+		debugRenderer->DrawCylinder({ position.x,position.y,position.z},
+			12.5, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+	//攻撃３
+	if (colstion_check3)
+		debugRenderer->DrawCylinder({ position.x,position.y,position.z + radius * 2 },
+			radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+
 	inhale->DebugRender();
 }
 
@@ -366,7 +396,7 @@ void Player::AddImpact(const DirectX::XMFLOAT3 impact_)
 
 ////アニメーションのステート関係
 //待機ステートへ
-void Player::Idel_chage()
+void Player::Idel_change()
 {
 	state = AnimeState::State_Idel;
 	model->PlayAnimation(Anim_Idel, true);
@@ -386,13 +416,13 @@ void Player::UpdateIdel(float elapsedTime)
 		switch (attck_select_state)
 		{
 		case 0:
-			Attack1_chage();
+			Attack1_change();
 			break;
 		case 1:
-			Attack2_chage();
+			Attack2_change();
 			break;
 		case 2:
-			Attack3_chage();
+			Attack3_change();
 			break;
 		}
 	}
@@ -400,7 +430,7 @@ void Player::UpdateIdel(float elapsedTime)
 }
 
 //攻撃ステートへ  1
-void Player::Attack1_chage()
+void Player::Attack1_change()
 {
 	state = AnimeState::State_Attack1;
 	model->PlayAnimation(Anim_Attack1, false);
@@ -409,12 +439,45 @@ void Player::Attack1_chage()
 //攻撃ステート更新  1
 void Player::UpdateAttack1(float elapsedTime)
 {
-	if (!model->IsPlayAnimation()) Idel_chage();
+
+	colstion_check1 = true;
+	EnemyManager& enemyManager = EnemyManager::Instance();
+	int enemyCount = enemyManager.GetEnemyCount();
+
+	DirectX::XMFLOAT3 attackPosition;
+	attackPosition.x = position.x;
+	attackPosition.y = position.y;
+	attackPosition.z = position.z + radius *2;
+
+	for (int i = 0; i < enemyCount; ++i)
+	{
+		Enemy* enemy = enemyManager.GetEnemy(i);
+		// 円柱と円柱の衝突処理
+		DirectX::XMFLOAT3 outPosition;
+		if (Collision3D::IntersectCylinderVsCylinder(
+			attackPosition, radius, height,
+			enemy->GetPosition(),
+			enemy->GetRadius(),
+			enemy->GetHeight(),
+			outPosition))
+		{
+			enemy->ApplyDamage(10, 5);
+		}
+
+	}
+
+	if (!model->IsPlayAnimation())
+	{
+
+		colstion_check1 = false;
+		Idel_change();
+	}
 }
 
 //攻撃ステートへ  2
-void Player::Attack2_chage()
+void Player::Attack2_change()
 {
+	animeTimer = 0;
 	state = AnimeState::State_Attack2;
 	model->PlayAnimation(Anim_Attack2, false);
 }
@@ -422,12 +485,42 @@ void Player::Attack2_chage()
 //攻撃ステート更新  2
 void Player::UpdateAttack2(float elapsedTime)
 {
-	if (!model->IsPlayAnimation()) Idel_chage();
+	animeTimer++;
+	colstion_check2 = true;
+	EnemyManager& enemyManager = EnemyManager::Instance();
+	int enemyCount = enemyManager.GetEnemyCount();
+
+	DirectX::XMFLOAT3 attackPosition;
+	attackPosition.x = position.x;
+	attackPosition.y = position.y;
+	attackPosition.z = position.z + radius * 2;
+
+	for (int i = 0; i < enemyCount; ++i)
+	{
+		Enemy* enemy = enemyManager.GetEnemy(i);
+		// 円柱と円柱の衝突処理
+		DirectX::XMFLOAT3 outPosition;
+		if (Collision3D::IntersectCylinderVsCylinder(
+			attackPosition, 12.5, height,
+			enemy->GetPosition(),
+			enemy->GetRadius(),
+			enemy->GetHeight(),
+			outPosition))
+		{
+			enemy->ApplyDamage(10, 5);
+		}
+	}
+	if (!model->IsPlayAnimation())
+	{
+		colstion_check2 = false;
+		Idel_change();
+	}
 }
 
 //攻撃ステートへ  3
-void Player::Attack3_chage()
+void Player::Attack3_change()
 {
+	animeTimer = 0;
 	state = AnimeState::State_Attack3;
 	model->PlayAnimation(Anim_Attack3, false);
 }
@@ -435,5 +528,61 @@ void Player::Attack3_chage()
 //攻撃ステート更新  3
 void Player::UpdateAttack3(float elapsedTime)
 {
-	if (!model->IsPlayAnimation()) Idel_chage();
+	animeTimer++;
+	EnemyManager& enemyManager = EnemyManager::Instance();
+	int enemyCount = enemyManager.GetEnemyCount();
+
+	DirectX::XMFLOAT3 attackPosition;
+	attackPosition.x = position.x;
+	attackPosition.y = position.y;
+	attackPosition.z = position.z + radius * 2;
+
+	if(animeTimer > 135.98f)colstion_check3 = true;
+
+	if(colstion_check3)
+	for (int i = 0; i < enemyCount; ++i)
+	{
+		Enemy* enemy = enemyManager.GetEnemy(i);
+		// 円柱と円柱の衝突処理
+		DirectX::XMFLOAT3 outPosition;
+		if (Collision3D::IntersectCylinderVsCylinder(
+			attackPosition, radius, height,
+			enemy->GetPosition(),
+			enemy->GetRadius(),
+			enemy->GetHeight(),
+			outPosition))
+		{
+			enemy->ApplyDamage(10, 5);
+		}
+	}
+	if (!model->IsPlayAnimation())
+	{
+		colstion_check3 = false;
+		Idel_change();
+	}
+}
+
+//デスステートへ
+void Player::Deth_change()
+{
+	state = AnimeState::State_deth;
+}
+//デスステート更新
+void Player::UpdateDeth(float elapsedTime)
+{
+	model->PlayAnimation(Anim_deth, false);
+}
+
+//走りステートへ
+void Player::Run_change()
+{
+	state = AnimeState::State_Run;
+}
+//走りステート更新
+void Player::UpdateRun(float elapsedTime)
+{
+	Input(elapsedTime);							// 入力処理
+	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+
+	model->PlayAnimation(Anim_Run, true);
 }

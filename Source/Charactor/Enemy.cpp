@@ -140,7 +140,7 @@ void Enemy::UpdateMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 	Mouse& mouse = Input::Instance().GetMouse();
 	if (mouse.GetButtonDown() & Mouse::BTN_LEFT)
 		//ApplyDamage(player->par.power);
-		ApplyDamage(5);
+		ApplyDamage(0);
 
 	if (is_dead_ == false)
 	{

@@ -252,6 +252,9 @@
     <ClInclude Include="Source\Charactor\StrongSword.h">
       <Filter>Source\Charater</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\story.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -421,6 +424,9 @@
     </ClCompile>
     <ClCompile Include="Source\Charactor\StrongSword.cpp">
       <Filter>Source\Charater</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\story.cpp">
+      <Filter>Source\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

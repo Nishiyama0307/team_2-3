@@ -7,7 +7,7 @@
 #include "common.h"
 #include "Input/Input.h"
 #include "result.h"
-
+#include "story.h"
 // 追加
 #include "gameSystem.h"
 #include "audioManager.h"
@@ -145,7 +145,7 @@ void Title::Update(float elapsedTime)
 	switch (check_state)
 	{
 	case 1:	//ゲームシーンへ
-		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new Game());
+		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new Story());
 		break;
 
 	case 2: //ゲーム終了	

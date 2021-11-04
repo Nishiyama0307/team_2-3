@@ -117,23 +117,38 @@ private:
 		State_Damage,
 	};
 	AnimeState state = AnimeState::State_Idel;
-	
+
+	float animeTimer =  0;
+	bool colstion_check1 = false;
+	bool colstion_check2 = false;
+	bool colstion_check3 = false;
+
 	//待機ステートへ
-	void Idel_chage();
+	void Idel_change();
 	//待機ステート更新
 	void UpdateIdel(float elapsedTime);
 
 	//1攻撃ステートへ
-	void Attack1_chage();
+	void Attack1_change();
 	//1攻撃ステート更新
 	void UpdateAttack1(float elapsedTime);
 	//2攻撃ステートへ
-	void Attack2_chage();
+	void Attack2_change();
 	//2攻撃ステート更新
 	void UpdateAttack2(float elapsedTime);
 	//3攻撃ステートへ
-	void Attack3_chage();
+	void Attack3_change();
 	//3攻撃ステート更新
 	void UpdateAttack3(float elapsedTime);
+
+	//デスステートへ
+	void Deth_change();
+	//デスステート更新
+	void UpdateDeth(float elapsedTime);
+
+	//走りステートへ
+	void Run_change();
+	//走りステート更新
+	void UpdateRun(float elapsedTime);
 
 };

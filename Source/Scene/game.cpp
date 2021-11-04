@@ -63,13 +63,22 @@ void Game::Update(float elapsedTime)
 	switch (attck_select_state)
 	{
 	case 0:
-		attacSelectPos.x = 38;
+		attacSelectPos.x = 20;
+		frameScale1 = 1.2f;
+		frameScale2 = 1.0f;
+		frameScale3 = 1.0f;
 		break;
 	case 1:
-		attacSelectPos.x = 198;
+		attacSelectPos.x = 20 + 160;
+		frameScale1 = 1.0f;
+		frameScale2 = 1.2f;
+		frameScale3 = 1.0f;
 		break;
 	case 2:
-		attacSelectPos.x = 358;
+		attacSelectPos.x = 20 + 160*2;
+		frameScale1 = 1.0f;
+		frameScale2 = 1.0f;
+		frameScale3 = 1.2f;
 		break;
 	}
 
@@ -198,10 +207,10 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 
 		//攻撃選択
 		AttackSelect->Render2(dc,
-			attacSelectPos.x, attacSelectPos.y,
+			attacSelectPos.x, 850,
 			1.0f, 1.0f,
 			0, 0,
-			128, 128,
+			160, 160,
 			0, 0,
 			0,
 			1, 1, 1, 1);
@@ -277,8 +286,8 @@ void Game::Load()
 	Minimap					= std::make_unique<Sprite>("Data/Sprite/ミニマップ.png");
 	Castlebar				= std::make_unique<Sprite>("Data/Sprite/城.png");
 	CastlebarFrame			= std::make_unique<Sprite>("Data/Sprite/城黒帯.png");
-	AttackSlot				= std::make_unique<Sprite>("Data/Sprite/攻撃スロット.png");
-	AttackSelect			= std::make_unique<Sprite>("Data/Sprite/丸.png");
+	AttackSlot				= std::make_unique<Sprite>("Data/Sprite/G_attack.png");
+	AttackSelect			= std::make_unique<Sprite>("Data/Sprite/attack_waku_R.png");
 }
 
 

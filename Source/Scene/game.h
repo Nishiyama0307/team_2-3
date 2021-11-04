@@ -70,6 +70,8 @@ private:
     std::unique_ptr<Sprite> CastlebarFrame      = nullptr;      //
     std::unique_ptr<Sprite> AttackSlot          = nullptr;      //攻撃スロット
     std::unique_ptr<Sprite> AttackSelect        = nullptr;      //攻撃選択
-
     CameraController* cameraController = nullptr;
+    float frameScale1 = 1.0f;
+    float frameScale2 = 1.0f;
+    float frameScale3 = 1.0f;
 };
