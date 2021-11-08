@@ -16,11 +16,10 @@
 
 extern int scene_tag;
 int attck_select_state = 0;
-
+extern bool f1;
 
 void Game::Update(float elapsedTime)
 {
-
 	// シーン変更
 	ChangeScene(elapsedTime);
 
@@ -29,6 +28,7 @@ void Game::Update(float elapsedTime)
 
 	// ポーズ
 	if (pause->Update(elapsedTime)) return;
+	
 
 	BGMStart();
 
@@ -54,7 +54,7 @@ void Game::Update(float elapsedTime)
 	cameraController->SetTarget(target);
 	cameraController->Update(elapsedTime);
 
-	stress++;
+	stress+= 0.1f;
 	if (stress > 512)
 		stress = 512;
 
@@ -68,22 +68,46 @@ void Game::Update(float elapsedTime)
 	switch (attck_select_state)
 	{
 	case 0:
+		attackPosx1 = 150;
+		attackPosx2 = 350;
+		attackPosx3 = 20;
+
+		attackPosY1 = 850;
+		attackPosY2 = 900;
+		attackPosY3 = 900;
+
 		attacSelectPos.x = 20;
-		frameScale1 = 1.2f;
-		frameScale2 = 1.0f;
-		frameScale3 = 1.0f;
+		AttackSlotScale1 = 1.2f;
+		AttackSlotScale2 = 0.7f;
+		AttackSlotScale3 = 0.7f;
 		break;
 	case 1:
+		attackPosx1 = 20;
+		attackPosx2 = 150;
+		attackPosx3 = 350;
+
+		attackPosY1 = 900;
+		attackPosY2 = 850;
+		attackPosY3 = 900;
+
 		attacSelectPos.x = 20 + 160;
-		frameScale1 = 1.0f;
-		frameScale2 = 1.2f;
-		frameScale3 = 1.0f;
+		AttackSlotScale1 = 0.7f;
+		AttackSlotScale2 = 1.2f;
+		AttackSlotScale3 = 0.7f;
 		break;
 	case 2:
-		attacSelectPos.x = 20 + 160*2;
-		frameScale1 = 1.0f;
-		frameScale2 = 1.0f;
-		frameScale3 = 1.2f;
+		attackPosx1 = 350;
+		attackPosx2 = 20;
+		attackPosx3 = 150;
+
+		attackPosY1 = 900;
+		attackPosY2 = 900;
+		attackPosY3 = 850;
+
+		attacSelectPos.x = 20 + 160 * 2;
+		AttackSlotScale1 = 0.7f;
+		AttackSlotScale2 = 0.7f;
+		AttackSlotScale3 = 1.2f;
 		break;
 	}
 
@@ -97,7 +121,6 @@ void Game::Update(float elapsedTime)
 
 
 	GameSystem::Instance().Update(elapsedTime);
-
 }
 
 
@@ -238,25 +261,45 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0,
 			1, 1, 1, 1);
 
-		//攻撃スロット
-		AttackSlot->Render2(dc,
-			20, 850,
-			1.0f, 1.0f,
+		//攻撃スロット1
+		AttackSlot1->Render2(dc,
+			attackPosx1, attackPosY1,
+			1.0f * AttackSlotScale1, 1.0f * AttackSlotScale1,
 			0, 0,
-			480, 160,
+			153, 148,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+
+		//攻撃スロット2
+		AttackSlot2->Render2(dc,
+			attackPosx2, attackPosY2,
+			1.0f * AttackSlotScale2, 1.0f * AttackSlotScale2,
+			0, 0,
+			153, 148,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+
+		//攻撃スロット3
+		AttackSlot3->Render2(dc,
+			attackPosx3, attackPosY3,
+			1.0f * AttackSlotScale3, 1.0f * AttackSlotScale3,
+			0, 0,
+			153, 148,
 			0, 0,
 			0,
 			1, 1, 1, 1);
 
 		//攻撃選択
-		AttackSelect->Render2(dc,
-			attacSelectPos.x, 850,
-			1.0f, 1.0f,
-			0, 0,
-			160, 160,
-			0, 0,
-			0,
-			1, 1, 1, 1);
+		//AttackSelect->Render2(dc,
+		//	150, 850,
+		//	1.2f, 1.2f,
+		//	0, 0,
+		//	160, 160,
+		//	0, 0,
+		//	0,
+		//	1, 1, 1, 1);
 	}
 
 	ClearedSpriteRender(dc);
@@ -305,6 +348,10 @@ void Game::Set()
 	stress = 0;
 
 	stage_num = STAGENUM::N_STAGE1_VOLCANO;
+
+	attackPosY1 = 850;
+	attackPosY2 = 850;
+	attackPosY3 = 850;
 }
 
 
@@ -338,7 +385,9 @@ void Game::Load()
 	Minimap					= std::make_unique<Sprite>("Data/Sprite/map.png");
 	Castlebar				= std::make_unique<Sprite>("Data/Sprite/城.png");
 	CastlebarFrame			= std::make_unique<Sprite>("Data/Sprite/城黒帯.png");
-	AttackSlot				= std::make_unique<Sprite>("Data/Sprite/G_attack.png");
+	AttackSlot1				= std::make_unique<Sprite>("Data/Sprite/AT1.png");
+	AttackSlot2				= std::make_unique<Sprite>("Data/Sprite/AT2.png");
+	AttackSlot3				= std::make_unique<Sprite>("Data/Sprite/AT3.png");
 	AttackSelect			= std::make_unique<Sprite>("Data/Sprite/attack_waku_R.png");
 }
 
@@ -387,7 +436,6 @@ void Game::StageNumUpdate()
 
 	if (STAGE4_start_position > player->GetPosition().z && player->GetPosition().z >= STAGE3_start_position) stage_num = N_STAGE3_;	  // 1910 > p >= 1240
 	if (STAGE2_start_position < player->GetPosition().z && player->GetPosition().z < STAGE3_start_position) stage_num = N_STAGE2_DESERT; // 565 < p < 1240
-
 	if (player->GetPosition().z >= STAGE4_start_position) stage_num = N_STAGE4_;							  // p >= 1920
 	if (STAGE3_start_position < player->GetPosition().z && player->GetPosition().z < STAGE4_start_position) stage_num = N_STAGE3_;		  // 1240 < p < 1920
 }

@@ -85,10 +85,19 @@ private:
     std::unique_ptr<Sprite> Minimap             = nullptr;      //ミニマップ
     std::unique_ptr<Sprite> Castlebar           = nullptr;      //城
     std::unique_ptr<Sprite> CastlebarFrame      = nullptr;      //
-    std::unique_ptr<Sprite> AttackSlot          = nullptr;      //攻撃スロット
+    std::unique_ptr<Sprite> AttackSlot1         = nullptr;      //攻撃スロット1
+    std::unique_ptr<Sprite> AttackSlot2         = nullptr;      //攻撃スロット2
+    std::unique_ptr<Sprite> AttackSlot3         = nullptr;      //攻撃スロット3
     std::unique_ptr<Sprite> AttackSelect        = nullptr;      //攻撃選択
     CameraController* cameraController = nullptr;
-    float frameScale1 = 1.0f;
-    float frameScale2 = 1.0f;
-    float frameScale3 = 1.0f;
+    float AttackSlotScale1 = 1.0f;
+    float AttackSlotScale2 = 1.0f;
+    float AttackSlotScale3 = 1.0f;
+    float attackPosx1 = 0;
+    float attackPosx2 = 0;
+    float attackPosx3 = 0;
+    float attackPosY1 = 0;
+    float attackPosY2 = 0;
+    float attackPosY3 = 0;
+
 };

@@ -10,7 +10,7 @@
 #include "Input/Mouse.h"
 
 extern int attck_select_state;
-
+extern bool f1;
 // コンストラクタ
 Player::Player()
 {
@@ -407,28 +407,31 @@ void Player::Idel_change()
 //待機ステート更新
 void Player::UpdateIdel(float elapsedTime)
 {
-	Input(elapsedTime);							// 入力処理
-	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
-
-	//攻撃選択によってアニメーションが変わる
-	Mouse& mouse = Input::Instance().GetMouse();
-	const MouseButton& anyButton = Mouse::BTN_LEFT;
-	if (mouse.GetButtonDown() & anyButton)
+	if (f1)
 	{
-		switch (attck_select_state)
+		Input(elapsedTime);							// 入力処理
+		UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+
+		//攻撃選択によってアニメーションが変わる
+		Mouse& mouse = Input::Instance().GetMouse();
+		const MouseButton& anyButton = Mouse::BTN_LEFT;
+		if (mouse.GetButtonDown() & anyButton)
 		{
-		case 0:
-			Attack1_change();
-			break;
-		case 1:
-			Attack2_change();
-			break;
-		case 2:
-			Attack3_change();
-			break;
+			switch (attck_select_state)
+			{
+			case 0:
+				Attack1_change();
+				break;
+			case 1:
+				Attack2_change();
+				break;
+			case 2:
+				Attack3_change();
+				break;
+			}
 		}
 	}
-
+	f1 = true;
 }
 
 //攻撃ステートへ  1
