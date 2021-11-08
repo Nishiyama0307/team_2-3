@@ -11,6 +11,7 @@
 // 追加
 #include "gameSystem.h"
 #include "audioManager.h"
+#include<Windows.h>
 
 extern bool game_exit;
 extern int scene_tag;
@@ -18,6 +19,7 @@ extern int scene_tag;
 //////////////////////////////////
 void Title::Update(float elapsedTime)
 {
+	ShowCursor(false);
 
 	GamePad& gamePad = Input::Instance().GetGamePad();
 	Mouse& mouseButton = Input::Instance().GetMouse();
@@ -101,17 +103,17 @@ void Title::Update(float elapsedTime)
 	mousePos.y = mouse.GetPositionY() - 26;
 	MouseBox.left = mousePos.x;
 	MouseBox.top = mousePos.y;
-	C_OffsetBox(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right, 32, 53);
+	C_OffsetBox(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right, 32, 32);
 
 	//スタートのボックス
 	StartBox.left = startPos.x;
 	StartBox.top = startPos.y;
-	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 512, 256);
+	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 400, 180);
 
 	//終了ボックス
 	EndBox.left = endPos.x;
 	EndBox.top = endPos.y;
-	C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 512, 256);
+	C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 400, 180);
 
 	//判定 (マウスとゲームへのボックス)
 	start_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
@@ -186,15 +188,15 @@ void Title::SpriteRender(ID3D11DeviceContext* dc)
 	{
 		//スタート
 		spr_start->Render(dc,
-			startPos.x, startPos.y, 512, 256,
-			0, 0, 512, 256,
+			startPos.x, startPos.y, 400, 180,
+			0, 0, 400, 180,
 			0,
 			1, 1, 1, 1);
 
 		//終了
 		spr_endbox->Render(dc,
-			endPos.x, endPos.y, 512, 256,
-			0, 0, 512, 256,
+			endPos.x, endPos.y, 400, 180,
+			0, 0, 400, 180,
 			0,
 			1, 1, 1, 1);
 
@@ -202,7 +204,7 @@ void Title::SpriteRender(ID3D11DeviceContext* dc)
 		{
 			//確認用フレーム
 			spr_frame->Render(dc,
-				framePos.x, framePos.y, 512, 256,
+				framePos.x, framePos.y, 400, 180,
 				0, 0, 512, 256,
 				0,
 				1, 1, 1, 1);
@@ -210,8 +212,8 @@ void Title::SpriteRender(ID3D11DeviceContext* dc)
 
 		//マウスカーソル
 		spr_mouseCursor->Render(dc,
-			mousePos.x, mousePos.y, 32, 53,
-			0, 0, 32, 53,
+			mousePos.x, mousePos.y, 64, 64,
+			0, 0, 64, 64,
 			0,
 			1, 1, 1, 1);
 	}
@@ -229,11 +231,11 @@ void Title::Set()
 	start_check = false;
 	end_check = false;
 
-	startPos.x = 300;
-	startPos.y = 700;
+	startPos.x = 600;
+	startPos.y = 500;
 
-	endPos.x = 1000;
-	endPos.y = 700;
+	endPos.x = 600;
+	endPos.y = 800;
 
 	framePos.x = 0;
 	framePos.y = 0;
@@ -248,9 +250,9 @@ void Title::Load()
 
 
 	spr_mouseCursor		= std::make_unique<Sprite>("Data/Sprite/cursor.png");
-	spr_start			= std::make_unique<Sprite>("Data/Sprite/スタート.png");
+	spr_start			= std::make_unique<Sprite>("Data/Sprite/start.png");
 	spr_frame			= std::make_unique<Sprite>("Data/Sprite/frame.png");
-	spr_endbox			= std::make_unique<Sprite>("Data/Sprite/終了.png");
+	spr_endbox			= std::make_unique<Sprite>("Data/Sprite/end.png");
 }			
 
 void Title::ImGui()

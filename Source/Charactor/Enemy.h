@@ -68,6 +68,8 @@ public:
 	// éÄñS
 	void OnDead();
 
+	DirectX::XMFLOAT3 GetFront() { return ConvertToIdentityVec(transform._31, transform._32, transform._33); }
+
 public: // Getä÷êî
 public: // Setä÷êî
 	void SetPlayerAddress(Player* player_) { player = player_; }
@@ -104,5 +106,13 @@ public:
 
 	int timer{ 0 };
 	int random_direction{ 0 };
+
+private:
+	DirectX::XMFLOAT3 ConvertToIdentityVec(float x, float y, float z)
+	{
+		DirectX::XMFLOAT3 identity_vec = {};
+		DirectX::XMStoreFloat3(&identity_vec, DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&DirectX::XMFLOAT3(x, y, z))));
+		return identity_vec;
+	}
 	
 };

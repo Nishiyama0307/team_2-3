@@ -5,6 +5,7 @@
 
 #include "Input/Input.h"
 #include "Input/Mouse.h"
+#include "easy_math.h"
 
 
 // デバッグプリミティブ描画
@@ -23,6 +24,10 @@ void Enemy::DrawDebugPrimitive()
 
 	// 衝突判定用のデバッグ円柱を描画
 	debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+
+	if(attack)
+		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 4)) },
+			radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 
 	switch (enemy_tag)
 	{
@@ -141,11 +146,11 @@ void Enemy::UpdateMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 	{
 		distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&position), DirectX::XMLoadFloat3(&playerPos))));
 
-		//AttackMove(elapsedTime, playerPos);
-		//
-		//RandomMove(elapsedTime);
-		//
-		//HomingMove(elapsedTime, playerPos);
+		AttackMove(elapsedTime, playerPos);
+		
+		RandomMove(elapsedTime);
+		
+		HomingMove(elapsedTime, playerPos);
 	}
 }
 
@@ -377,7 +382,9 @@ void Enemy::AttackMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 	if (distance < kAttack_Range)
 	{
 		is_attacking_ = true;
+		attack = true;
 		if(model->GetIndex() != ANIMINDEX::ATTACK) model->PlayAnimation(ANIMINDEX::ATTACK, false);
+		if (!model->IsPlayAnimation()) attack = false;
 	}
 	else if(is_attacking_ && model->IsPlayAnimation() == false)
 	{

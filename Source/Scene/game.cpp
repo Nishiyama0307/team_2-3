@@ -141,7 +141,6 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 	/* 2Dスプライトの描画 */
 	GameSystem::Instance().SpriteRender(dc);
 
-	pause->SpriteRender(dc);
 
 	//UIレンダー
 	{
@@ -302,6 +301,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 		//	1, 1, 1, 1);
 	}
 
+	pause->SpriteRender(dc);
 	ClearedSpriteRender(dc);
 }
 

@@ -127,6 +127,8 @@ void Player::Update(float elapsedTime, bool explaining)
 
 	front = GetFront();
 
+	EnemyAttckHit();
+
 	//アニメーション再生
 	Mouse& mouse = Input::Instance().GetMouse();
 	const MouseButton& anyButton = Mouse::BTN_LEFT;
@@ -604,4 +606,38 @@ void Player::UpdateRun(float elapsedTime)
 	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
 
 	model->PlayAnimation(Anim_Run, true);
+}
+
+void Player::EnemyAttckHit()
+{
+	EnemyManager& enemyManager = EnemyManager::Instance();
+
+	// 全ての敵と総当たりで衝突処理
+	int enemyCount = enemyManager.GetEnemyCount();
+	for (int i = 0; i < enemyCount; ++i)
+	{
+		Enemy* enemy = enemyManager.GetEnemy(i);
+
+		DirectX::XMFLOAT3 attackPosition;
+		attackPosition = { float3SUM(enemy->GetPosition(),float3Scaling(enemy->GetFront(), enemy->GetRadius() * 4)) };
+
+		if (enemy->attack)
+		{
+			// 円柱と円柱の衝突処理
+			DirectX::XMFLOAT3 outPosition;
+			if (Collision3D::IntersectCylinderVsCylinder(
+				position,
+				radius,
+				height,
+				attackPosition,
+				enemy->GetRadius(),
+				enemy->GetHeight(),
+				outPosition
+			))
+			{
+				ApplyDamage(10);
+
+			}
+		}
+	}
 }

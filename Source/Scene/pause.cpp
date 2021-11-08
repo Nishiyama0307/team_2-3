@@ -11,6 +11,7 @@
 #include "scene.h"
 #include "title.h"
 bool f1;
+#include<Windows.h>
 
 Pause::Pause(Scene* scene_) : scene(scene_)
 {
@@ -24,9 +25,10 @@ Pause::Pause(Scene* scene_) : scene(scene_)
 
 
 	spr_mouseCursor = std::make_unique<Sprite>("Data/Sprite/cursor.png");
-	spr_start = std::make_unique<Sprite>("Data/Sprite/スタート.png");
+	spr_start = std::make_unique<Sprite>("Data/Sprite/gamebuck.png");
 	spr_frame = std::make_unique<Sprite>("Data/Sprite/frame.png");
-	spr_endbox = std::make_unique<Sprite>("Data/Sprite/終了.png");
+	spr_endbox = std::make_unique<Sprite>("Data/Sprite/titlebuck.png");
+	spr_back2 = std::make_unique<Sprite>("Data/Sprite/back.png");
 
 	start_check = false;
 	end_check = false;
@@ -104,6 +106,8 @@ bool Pause::Update(float elapsedTime)
 		if (elapsedTime) select_timer++;
 	}
 #endif
+
+	ShowCursor(false);
 	if (Input::Instance().GetGamePad().GetButtonDown() & GamePad::BTN_R)
 	{
 		now_pause = !now_pause;
@@ -119,23 +123,23 @@ bool Pause::Update(float elapsedTime)
 	mousePos.y = mouse.GetPositionY() - 26;
 	MouseBox.left = mousePos.x;
 	MouseBox.top = mousePos.y;
-	C_OffsetBox(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right, 32, 53);
+	C_OffsetBox(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right, 32, 32);
 
-	//スタートのボックス
+	//ゲーム続行のボックス
 	StartBox.left = startPos.x;
 	StartBox.top = startPos.y;
-	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 512, 256);
+	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 400, 180);
 
-	//終了ボックス
+	//タイトルへボックス
 	EndBox.left = endPos.x;
 	EndBox.top = endPos.y;
-	C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 512, 256);
+	C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 400, 180);
 
-	//判定 (マウスとゲームへのボックス)
+	//判定 (マウスとゲーム続行へのボックス)
 	start_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
 		StartBox.top, StartBox.left, StartBox.bottom, StartBox.right);
 
-	//判定 (マウスと終了とのボックス)
+	//判定 (マウスとタイトルへとのボックス)
 	end_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
 		EndBox.top, EndBox.left, EndBox.bottom, EndBox.right);
 	if (now_pause == true)
@@ -163,13 +167,13 @@ bool Pause::Update(float elapsedTime)
 
 		switch (check_state)
 		{
-		case 1:	//ゲームシーンへ
+		case 1:	//ゲーム続行
 			//if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new Story());
 			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT) now_pause = false;
 			f1 = false;
 			break;
 
-		case 2: //ゲーム終了	
+		case 2: //タイトルへ
 			//if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT) exit(EXIT_SUCCESS);
 			//if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT) game_exit = true;
 			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	scene->ChangeNextScene(new Title());
@@ -201,17 +205,24 @@ void Pause::SpriteRender(ID3D11DeviceContext* dc)
 	float spr_endHeight = CAST_F(spr_end->GetTextureHeight());
 
 	{
-		//スタート
+		//背面
+		spr_back2->Render(dc,
+			0, 0, 1920, 1080,
+			0, 0, 1920, 1080,
+			0,
+			0, 0, 0, 0.6f);
+
+		//続行
 		spr_start->Render(dc,
-			startPos.x, startPos.y, 512, 256,
-			0, 0, 512, 256,
+			startPos.x, startPos.y, 400, 180,
+			0, 0, 400, 180,
 			0,
 			1, 1, 1, 1);
 
-		//終了
+		//タイトルへ
 		spr_endbox->Render(dc,
-			endPos.x, endPos.y, 512, 256,
-			0, 0, 512, 256,
+			endPos.x, endPos.y, 400, 180,
+			0, 0, 400, 180,
 			0,
 			1, 1, 1, 1);
 
@@ -219,7 +230,7 @@ void Pause::SpriteRender(ID3D11DeviceContext* dc)
 		{
 			//確認用フレーム
 			spr_frame->Render(dc,
-				framePos.x, framePos.y, 512, 256,
+				framePos.x, framePos.y, 400, 180,
 				0, 0, 512, 256,
 				0,
 				1, 1, 1, 1);
@@ -227,8 +238,8 @@ void Pause::SpriteRender(ID3D11DeviceContext* dc)
 
 		//マウスカーソル
 		spr_mouseCursor->Render(dc,
-			mousePos.x, mousePos.y, 32, 53,
-			0, 0, 32, 53,
+			mousePos.x, mousePos.y, 64, 64,
+			0, 0, 64, 64,
 			0,
 			1, 1, 1, 1);
 	}

@@ -140,4 +140,6 @@ public:
 	Parameter par;
 
 	Model* model = nullptr;
+
+	bool attack = false;
 };

@@ -15,9 +15,11 @@
 // 追加
 #include "gameSystem.h"
 #include "audioManager.h"
+#include<Windows.h>
 
 void Story::Update(float elapsedtime)
 {
+	ShowCursor(false);
 	GamePad& gamePad = Input::Instance().GetGamePad();
 	Mouse& mouseButton = Input::Instance().GetMouse();
 
@@ -27,17 +29,17 @@ void Story::Update(float elapsedtime)
 	mousePos.y = mouse.GetPositionY() - 26;
 	MouseBox.left = mousePos.x;
 	MouseBox.top = mousePos.y;
-	C_OffsetBox(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right, 32, 53);
+	C_OffsetBox(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right, 32, 32);
 
 	//スタートのボックス
 	StartBox.left = startPos.x;
 	StartBox.top = startPos.y;
-	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 512, 256);
+	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 400, 180);
 
-	//終了ボックス
+	//チュートリアルへボックス
 	tutorialBox.left = tutorialPos.x;
 	tutorialBox.top =  tutorialPos.y;
-	C_OffsetBox(tutorialBox.top, tutorialBox.left, tutorialBox.bottom, tutorialBox.right, 512, 256);
+	C_OffsetBox(tutorialBox.top, tutorialBox.left, tutorialBox.bottom, tutorialBox.right, 400, 180);
 
 	//判定 (マウスとゲームへのボックス)
 	start_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
@@ -74,7 +76,7 @@ void Story::Update(float elapsedtime)
 		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new Game());
 		break;
 
-	case 2: //タイトルへ
+	case 2: //チュートリアルへ
 		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)ChangeNextScene(new Tutorial());
 		break;
 	}
@@ -97,17 +99,17 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 		1, 1, 1, 1);
 
 	{
-		//スタート
+		//NO
 		spr_start->Render(dc,
-			startPos.x, startPos.y, 512, 256,
-			0, 0, 512, 256,
+			startPos.x, startPos.y, 400, 180,
+			0, 0, 400, 180,
 			0,
 			1, 1, 1, 1);
 
-		//チュートリアル
+		//Yes
 		spr_tutorial->Render(dc,
-			tutorialPos.x, tutorialPos.y, 512, 256,
-			0, 0, 512, 256,
+			tutorialPos.x, tutorialPos.y, 400, 180,
+			0, 0, 400, 180,
 			0,
 			1, 1, 1, 1);
 
@@ -115,7 +117,7 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 		{
 			//確認用フレーム
 			spr_frame->Render(dc,
-				framePos.x, framePos.y, 512, 256,
+				framePos.x, framePos.y, 400, 180,
 				0, 0, 512, 256,
 				0,
 				1, 1, 1, 1);
@@ -123,8 +125,8 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 
 		//マウスカーソル
 		spr_mouseCursor->Render(dc,
-			mousePos.x, mousePos.y, 32, 53,
-			0, 0, 32, 53,
+			mousePos.x, mousePos.y, 64, 64,
+			0, 0, 64, 64,
 			0,
 			1, 1, 1, 1);
 	}
@@ -154,9 +156,9 @@ void Story::Load()
 {
 	spr_mouseCursor = std::make_unique<Sprite>("Data/Sprite/cursor.png");
 	spr_haikei = std::make_unique<Sprite>("Data/Sprite/ストーリー.png");
-	spr_start = std::make_unique<Sprite>("Data/Sprite/スタート.png");
+	spr_start = std::make_unique<Sprite>("Data/Sprite/no.png");
 	spr_frame = std::make_unique<Sprite>("Data/Sprite/frame.png");
-	spr_tutorial = std::make_unique<Sprite>("Data/Sprite/チュートリアル.png");
+	spr_tutorial = std::make_unique<Sprite>("Data/Sprite/yes.png");
 }
 
 void Story::ImGui()

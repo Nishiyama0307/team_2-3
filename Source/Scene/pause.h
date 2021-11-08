@@ -47,6 +47,7 @@ private:
     std::unique_ptr<Sprite> spr_start = nullptr;
     std::unique_ptr<Sprite> spr_frame = nullptr;
     std::unique_ptr<Sprite> spr_endbox = nullptr;
+    std::unique_ptr<Sprite> spr_back2 = nullptr;
 
     //“–‚½‚è”»’è
     C_Hitbox MouseBox;

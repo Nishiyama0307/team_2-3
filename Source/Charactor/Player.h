@@ -162,4 +162,7 @@ private:
 	//走りステート更新
 	void UpdateRun(float elapsedTime);
 
+	//敵の攻撃を喰らう関数
+	void EnemyAttckHit();
+
 };
