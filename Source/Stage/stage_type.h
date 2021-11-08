@@ -37,3 +37,11 @@ public:
     ~Stage4_Volcano();
 
 };
+
+class castle : public Stage
+{
+public:
+    castle();
+    ~castle();
+
+};

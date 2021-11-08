@@ -120,6 +120,9 @@ void Player::Update(float elapsedTime, bool explaining)
 
 	}
 
+	if (position.y < 0) jumpspeed = 40.0f;
+	else jumpspeed = 20.0f;
+
 	inhale->Update(elapsedTime);				// 掃除機機能の更新
 
 	front = GetFront();

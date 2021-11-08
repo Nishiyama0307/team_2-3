@@ -11,6 +11,7 @@ enum STAGETYPE
 	STAGE2_DESERT,
 	STAGE3_,
 	STAGE4_,
+    CASTLE,
 };
 
 // ステージクラス ※抽象クラス

@@ -59,3 +59,17 @@ Stage4_Volcano::~Stage4_Volcano()
 {
 
 }
+
+castle::castle()
+{
+    mdl_stage = std::make_unique<Model>("Data/Model/stage/castle.mdl");
+
+    if (mdl_stage.get() == nullptr) return;
+
+    stage_type = STAGETYPE::CASTLE;
+}
+
+castle::~castle()
+{
+
+}

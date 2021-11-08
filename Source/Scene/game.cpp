@@ -372,6 +372,7 @@ void Game::Load()
 	StageManager::Instance().AddStage(new Stage2_Desert());
 	StageManager::Instance().AddStage(new Stage3_Volcano());
 	StageManager::Instance().AddStage(new Stage4_Volcano());
+	StageManager::Instance().AddStage(new castle());
 
 	//UI‰Šú‰»
 	HpBar					= std::make_unique<Sprite>("Data/Sprite/G_HP.png");
