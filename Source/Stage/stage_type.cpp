@@ -7,6 +7,7 @@
 Stage1_Volcano::Stage1_Volcano()
 {
     mdl_stage = std::make_unique<Model>("Data/Model/stage/stage1.mdl");
+    //mdl_stage = std::make_unique<Model>("Data/Model/stage/‰¼/LongStage.mdl");
 
     if (mdl_stage.get() == nullptr) return;
 

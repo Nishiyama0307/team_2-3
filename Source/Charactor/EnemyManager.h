@@ -15,7 +15,7 @@ public:
 		static EnemyManager instance;
 		return instance;
 	}
-	void Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos);
+	void Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos, int stage_num = 0);
 	void Render(ID3D11DeviceContext* dc, Shader* shader);
 
 	// デバッグプリミティブ描画
@@ -43,7 +43,7 @@ public:
 
 private:
 	// エネミー同士の衝突判定
-	void CollisionEnemyVsEnemies();
+	void CollisionEnemyVsEnemies(int stage_num);
 
 	std::vector<Enemy*>		enemies;
 	std::vector<Enemy*>		removes;

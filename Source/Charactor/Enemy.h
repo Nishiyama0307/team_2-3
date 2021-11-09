@@ -74,6 +74,7 @@ public: // GetŠÖ”
 public: // SetŠÖ”
 	void SetPlayerAddress(Player* player_) { player = player_; }
 	virtual void SetInhaleParameter() = 0;
+	void SetStageNum(int stage_num) { this->stage_num = stage_num; }
 
 public: // length
 	void SetLengthSq(float sq) { lengthSq = sq; }
@@ -106,6 +107,7 @@ public:
 
 	int timer{ 0 };
 	int random_direction{ 0 };
+	int stage_num;
 
 private:
 	DirectX::XMFLOAT3 ConvertToIdentityVec(float x, float y, float z)

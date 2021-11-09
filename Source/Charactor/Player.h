@@ -77,7 +77,7 @@ private:
 	Model* model = nullptr;
 
 #if _DEBUG
-	float	moveSpeed = 100.0f;
+	float	moveSpeed = 200.0f;
 #else
 	float	moveSpeed = 25.0f;
 #endif
@@ -89,7 +89,7 @@ private:
 	int				jumpCount = 0;
 
 #if _DEBUG
-	int				jumpLimit = 50;
+	int				jumpLimit = 100;
 #else
 	int				jumpLimit = 1;
 #endif

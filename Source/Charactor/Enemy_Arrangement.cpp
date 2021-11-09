@@ -50,7 +50,7 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
         csv_load(Arrangement,"Data/map/enemy_arrangement._チュートリアル(bomb).csv");
         break;
     case GAME:
-        csv_load(Arrangement,"Data/map/配置図.csv");
+        csv_load(Arrangement,"Data/map/配置図_test_団体行動.csv");
         break;
     default:
         break;

@@ -26,6 +26,10 @@ enum STAGENUM
 
 // ƒQ[ƒ€ƒV[ƒ“
 
+constexpr int kStage2_Start_Position{ 565 };
+constexpr int kStage3_Start_Position{ 1240 };
+constexpr int kStage4_Start_Position{ 1920 };
+
 class Game : public Scene
 {
 public:

@@ -3,26 +3,33 @@
 #include "Collision.h"
 
 
-void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
+void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos, int stage_num)
 {
 
 	for (auto& enemy : enemies)
 	{
-		if (enemy->is_dead_ == false)
+		if (stage_num > enemy->stage_num) enemy->Destroy();
+
+		//if (enemy->is_dead_ == false)
+		if (enemy->is_dead_ == false && stage_num == enemy->stage_num)
 		{
 			enemy->UpdateMove(elapsedTime, playerPos);
 		}
 	}
 	for (auto& enemy : enemies)
 	{
-		enemy->Update(elapsedTime, playerPos);
+		if (stage_num == enemy->stage_num)
+		{
+			enemy->Update(elapsedTime, playerPos);
+		}
 	}
 
 	constexpr int range = 50;
 
 	for (auto& enemy1 : enemies)
 	{
-		if (enemy1->is_dead_ == false)
+		//if (enemy1->is_dead_ == false)
+		if (enemy1->is_dead_ == false && stage_num == enemy1->stage_num)
 		{
 			if (enemy1->is_tracking_) // 1人がplayerに気づいたら
 			{
@@ -96,7 +103,7 @@ void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 	removes.clear();
 
 	// エネミー同士の衝突判定
-	CollisionEnemyVsEnemies();
+	CollisionEnemyVsEnemies(stage_num);
 }
 
 #include <algorithm>
@@ -174,15 +181,18 @@ void EnemyManager::Remove(Enemy* enemy)
 }
 
 // エネミー同士の衝突判定
-void EnemyManager::CollisionEnemyVsEnemies()
+void EnemyManager::CollisionEnemyVsEnemies(int stage_num)
 {
 	size_t enemyCount = enemies.size();
 	for (int i = 0; i < enemyCount; ++i)
 	{
 		Enemy* enemyA = enemies.at(i);
+		if (enemyA->stage_num != stage_num) continue;
+
 		for (int j = i + 1; j < enemyCount; ++j)
 		{
 			Enemy* enemyB = enemies.at(j);
+			if (enemyB->stage_num != stage_num) continue;
 
 			DirectX::XMFLOAT3 outPosition;
 			if (Collision3D::IntersectCylinderVsCylinder(
@@ -198,7 +208,7 @@ void EnemyManager::CollisionEnemyVsEnemies()
 				//押し出し後の位置設定
 				enemyB->SetPosition(outPosition);
 			}
-			
+
 		}
 	}
 }

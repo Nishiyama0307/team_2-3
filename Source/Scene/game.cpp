@@ -43,7 +43,7 @@ void Game::Update(float elapsedTime)
 
 	StageManager::Instance().Update(elapsedTime, stage_num);
 
-	EnemyManager::Instance().Update(elapsedTime, player->GetPosition());
+	EnemyManager::Instance().Update(elapsedTime, player->GetPosition(), stage_num);
 
 	EnemyManager::Instance().SortLengthSq(player->GetPosition());
 
@@ -113,6 +113,18 @@ void Game::Update(float elapsedTime)
 
 	player->Update(elapsedTime);
 
+#ifdef _DEBUG
+	// デバッグのみのワープキー
+	GamePad& gamePad = Input::Instance().GetGamePad();
+	if (gamePad.GetButtonDown() & GamePad::BTN_B) // xキー
+		//player->SetPosition(DirectX::XMFLOAT3(0, 0, -170)); // 本番
+		player->SetPosition(DirectX::XMFLOAT3(0, 0, -100)); // test
+
+	if (gamePad.GetButtonDown() & GamePad::BTN_X) // cキー
+		//player->SetPosition(DirectX::XMFLOAT3(0, 0, 2600)); // 本番
+		player->SetPosition(DirectX::XMFLOAT3(0, 0, 2575)); // test
+
+#endif
 
 	//DirectX::XMFLOAT3 player_pos = player->GetPosition();
 	//CameraController::Instance()->SetTarget(float3SUM({player_pos.x, player_pos.y + 3, player_pos.z}, float3Scaling(player->GetFront(), 4.5f)));
@@ -428,17 +440,18 @@ void Game::DebugRender()
 
 void Game::StageNumUpdate()
 {
-	constexpr int STAGE2_start_position{ 565 };
-	constexpr int STAGE3_start_position{ 1240 };
-	constexpr int STAGE4_start_position{ 1920 };
+	//constexpr int STAGE2_start_position{ 565 };
+	//constexpr int STAGE3_start_position{ 1240 };
+	//constexpr int STAGE4_start_position{ 1920 };
 
-	if (STAGE3_start_position > player->GetPosition().z && player->GetPosition().z >= STAGE2_start_position) stage_num = N_STAGE2_DESERT; // 1240 > p >= 565
-	if (player->GetPosition().z < STAGE2_start_position) stage_num = N_STAGE1_VOLCANO;						  // p < 565
+	if (kStage3_Start_Position > player->GetPosition().z && player->GetPosition().z >= kStage2_Start_Position) stage_num = N_STAGE2_DESERT; // 1240 > p >= 565
+	if (player->GetPosition().z < kStage2_Start_Position) stage_num = N_STAGE1_VOLCANO;						  // p < 565
 
-	if (STAGE4_start_position > player->GetPosition().z && player->GetPosition().z >= STAGE3_start_position) stage_num = N_STAGE3_;	  // 1910 > p >= 1240
-	if (STAGE2_start_position < player->GetPosition().z && player->GetPosition().z < STAGE3_start_position) stage_num = N_STAGE2_DESERT; // 565 < p < 1240
-	if (player->GetPosition().z >= STAGE4_start_position) stage_num = N_STAGE4_;							  // p >= 1920
-	if (STAGE3_start_position < player->GetPosition().z && player->GetPosition().z < STAGE4_start_position) stage_num = N_STAGE3_;		  // 1240 < p < 1920
+	if (kStage4_Start_Position > player->GetPosition().z && player->GetPosition().z >= kStage3_Start_Position) stage_num = N_STAGE3_;	  // 1910 > p >= 1240
+	if (kStage2_Start_Position < player->GetPosition().z && player->GetPosition().z < kStage3_Start_Position) stage_num = N_STAGE2_DESERT; // 565 < p < 1240
+
+	if (player->GetPosition().z >= kStage4_Start_Position) stage_num = N_STAGE4_;							  // p >= 1920
+	if (kStage3_Start_Position < player->GetPosition().z && player->GetPosition().z < kStage4_Start_Position) stage_num = N_STAGE3_;		  // 1240 < p < 1920
 }
 
 void Game::CameraSet()
