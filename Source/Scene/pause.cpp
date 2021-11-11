@@ -10,7 +10,7 @@
 #include "Input/Mouse.h"
 #include "scene.h"
 #include "title.h"
-bool f1;
+bool f1;	//ポーズ解除時、攻撃とポーズ解除の左クリックが同時に処理されるので１フレームだけ動かさない
 #include<Windows.h>
 
 Pause::Pause(Scene* scene_) : scene(scene_)

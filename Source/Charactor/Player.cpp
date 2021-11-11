@@ -165,6 +165,7 @@ void Player::Update(float elapsedTime, int stage_num, bool explaining)
 		//歩き
 	case AnimeState::State_walk:
 		UpdateWalk(elapsedTime);
+		break;
 
 		//走り
 	case AnimeState::State_Run:
@@ -206,7 +207,7 @@ void Player::InputMove(float elapsedTime)
 	// 移動処理
 	switch (state)
 	{
-		//走ってるとき
+		////走ってるとき
 		case AnimeState::State_Run:
 			moveSpeed = 25;
 			break;
@@ -216,6 +217,7 @@ void Player::InputMove(float elapsedTime)
 			break;
 			
 	}
+
 	Move(moveVec.x, moveVec.z, moveSpeed);
 
 	//Turn(elapsedTime, 0, 0, turnSpeed);
@@ -665,7 +667,24 @@ void Player::UpdateWalk(float elapsedTime)
 	}
 	if (f1)
 	{
-
+		//攻撃選択によってアニメーションが変わる
+		Mouse& mouse = Input::Instance().GetMouse();
+		const MouseButton& anyButton = Mouse::BTN_LEFT;
+		if (mouse.GetButtonDown() & anyButton)
+		{
+			switch (attck_select_state)
+			{
+			case 0:
+				Attack1_change();
+				break;
+			case 1:
+				Attack2_change();
+				break;
+			case 2:
+				Attack3_change();
+				break;
+			}
+		}
 	}
 	f1 = true;
 }
@@ -701,7 +720,24 @@ void Player::UpdateRun(float elapsedTime)
 	}
 	if (f1)
 	{
-
+		//攻撃選択によってアニメーションが変わる
+		Mouse& mouse = Input::Instance().GetMouse();
+		const MouseButton& anyButton = Mouse::BTN_LEFT;
+		if (mouse.GetButtonDown() & anyButton)
+		{
+			switch (attck_select_state)
+			{
+			case 0:
+				Attack1_change();
+				break;
+			case 1:
+				Attack2_change();
+				break;
+			case 2:
+				Attack3_change();
+				break;
+			}
+		}
 	}
 	f1 = true;
 

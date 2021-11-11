@@ -287,17 +287,20 @@ void Character::UpdateHorizontalVelocity(float elapsedFrame)
         if (moveVecLength > 0.0f)
         {
             // 加速力
-            float shiftAccel = 1.0f;
+            float shiftAccel = 0.0f;
             GamePad& pad = Input::Instance().GetGamePad();
             const GamePadButton& button = GamePad::BTN_SHIFT;
             bool isB = false;
             if (pad.GetButtonDown() &button)
             {
                 shiftAccel = 20.0f;
+                isB = true;
             }
             float acceleration = (this->acceleration + shiftAccel) * elapsedFrame;
 
             // 空中なら加速力を減らす
+            //if (isB)
+            //    acceleration = this->acceleration * elapsedFrame;
             if (!IsGround()) acceleration *= 0.5f; // 半減
 
             // 加速処理  
@@ -400,7 +403,9 @@ void Character::UpdateHorizontalMove(float elapsedTime)
             if (StageManager::Instance().RayCast(start, end, hit))
             {
                 // 更新しない
-
+                //velocity.x = 0;
+                //velocity.y = 0;
+                //velocity.z = 0;
             }
 
             // めり込んでいなければ
@@ -447,7 +452,9 @@ void Character::UpdateHorizontalMove(float elapsedTime)
             if (StageManager::Instance().RayCast(start, end, hit))
             {
                 // 更新しない
-
+                //velocity.x = 0;
+                //velocity.y = 0;
+                //velocity.z = 0;
             }
 
             // めり込んでいなければ
