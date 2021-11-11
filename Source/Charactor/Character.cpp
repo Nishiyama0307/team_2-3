@@ -3,6 +3,8 @@
 #include "stageManager.h"
 
 #include "audioManager.h"
+#include "Input/GamePad.h"
+#include "Input/Input.h"
 
 
 // s—ñXVˆ—
@@ -285,7 +287,15 @@ void Character::UpdateHorizontalVelocity(float elapsedFrame)
         if (moveVecLength > 0.0f)
         {
             // ‰Á‘¬—Í
-            float acceleration = this->acceleration * elapsedFrame;
+            float shiftAccel = 1.0f;
+            GamePad& pad = Input::Instance().GetGamePad();
+            const GamePadButton& button = GamePad::BTN_SHIFT;
+            bool isB = false;
+            if (pad.GetButtonDown() &button)
+            {
+                shiftAccel = 20.0f;
+            }
+            float acceleration = (this->acceleration + shiftAccel) * elapsedFrame;
 
             // ‹ó’†‚È‚ç‰Á‘¬—Í‚ðŒ¸‚ç‚·
             if (!IsGround()) acceleration *= 0.5f; // ”¼Œ¸

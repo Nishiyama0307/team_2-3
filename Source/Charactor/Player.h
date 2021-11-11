@@ -49,6 +49,7 @@ private:
 
 	// 移動入力値処理
 	void InputMove(float elapsedTime);
+	//bool InputMove(float elapsedTime);
 
 	// ジャンプ入力処理
 	void InputJump();
@@ -79,7 +80,7 @@ private:
 	Model* model = nullptr;
 
 #if _DEBUG
-	float	moveSpeed = 200.0f;
+	float	moveSpeed = 25.0f;
 #else
 	float	moveSpeed = 25.0f;
 #endif
@@ -159,6 +160,11 @@ private:
 	//デスステート更新
 	void UpdateDeth(float elapsedTime);
 
+	//歩きステートへ
+	void Walk_change();
+	//歩きステート更新
+	void UpdateWalk(float elapsedTime);
+
 	//走りステートへ
 	void Run_change();
 	//走りステート更新
@@ -166,5 +172,10 @@ private:
 
 	//敵の攻撃を喰らう関数
 	void EnemyAttckHit();
+
+	//ゼロベクトルかチェック
+	bool zeroVec = false;
+
+	bool isbuttn = false;
 
 };

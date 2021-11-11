@@ -26,6 +26,7 @@ public:
 	static const GamePadButton BTN_R				= (1 << 17);
 	static const GamePadButton BTN_I				= (1 << 18);
 	static const GamePadButton BTN_K				= (1 << 19);
+	static const GamePadButton BTN_SHIFT			= (1 << 20);
 
 public:
 	GamePad() {}

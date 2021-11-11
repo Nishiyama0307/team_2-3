@@ -162,6 +162,10 @@ void Player::Update(float elapsedTime, int stage_num, bool explaining)
 		UpdateDeth(elapsedTime);
 		break;
 
+		//歩き
+	case AnimeState::State_walk:
+		UpdateWalk(elapsedTime);
+
 		//走り
 	case AnimeState::State_Run:
 		UpdateRun(elapsedTime);
@@ -200,10 +204,29 @@ void Player::InputMove(float elapsedTime)
 	DirectX::XMFLOAT3 moveVec = GetMoveVec();
 
 	// 移動処理
+	switch (state)
+	{
+		//走ってるとき
+		case AnimeState::State_Run:
+			moveSpeed = 25;
+			break;
+		//それ以外
+		default:
+			moveSpeed = 10;
+			break;
+			
+	}
 	Move(moveVec.x, moveVec.z, moveSpeed);
 
 	//Turn(elapsedTime, 0, 0, turnSpeed);
 	Turn(elapsedTime, moveVec.x, moveVec.z, turnSpeed);
+
+	//走りに移行する為チェック
+	float moveVecLength = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMLoadFloat3(&moveVec)));
+	if (moveVecLength > 0.0f)
+		zeroVec = true;
+	else
+		zeroVec = false;
 }
 
 // ジャンプ入力処理
@@ -426,10 +449,19 @@ void Player::Idel_change()
 //待機ステート更新
 void Player::UpdateIdel(float elapsedTime)
 {
+	//ポーズ解除時、攻撃とポーズ解除の左クリックが同時に処理されるので１フレームだけ動かさない
 	if (f1)
 	{
+		
 		Input(elapsedTime);							// 入力処理
 		UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+
+		GamePad& pad = Input::Instance().GetGamePad();
+		const GamePadButton button = GamePad::BTN_SHIFT;
+		if (zeroVec)
+		{
+			Walk_change();
+		}
 
 		//攻撃選択によってアニメーションが変わる
 		Mouse& mouse = Input::Instance().GetMouse();
@@ -608,10 +640,41 @@ void Player::UpdateDeth(float elapsedTime)
 	model->PlayAnimation(Anim_deth, false);
 }
 
+// 歩きステートへ
+void Player::Walk_change()
+{
+	state = AnimeState::State_walk;
+	model->PlayAnimation(Anim_walk, true);
+}
+//歩きステート更新
+void Player::UpdateWalk(float elapsedTime)
+{
+	Input(elapsedTime);							// 入力処理
+	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+
+	GamePad& pad = Input::Instance().GetGamePad();
+	const GamePadButton button = GamePad::BTN_SHIFT;
+	if (!zeroVec)
+	{
+		Idel_change();
+	}
+	if (pad.GetButtonDown() & button)
+	{
+		isbuttn = false;
+		Run_change();
+	}
+	if (f1)
+	{
+
+	}
+	f1 = true;
+}
+
 //走りステートへ
 void Player::Run_change()
 {
 	state = AnimeState::State_Run;
+	model->PlayAnimation(Anim_Run, true);
 }
 //走りステート更新
 void Player::UpdateRun(float elapsedTime)
@@ -619,9 +682,32 @@ void Player::UpdateRun(float elapsedTime)
 	Input(elapsedTime);							// 入力処理
 	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
 
-	model->PlayAnimation(Anim_Run, true);
+	GamePad& pad = Input::Instance().GetGamePad();
+	const GamePadButton button = GamePad::BTN_SHIFT;
+	if (pad.GetButtonUp() & button)
+	{
+		isbuttn = true;
+	}
+	if (isbuttn)
+	{
+		isbuttn = false;
+		Walk_change();
+	}
+	
+	if (!zeroVec)
+	{
+		isbuttn = false;
+		Idel_change();
+	}
+	if (f1)
+	{
+
+	}
+	f1 = true;
+
 }
 
+//敵の攻撃を食らう
 void Player::EnemyAttckHit()
 {
 	EnemyManager& enemyManager = EnemyManager::Instance();
