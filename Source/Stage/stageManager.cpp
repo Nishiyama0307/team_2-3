@@ -19,6 +19,7 @@ void StageManager::ModelRender(ID3D11DeviceContext* dc, Shader* shader)
 {
     for (auto& stage : stages)
     {
+        if(stage->stage_type >= CASTLE)
         stage->ModelRender(dc, shader);
     }
 }

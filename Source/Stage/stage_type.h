@@ -6,6 +6,14 @@
 
 // 部屋のステージクラス
 
+class All_Stage : public Stage
+{
+public:
+    All_Stage();
+    ~All_Stage();
+
+};
+
 class Stage1_Volcano : public Stage
 {
 public:

@@ -3,6 +3,19 @@
 #include "stage_type.h"
 
 
+All_Stage::All_Stage()
+{
+    mdl_stage = std::make_unique<Model>("Data/Model/stage/allstage.mdl");
+
+    if (mdl_stage.get() == nullptr) return;
+
+    stage_type = STAGETYPE::ALL_STAGE;
+}
+
+All_Stage::~All_Stage()
+{
+
+}
 
 Stage1_Volcano::Stage1_Volcano()
 {

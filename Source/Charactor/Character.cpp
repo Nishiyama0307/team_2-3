@@ -254,6 +254,14 @@ void Character::UpdateHorizontalVelocity(float elapsedFrame)
             velocity.z = velocity.z - vz * friction;
 
         }
+        //if (length > friction)
+        //{
+        //    // 単位ベクトル化
+        //    float vx = velocity.x / length;
+        //    float vz = velocity.z / length;
+        //    velocity.x -= vx * friction;
+        //    velocity.z -= vz * friction;
+        //}
 
         // 速力をなしにする (速力が摩擦以下)
         else
@@ -316,6 +324,14 @@ void Character::UpdateHorizontalVelocity(float elapsedFrame)
                     velocity.z = normalized.z * maxMoveSpeed;
                 }
             }
+            /*if (length > maxMoveSpeed)
+            {
+                float vx = velocity.x / length;
+                float vz = velocity.z / length;
+
+                velocity.x = vx * maxMoveSpeed;
+                velocity.z = vz * maxMoveSpeed;
+            }*/
 
         }
 
@@ -341,8 +357,8 @@ void Character::UpdateHorizontalMove(float elapsedTime)
         DirectX::XMFLOAT3 start = { position.x,     position.y + stepOffset,    position.z };
         DirectX::XMFLOAT3 end = { position.x + mx,  position.y + stepOffset,    position.z + mz };
 
-        DirectX::XMFLOAT3 start2 = { position.x,     position.y,    position.z };
-        DirectX::XMFLOAT3 end2 = { position.x + mx,  position.y,    position.z + mz };
+        DirectX::XMFLOAT3 start2 = { position.x,     position.y + stepOffset,    position.z };
+        DirectX::XMFLOAT3 end2 = { position.x + mx,  position.y + stepOffset,    position.z + mz };
 
         HitResult hit, hit2;
 

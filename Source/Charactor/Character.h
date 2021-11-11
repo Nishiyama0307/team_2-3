@@ -67,7 +67,7 @@ protected:
 	// 水平速力の更新
 	void UpdateHorizontalVelocity(float elapsedFrame);
 	// 水平移動の更新
-	void UpdateHorizontalMove(float elapsedTime);
+	virtual void UpdateHorizontalMove(float elapsedTime);
 
 	// 無敵時間更新
 	void UpdateInvicibleTimer(float elapsedTime);

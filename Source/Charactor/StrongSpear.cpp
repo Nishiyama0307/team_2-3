@@ -23,7 +23,7 @@ StrongSpear::~StrongSpear()
 void StrongSpear::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 {
 	// 速力処理更新
-	UpdateVelocity(elapsedTime, KIND::RARE_ENEMY);
+	UpdateVelocity(elapsedTime, KIND::RARE_ENEMY, playerPos);
 
 	// オブジェクト行列を更新
 	UpdateTransform();

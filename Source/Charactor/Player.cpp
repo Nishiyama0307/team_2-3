@@ -104,7 +104,7 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
 }
 
 // 更新処理
-void Player::Update(float elapsedTime, bool explaining)
+void Player::Update(float elapsedTime, int stage_num, bool explaining)
 {
 	if (explaining == false)
 	{
@@ -120,8 +120,10 @@ void Player::Update(float elapsedTime, bool explaining)
 
 	}
 
-	if (position.y < 0) jumpspeed = 40.0f;
+	if (position.y < -13) jumpspeed = 40.0f;
 	else jumpspeed = 20.0f;
+
+	if(stage_num == 0) Stage1_Gimmick();
 
 	inhale->Update(elapsedTime);				// 掃除機機能の更新
 
@@ -169,6 +171,8 @@ void Player::Update(float elapsedTime, bool explaining)
 	// モデルアニメーション更新処理
 	model->UpdateAnimation(elapsedTime);
 
+	// 無敵時間更新
+	UpdateInvicibleTimer(elapsedTime);
 
 	// プレイヤーとエネミーとの衝突処理
 	CollisionPlayerVsEnemies();
@@ -282,6 +286,15 @@ void Player::InputInhale()
 
 }
 
+void Player::Stage1_Gimmick()
+{
+
+	if (position.y > 22 || position.y <= -15) ApplyDamage(1, 2.0f);
+
+	//要らなくなるかも
+	//if (position.y >= 35) position.y = 35;
+	//if (position.y >= 30) jumpCount = 100;
+}
 
 void Player::Render(ID3D11DeviceContext* dc, Shader* shader)
 {
@@ -389,6 +402,7 @@ void Player::DrawDebugPrimitive()
 void Player::DrawDebugGUI()
 {
 	// デバッグ用GUI描画
+	ImGui::Text("param.hp : %d", par.health);
 }
 
 

@@ -1,4 +1,7 @@
 #include "Enemy.h"
+
+#include "collision.h"
+#include "audioManager.h"
 #include "EnemyManager.h"
 #include "Graphics/Graphics.h"
 #include "Player.h"
@@ -6,6 +9,7 @@
 #include "Input/Input.h"
 #include "Input/Mouse.h"
 #include "easy_math.h"
+#include "stageManager.h"
 
 
 // デバッグプリミティブ描画
@@ -77,7 +81,7 @@ void Enemy::DrawDebugGUI(int i)
 	ImGui::Text("is_action_range_ : %d", is_action_range_);
 }
 
-void Enemy::UpdateVelocity(float elapsedTime, int kind)
+void Enemy::UpdateVelocity(float elapsedTime, int kind, const DirectX::XMFLOAT3& playerPos)
 {
 
 	float elapsedFrame = 60.0f * elapsedTime;
@@ -86,11 +90,154 @@ void Enemy::UpdateVelocity(float elapsedTime, int kind)
 
 	UpdateVerticalMove(elapsedTime, kind);
 
+	// 水平移動
+	//UpdateHorizontalMove(elapsedTime, playerPos);
+
+	//if (!wall_hit) UpdateMove(elapsedTime, playerPos);
 
 	if (Is_inhaling == false) return;
 
 
 }
+//
+//void Enemy::UpdateHorizontalMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
+//{
+//	float Speed;
+//	// 移動
+//	if(model->GetIndex() != ANIMINDEX::RUN) Speed = this->moveSpeed * elapsedTime;
+//	else Speed = (this->moveSpeed * elapsedTime) / 2;
+//
+//	// 水平速力
+//	float veclocityLengthXZ = sqrtf(direction.x * Speed * direction.x * Speed + direction.z * Speed * direction.z * Speed);
+//	if (veclocityLengthXZ > 0.0f)
+//	{
+//
+//		float mx = direction.x * Speed;
+//		float mz = direction.z * Speed;
+//
+//		DirectX::XMFLOAT3 start = { position.x,     position.y + stepOffset,    position.z };
+//		DirectX::XMFLOAT3 end = { position.x + mx,  position.y + stepOffset,    position.z + mz };
+//
+//		DirectX::XMFLOAT3 start2 = { position.x,     position.y,    position.z };
+//		DirectX::XMFLOAT3 end2 = { position.x + mx,  position.y,    position.z + mz };
+//
+//		HitResult hit, hit2;
+//
+//		// レイキャスト2個目完成！
+//		//壁があれば
+//		if (StageManager::Instance().RayCast(start, end, hit))
+//		{
+//			// 壁までのベクトル
+//			DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&start);
+//			DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
+//			DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
+//
+//
+//			// 壁の法線
+//			DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hit.normal);
+//			Normal = DirectX::XMVector3Normalize(Normal);
+//			DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(Vec, Normal);
+//
+//			DirectX::XMFLOAT3 wall_vec;
+//			DirectX::XMStoreFloat3(&wall_vec, DirectX::XMVectorSubtract(Vec, DirectX::XMVectorMultiply(Dot, Normal)));
+//
+//
+//
+//			start = { position.x,position.y + stepOffset,position.z };
+//			end = { position.x + wall_vec.x , position.y + stepOffset, position.z + wall_vec.z };
+//
+//			// 壁ずり後の位置が壁に
+//			// めり込んでいれば
+//			if (StageManager::Instance().RayCast(start, end, hit))
+//			{
+//				// 更新しない
+//				position.x += -wall_vec.x;
+//				position.z += -wall_vec.z;
+//			}
+//
+//			// めり込んでいなければ
+//			else
+//			{
+//				// 位置の更新
+//				/*position.x += wall_vec.x;
+//				position.z += wall_vec.z;*/
+//				//UpdateMove(elapsedTime, playerPos);
+//			}
+//
+//			if (wall_hit == false)
+//			{
+//				AudioManager::Instance().GetAudio(Audio_INDEX::SE_WALLHIT)->Stop();
+//				AudioManager::Instance().GetAudio(Audio_INDEX::SE_WALLHIT)->Play(false);
+//			}
+//
+//			wall_hit = true;
+//
+//		}
+//
+//		else if (StageManager::Instance().RayCast(start2, end2, hit2))
+//		{
+//			// 壁までのベクトル
+//			DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&start2);
+//			DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end2);
+//			DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
+//
+//
+//			// 壁の法線
+//			DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hit2.normal);
+//			Normal = DirectX::XMVector3Normalize(Normal);
+//			DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(Vec, Normal);
+//
+//			DirectX::XMFLOAT3 wall_vec;
+//			DirectX::XMStoreFloat3(&wall_vec, DirectX::XMVectorSubtract(Vec, DirectX::XMVectorMultiply(Dot, Normal)));
+//
+//
+//
+//			start = { position.x,position.y,position.z };
+//			end = { position.x + wall_vec.x , position.y, position.z + wall_vec.z };
+//
+//			// 壁ずり後の位置が壁に
+//			// めり込んでいれば
+//			if (StageManager::Instance().RayCast(start, end, hit))
+//			{
+//				// 更新しない
+//				position.x += -wall_vec.x;
+//				position.z += -wall_vec.z;
+//			}
+//
+//			// めり込んでいなければ
+//			else
+//			{
+//				// 位置の更新
+//				/*position.x += wall_vec.x;
+//				position.z += wall_vec.z;*/
+//				//UpdateMove(elapsedTime, playerPos);
+//			}
+//
+//			if (wall_hit == false)
+//			{
+//				AudioManager::Instance().GetAudio(Audio_INDEX::SE_WALLHIT)->Stop();
+//				AudioManager::Instance().GetAudio(Audio_INDEX::SE_WALLHIT)->Play(false);
+//			}
+//
+//			wall_hit = true;
+//		}
+//
+//		//壁がなければ
+//		else
+//		{
+//			// 通常の位置の更新
+//			/*position.x += mx;
+//			position.z += mz;*/
+//
+//			//UpdateMove(elapsedTime, playerPos);
+//
+//			wall_hit = false;
+//		}
+//
+//
+//	}
+//
+//}
 
 // 行列更新処理
 void Enemy::UpdateTransform()

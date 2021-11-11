@@ -41,6 +41,7 @@ void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos,
 					if (enemy->is_tracking_) continue; // 追尾中ならcontinue
 					// target更新のためコメントアウト
 					if (enemy->is_group_behavior_) continue; // 団体行動中ならcontinue
+					if (enemy->is_dead_) continue;
 
 					float distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&Benchmark), DirectX::XMLoadFloat3(&enemy->GetPosition()))));
 
@@ -60,6 +61,7 @@ void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos,
 				for (auto& enemy : enemies) // 全ての敵と
 				{
 					if (enemy->is_group_behavior_) continue;
+					if (enemy->is_dead_) continue;
 
 					if (enemy->is_tracking_) // 追跡中の人がいるか
 					{
@@ -80,6 +82,14 @@ void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos,
 					enemy1->model->PlayAnimation(ANIMINDEX::IDLE, true);
 				}
 			}
+		}
+		else if(enemy1->is_dead_ && stage_num == enemy1->stage_num ) // 死んだら念のためbool変数をfalseにしておく
+		{
+			enemy1->is_tracking_ = false;
+			enemy1->is_detection_ = false;
+			enemy1->is_group_behavior_ = false; // 団体行動をやめる
+			enemy1->is_attacking_ = false;
+			enemy1->is_walking = false;
 		}
 	}
 

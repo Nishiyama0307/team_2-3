@@ -16,7 +16,7 @@ public:
 	Player();
 	~Player() override;
 
-	void Update(float elapsedTime, bool explaining = false);
+	void Update(float elapsedTime, int stage_num, bool explaining = false);
 	void Render(ID3D11DeviceContext* dc, Shader* shader);
 
 	// デバッグプリミティブ描画
@@ -59,6 +59,8 @@ private:
 	void Turn(float elapsedTime, float vx, float vz, float speed)override;
 
 	void InputInhale();
+
+	void Stage1_Gimmick();
 
 protected:
 	// 着地したときに呼ばれる

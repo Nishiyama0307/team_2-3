@@ -111,7 +111,7 @@ void Game::Update(float elapsedTime)
 		break;
 	}
 
-	player->Update(elapsedTime);
+	player->Update(elapsedTime, stage_num);
 
 #ifdef _DEBUG
 	// デバッグのみのワープキー
@@ -380,6 +380,7 @@ void Game::Load()
 
 	black_band = std::make_unique<Sprite>();
 
+	StageManager::Instance().AddStage(new All_Stage());
 	StageManager::Instance().AddStage(new Stage1_Volcano());
 	StageManager::Instance().AddStage(new Stage2_Desert());
 	StageManager::Instance().AddStage(new Stage3_Volcano());
@@ -424,6 +425,11 @@ void Game::ImGui()
 
 	DirectX::XMFLOAT3 velo = player->GetVelocity();
 	ImGui::Text("player velo %.1f, %.1f, %.1f", velo.x, velo.y, velo.z);
+
+	if (ImGui::CollapsingHeader("player", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		player->DrawDebugGUI();
+	}
 
 	if (ImGui::CollapsingHeader("enemy", ImGuiTreeNodeFlags_DefaultOpen))
 	{

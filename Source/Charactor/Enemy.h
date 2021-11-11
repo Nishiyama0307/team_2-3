@@ -36,7 +36,8 @@ public:
 	virtual void Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos = {0,0,0}) = 0;
 	virtual void Render(ID3D11DeviceContext* context, Shader* shader) = 0;
 
-	void UpdateVelocity(float elapsedTime, int kind)override;
+	void UpdateVelocity(float elapsedTime, int kind, const DirectX::XMFLOAT3& playerPos);
+	//void UpdateHorizontalMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos);
 
 	// inhaled(形容詞で吸い込まれた)
 	virtual DirectX::XMFLOAT3 inhaled() = 0;
@@ -101,7 +102,7 @@ public:
 	bool is_detection_ = false;													// 検知範囲に居るかどうか
 	bool is_group_behavior_ = false;											// 団体行動してるかどうか
 	bool is_attacking_ = false;													// 攻撃してるかどうか
-	bool is_walking = false;													// 歩いているかどうか
+	bool is_walking = true;													// 歩いているかどうか
 	bool is_change_direction_ = false;											// 歩く方向を変えれるかどうか
 	bool is_action_range_ = true;												// 行動範囲にいるかどうか
 

@@ -12,6 +12,7 @@ enum STAGETYPE
 	STAGE3_,
 	STAGE4_,
     CASTLE,
+    ALL_STAGE,
 };
 
 // ステージクラス ※抽象クラス
@@ -33,7 +34,7 @@ public:
 public: // Get関数
     bool RayPick(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit, int stage_num);
 
-protected:
     STAGETYPE stage_type;
+protected:
     std::unique_ptr<Model> mdl_stage = nullptr;
 };
