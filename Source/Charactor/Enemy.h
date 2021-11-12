@@ -110,6 +110,8 @@ public:
 	int random_direction{ 0 };
 	int stage_num;
 
+	float animTimer = 0;
+
 private:
 	DirectX::XMFLOAT3 ConvertToIdentityVec(float x, float y, float z)
 	{

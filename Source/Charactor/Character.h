@@ -136,6 +136,7 @@ protected:
 public:
 
 	bool is_dead_ = false;
+	bool animdeth = false;
 
 	Parameter par;
 

@@ -8,7 +8,8 @@
 #include "collision.h"
 #include "easy_math.h"
 #include "Input/Mouse.h"
-
+#include "Scene/title.h"
+#include "Scene/scene.h"
 extern int attck_select_state;
 extern bool f1;
 // コンストラクタ
@@ -106,84 +107,101 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
 // 更新処理
 void Player::Update(float elapsedTime, int stage_num, bool explaining)
 {
-	if (explaining == false)
+	//死亡した時アニメーションが終わるまではまだ動ける用にする為のanimdeth
+	if (is_dead_)
 	{
-		//Input(elapsedTime);							// 入力処理
-		//UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+		if (!model->IsPlayAnimation())
+		{
+			animdeth = true;
+		}
 	}
-	// 速力をなしにする (速力が摩擦以下)
-	else
+	//
+	if (animdeth == false)
 	{
+		if (explaining == false)
+		{
+			//Input(elapsedTime);							// 入力処理
+			//UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+		}
+		// 速力をなしにする (速力が摩擦以下)
+		else
+		{
 
-		velocity.x = 0.0f;
-		velocity.z = 0.0f;
+			velocity.x = 0.0f;
+			velocity.z = 0.0f;
 
+		}
+
+		if (position.y < -13) jumpspeed = 40.0f;
+		else jumpspeed = 20.0f;
+
+		if (stage_num == 0) Stage1_Gimmick();
+
+		inhale->Update(elapsedTime);				// 掃除機機能の更新
+
+		front = GetFront();
+
+		EnemyAttckHit();
+
+		//アニメーション再生
+		Mouse& mouse = Input::Instance().GetMouse();
+		const MouseButton& anyButton = Mouse::BTN_LEFT;
+
+		switch (state)
+		{
+			//待機
+		case AnimeState::State_Idel:
+			UpdateIdel(elapsedTime);
+			break;
+
+			//攻撃1
+		case AnimeState::State_Attack1:
+			UpdateAttack1(elapsedTime);
+			break;
+
+			//攻撃2
+		case AnimeState::State_Attack2:
+			UpdateAttack2(elapsedTime);
+			break;
+
+			//攻撃3
+		case AnimeState::State_Attack3:
+			UpdateAttack3(elapsedTime);
+			break;
+
+			//ダメージ
+		case AnimeState::State_Damage:
+			UpdateDamage(elapsedTime);
+			break;
+
+			//死亡
+		//case AnimeState::State_deth:
+		//	UpdateDeth(elapsedTime);
+		//	break;
+
+			//歩き
+		case AnimeState::State_walk:
+			UpdateWalk(elapsedTime);
+			break;
+
+			//走り
+		case AnimeState::State_Run:
+			UpdateRun(elapsedTime);
+			break;
+		}
+
+		// モデルアニメーション更新処理
+		model->UpdateAnimation(elapsedTime);
+
+		// 無敵時間更新
+		UpdateInvicibleTimer(elapsedTime);
+
+		// プレイヤーとエネミーとの衝突処理
+		CollisionPlayerVsEnemies();
+
+		UpdateTransform();							// オブジェクト行列を更新
+		model->UpdateTransform(transform);			// モデル行列更新
 	}
-
-	if (position.y < -13) jumpspeed = 40.0f;
-	else jumpspeed = 20.0f;
-
-	if(stage_num == 0) Stage1_Gimmick();
-
-	inhale->Update(elapsedTime);				// 掃除機機能の更新
-
-	front = GetFront();
-
-	EnemyAttckHit();
-
-	//アニメーション再生
-	Mouse& mouse = Input::Instance().GetMouse();
-	const MouseButton& anyButton = Mouse::BTN_LEFT;
-
-	switch (state)
-	{
-		//待機
-	case AnimeState::State_Idel:
-		UpdateIdel(elapsedTime);
-		break;
-
-		//攻撃1
-	case AnimeState::State_Attack1:
-		UpdateAttack1(elapsedTime);
-		break;
-
-		//攻撃2
-	case AnimeState::State_Attack2:
-		UpdateAttack2(elapsedTime);
-		break;
-
-		//攻撃3
-	case AnimeState::State_Attack3:
-		UpdateAttack3(elapsedTime);
-		break;
-
-		//死亡
-	case AnimeState::State_deth:
-		UpdateDeth(elapsedTime);
-		break;
-
-		//歩き
-	case AnimeState::State_walk:
-		UpdateWalk(elapsedTime);
-		break;
-
-		//走り
-	case AnimeState::State_Run:
-		UpdateRun(elapsedTime);
-		break;
-	}
-
-	// モデルアニメーション更新処理
-	model->UpdateAnimation(elapsedTime);
-
-	// 無敵時間更新
-	UpdateInvicibleTimer(elapsedTime);
-
-	// プレイヤーとエネミーとの衝突処理
-	CollisionPlayerVsEnemies();
-
-	UpdateTransform();							// オブジェクト行列を更新
-	model->UpdateTransform(transform);			// モデル行列更新
 }
 
 void Player::Input(float elapsedTime)
@@ -209,11 +227,15 @@ void Player::InputMove(float elapsedTime)
 	{
 		////走ってるとき
 		case AnimeState::State_Run:
-			moveSpeed = 25;
+			if (stamina == 512)
+				moveSpeed = 10;
+			else
+				moveSpeed = 50;
+
 			break;
 		//それ以外
 		default:
-			moveSpeed = 10;
+			moveSpeed = 25;
 			break;
 			
 	}
@@ -441,6 +463,30 @@ void Player::AddImpact(const DirectX::XMFLOAT3 impact_)
 
 
 ////アニメーションのステート関係
+//攻撃分岐
+void Player::attack_Branch()
+{
+	//攻撃選択によってアニメーションが変わる
+	Mouse& mouse = Input::Instance().GetMouse();
+	const MouseButton& anyButton = Mouse::BTN_LEFT;
+	if (mouse.GetButtonDown() & anyButton)
+	{
+		armor = true;
+		switch (attck_select_state)
+		{
+		case 0:
+			Attack1_change();
+			break;
+		case 1:
+			Attack2_change();
+			break;
+		case 2:
+			Attack3_change();
+			break;
+		}
+	}
+}
+
 //待機ステートへ
 void Player::Idel_change()
 {
@@ -451,10 +497,13 @@ void Player::Idel_change()
 //待機ステート更新
 void Player::UpdateIdel(float elapsedTime)
 {
+	stamina -= 20 * elapsedTime;
+	if (stamina < 0)
+		stamina = 0;
+
 	//ポーズ解除時、攻撃とポーズ解除の左クリックが同時に処理されるので１フレームだけ動かさない
 	if (f1)
 	{
-		
 		Input(elapsedTime);							// 入力処理
 		UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
 
@@ -465,24 +514,7 @@ void Player::UpdateIdel(float elapsedTime)
 			Walk_change();
 		}
 
-		//攻撃選択によってアニメーションが変わる
-		Mouse& mouse = Input::Instance().GetMouse();
-		const MouseButton& anyButton = Mouse::BTN_LEFT;
-		if (mouse.GetButtonDown() & anyButton)
-		{
-			switch (attck_select_state)
-			{
-			case 0:
-				Attack1_change();
-				break;
-			case 1:
-				Attack2_change();
-				break;
-			case 2:
-				Attack3_change();
-				break;
-			}
-		}
+		attack_Branch();
 	}
 	f1 = true;
 }
@@ -494,7 +526,6 @@ void Player::Attack1_change()
 	state = AnimeState::State_Attack1;
 	model->PlayAnimation(Anim_Attack1, false);
 }
-
 //攻撃ステート更新  1
 void Player::UpdateAttack1(float elapsedTime)
 {
@@ -504,10 +535,6 @@ void Player::UpdateAttack1(float elapsedTime)
 	int enemyCount = enemyManager.GetEnemyCount();
 
 	DirectX::XMFLOAT3 attackPosition;
-	//attackPosition.x = position.x;
-	//attackPosition.y = position.y;
-	//attackPosition.z = position.z + radius *2;
-
 	attackPosition = { float3SUM(position,float3Scaling(GetFront(), radius * 2)) };
 	if (animeTimer > 12.0f)colstion_check1 = true;
 	if (animeTimer > 33.0f)colstion_check1 = false;
@@ -532,7 +559,7 @@ void Player::UpdateAttack1(float elapsedTime)
 
 	if (!model->IsPlayAnimation())
 	{
-
+		armor = false;
 		colstion_check1 = false;
 		Idel_change();
 	}
@@ -545,7 +572,6 @@ void Player::Attack2_change()
 	state = AnimeState::State_Attack2;
 	model->PlayAnimation(Anim_Attack2, false);
 }
-
 //攻撃ステート更新  2
 void Player::UpdateAttack2(float elapsedTime)
 {
@@ -582,6 +608,7 @@ void Player::UpdateAttack2(float elapsedTime)
 	if (!model->IsPlayAnimation())
 	{
 		colstion_check2 = false;
+		armor = false;
 		Idel_change();
 	}
 }
@@ -593,7 +620,6 @@ void Player::Attack3_change()
 	state = AnimeState::State_Attack3;
 	model->PlayAnimation(Anim_Attack3, false);
 }
-
 //攻撃ステート更新  3
 void Player::UpdateAttack3(float elapsedTime)
 {
@@ -627,20 +653,58 @@ void Player::UpdateAttack3(float elapsedTime)
 	if (!model->IsPlayAnimation())
 	{
 		colstion_check3 = false;
+		armor = false;
 		Idel_change();
 	}
 }
 
-//デスステートへ
-void Player::Deth_change()
+//ダメージステートへ
+void Player::Damage_change()
 {
-	state = AnimeState::State_deth;
+	state = AnimeState::State_Damage;
+	if(model->GetIndex() != Anim_Damage)
+	model->PlayAnimation(Anim_Damage, false);
+	ApplyDamage(1, 1.0f);
 }
-//デスステート更新
-void Player::UpdateDeth(float elapsedTime)
+//ダメージ更新
+void Player::UpdateDamage(float elapsedTime)
+{
+	if (!model->IsPlayAnimation())
+	{
+		Idel_change();
+	}
+	Input(elapsedTime);							// 入力処理
+	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+	
+	if (f1)
+	{
+		attack_Branch();
+	}
+	f1 = true;
+}
+
+//死亡
+void Player::OnDead()
 {
 	model->PlayAnimation(Anim_deth, false);
+	is_dead_ = true;
 }
+
+
+//死亡ステートへ
+//void Player::Deth_change()
+//{
+//	state = AnimeState::State_deth;
+//	model->PlayAnimation(Anim_deth, false);
+//}
+////死亡ステート更新
+//void Player::UpdateDeth(float elapsedTime)
+//{
+//	if (model->IsPlayAnimation())
+//	{
+//		
+//	}
+//}
 
 // 歩きステートへ
 void Player::Walk_change()
@@ -654,37 +718,26 @@ void Player::UpdateWalk(float elapsedTime)
 	Input(elapsedTime);							// 入力処理
 	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
 
+	stamina -= 20 * elapsedTime;
+	if (stamina < 0)
+		stamina = 0;
+
 	GamePad& pad = Input::Instance().GetGamePad();
 	const GamePadButton button = GamePad::BTN_SHIFT;
+	//入力してない時は待機
 	if (!zeroVec)
 	{
 		Idel_change();
 	}
+	//shiftキーでダッシュ
 	if (pad.GetButtonDown() & button)
 	{
-		isbuttn = false;
-		Run_change();
+		isbuttn = false;	//ボタンを押した状態を引き継ぐ為
+		Run_change();	//ステートのチェンジ
 	}
 	if (f1)
 	{
-		//攻撃選択によってアニメーションが変わる
-		Mouse& mouse = Input::Instance().GetMouse();
-		const MouseButton& anyButton = Mouse::BTN_LEFT;
-		if (mouse.GetButtonDown() & anyButton)
-		{
-			switch (attck_select_state)
-			{
-			case 0:
-				Attack1_change();
-				break;
-			case 1:
-				Attack2_change();
-				break;
-			case 2:
-				Attack3_change();
-				break;
-			}
-		}
+		attack_Branch();
 	}
 	f1 = true;
 }
@@ -701,8 +754,14 @@ void Player::UpdateRun(float elapsedTime)
 	Input(elapsedTime);							// 入力処理
 	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
 
+	//スタミナ
+	stamina += 40 * elapsedTime;
+	if (stamina > 512)
+		stamina = 512;
+
 	GamePad& pad = Input::Instance().GetGamePad();
 	const GamePadButton button = GamePad::BTN_SHIFT;
+	//ボタンを離した時
 	if (pad.GetButtonUp() & button)
 	{
 		isbuttn = true;
@@ -712,7 +771,7 @@ void Player::UpdateRun(float elapsedTime)
 		isbuttn = false;
 		Walk_change();
 	}
-	
+	//入力してない時は待機
 	if (!zeroVec)
 	{
 		isbuttn = false;
@@ -720,24 +779,7 @@ void Player::UpdateRun(float elapsedTime)
 	}
 	if (f1)
 	{
-		//攻撃選択によってアニメーションが変わる
-		Mouse& mouse = Input::Instance().GetMouse();
-		const MouseButton& anyButton = Mouse::BTN_LEFT;
-		if (mouse.GetButtonDown() & anyButton)
-		{
-			switch (attck_select_state)
-			{
-			case 0:
-				Attack1_change();
-				break;
-			case 1:
-				Attack2_change();
-				break;
-			case 2:
-				Attack3_change();
-				break;
-			}
-		}
+		attack_Branch();
 	}
 	f1 = true;
 
@@ -771,8 +813,16 @@ void Player::EnemyAttckHit()
 				outPosition
 			))
 			{
-				ApplyDamage(10);
-
+				//死亡していない時
+				if (!is_dead_)
+				{
+					//攻撃モーションしていない(アーマーがついていない)時はアニメーションする
+					if (!armor)
+						Damage_change();
+					//攻撃モーション中(アーマーがついている)時はアニメーションせずそのままダメージ
+					if (armor)
+						ApplyDamage(1, 1.0f);
+				}
 			}
 		}
 	}

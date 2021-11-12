@@ -14,6 +14,8 @@
 #include "easy_math.h"
 #include "audioManager.h"
 
+#include "title.h"
+
 extern int scene_tag;
 int attck_select_state = 0;
 extern bool f1;
@@ -34,8 +36,17 @@ void Game::Update(float elapsedTime)
 
 	//	↓	　入力処理とかいろいろ書く　	↓	　//
 
-
 	// TODO: ゲーム処理
+
+	CastleHP -= 10 * elapsedTime;
+	if (CastleHP < 0)
+		CastleHP = 0;
+	//プレイヤーが死んだらゲームオーバーへ(仮)
+	if (player->animdeth)
+		ChangeNextScene(new Title);
+	//城の体力が無くなったらゲームオーバーへ(仮)
+	//if(CastleHP < 0)
+	//	ChangeNextScene(new Title);
 
 	GameSystem::Instance().HitStopUpdate(elapsedTime);
 
@@ -53,10 +64,6 @@ void Game::Update(float elapsedTime)
 	//target.z -= 10.0f;
 	cameraController->SetTarget(target);
 	cameraController->Update(elapsedTime);
-
-	stress+= 0.1f;
-	if (stress > 512)
-		stress = 512;
 
 	//攻撃選択
 	Mouse& mouse = Input::Instance().GetMouse();
@@ -171,7 +178,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			20, 30,
 			1.0f, 1.0f,
 			0, 0,
-			640, 64,
+			player->par.health * 64, 64,
 			0, 0,
 			0,
 			1, 1, 1, 1);
@@ -186,7 +193,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			1, 1, 1, 1);
 
 
-		//ストレスフレーム
+		//スタミナフレーム
 		StressBarFrame->Render2(dc,
 			20, 95,
 			1.0f, 1.0f,
@@ -196,12 +203,12 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0,
 			1, 1, 1, 1);
 
-		//ストレス
+		//スタミナ
 		StressBar->Render2(dc,
 			20, 95,
 			1.0f, 1.0f,
 			0, 0,
-			stress, 64,
+			player->stamina, 64,
 			0, 0,
 			0,
 			1, 1, 1, 1);
@@ -267,7 +274,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			1600, 276,
 			1.0f, 1.0f,
 			0, 0,
-			256, 64,
+			CastleHP, 64,
 			0, 0,
 			0,
 			1, 1, 1, 1);
@@ -364,6 +371,8 @@ void Game::Set()
 	attackPosY1 = 850;
 	attackPosY2 = 850;
 	attackPosY3 = 850;
+
+	CastleHP = 256;
 }
 
 

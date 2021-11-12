@@ -529,9 +529,20 @@ void Enemy::AttackMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 	if (distance < kAttack_Range)
 	{
 		is_attacking_ = true;
-		attack = true;
-		if(model->GetIndex() != ANIMINDEX::ATTACK) model->PlayAnimation(ANIMINDEX::ATTACK, false);
-		if (!model->IsPlayAnimation()) attack = false;
+		if (model->GetIndex() != ANIMINDEX::ATTACK)
+		{
+			model->PlayAnimation(ANIMINDEX::ATTACK, false);
+			this->animTimer = 1 * elapsedTime;
+		}
+		//if (this->animTimer > 5.0f)
+		//{
+			attack = true;
+		//}
+		if (!model->IsPlayAnimation())
+		{
+			//this->animTimer = 0;
+			attack = false;
+		}
 	}
 	else if(is_attacking_ && model->IsPlayAnimation() == false)
 	{

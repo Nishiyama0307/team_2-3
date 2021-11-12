@@ -104,4 +104,5 @@ private:
     float attackPosY2 = 0;
     float attackPosY3 = 0;
 
+    float CastleHP = 0;
 };

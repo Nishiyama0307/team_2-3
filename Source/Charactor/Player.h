@@ -63,6 +63,8 @@ private:
 
 	void Stage1_Gimmick();
 
+	void OnDead();
+
 protected:
 	// 着地したときに呼ばれる
 	void OnLanding() override;
@@ -142,6 +144,10 @@ private:
 	//待機ステート更新
 	void UpdateIdel(float elapsedTime);
 
+	//攻撃分岐
+	void attack_Branch();
+	//アーマー
+	bool armor = false;
 	//1攻撃ステートへ
 	void Attack1_change();
 	//1攻撃ステート更新
@@ -155,10 +161,16 @@ private:
 	//3攻撃ステート更新
 	void UpdateAttack3(float elapsedTime);
 
-	//デスステートへ
-	void Deth_change();
-	//デスステート更新
-	void UpdateDeth(float elapsedTime);
+	//ダメージステート
+	void Damage_change();
+	//ダメージ更新
+	void UpdateDamage(float elapsedTime);
+
+	//死んだステートへ
+	//void Deth_change();
+	////死んだステート更新
+	//void UpdateDeth(float elapsedTime);
+	
 
 	//歩きステートへ
 	void Walk_change();
@@ -175,7 +187,11 @@ private:
 
 	//ゼロベクトルかチェック
 	bool zeroVec = false;
-
+	//シフトキー離した時のチェック
 	bool isbuttn = false;
+	
+public:
+	//shiftダッシュのスタミナゲージ
+	float stamina = 0;
 
 };
