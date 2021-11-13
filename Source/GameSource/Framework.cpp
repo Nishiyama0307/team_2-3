@@ -91,7 +91,11 @@ void Framework::CalculateFrameStats()
 		float mspf = 1000.0f / fps;
 		std::ostringstream outs;
 		outs.precision(6);
+#ifdef _DEBUG
 		outs << "FPS : " << fps << " / " << "Frame Time : " << mspf << " (ms)";
+#else
+		outs << "オープンワールドっぽい アクションRPG風ゲーム";
+#endif
 		//outs << "タイトル";
 		SetWindowTextA(hWnd, outs.str().c_str());
 

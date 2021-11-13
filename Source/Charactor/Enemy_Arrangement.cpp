@@ -52,19 +52,20 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
         csv_load(Arrangement,"Data/map/enemy_arrangement._チュートリアル(bomb).csv");
         break;
     case GAME:
-        csv_load(Arrangement, "Data/map/配置図(size更新)_test_分割.csv");
-        //csv_load(Arrangement, "Data/map/配置図(size更新)_本番.csv");
+        //csv_load(Arrangement, "Data/map/配置図(size更新)_test_分割.csv");
+        csv_load(Arrangement, "Data/map/配置図(size更新)_本番.csv");
         break;
     default:
         break;
     }
 
+	constexpr int kMap_Size_Hosei{ -175 };
 
    for (int y = 0; y < CHIP_NUM_Y; y++)
    {
        float step_offset{ 0.0f };
 
-       if (kStage2_Start_Position < y * CHIP_SIZE && y * CHIP_SIZE < kStage3_Start_Position) step_offset = 2.0f;
+       if (kStage2_Start_Position < (y + kMap_Size_Hosei) * CHIP_SIZE && (y + kMap_Size_Hosei) * CHIP_SIZE < kStage3_Start_Position) step_offset = 2.0f;
 
        for (int x = 0; x < CHIP_NUM_X; x++)
        {
@@ -107,17 +108,18 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
            //    }
            //    enemyManager.Register(bombEnemy, ENEMYTAG::BOMB);
            //}
+           
 
            int stage_num;
-           if (kStage2_Start_Position > y * CHIP_SIZE /*+ kMap_Size*/)
+           if (kStage2_Start_Position > (y + kMap_Size_Hosei) * CHIP_SIZE)
            {
                stage_num = 0;
            }
-           else if (kStage3_Start_Position > y * CHIP_SIZE /*+ kMap_Size*/)
+           else if (kStage3_Start_Position > (y + kMap_Size_Hosei) * CHIP_SIZE)
            {
                stage_num = 1;
            }
-           else if (kStage4_Start_Position > y * CHIP_SIZE /*+ kMap_Size*/)
+           else if (kStage4_Start_Position > (y + kMap_Size_Hosei) * CHIP_SIZE)
            {
                stage_num = 2;
            }

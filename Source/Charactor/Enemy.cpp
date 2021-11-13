@@ -86,9 +86,16 @@ void Enemy::UpdateVelocity(float elapsedTime, int kind, const DirectX::XMFLOAT3&
 
 	float elapsedFrame = 60.0f * elapsedTime;
 
+#ifdef _DEBUG
 	//UpdateVerticalVelocity(elapsedFrame, kind);
 	//
 	//UpdateVerticalMove(elapsedTime, kind);
+#else
+	UpdateVerticalVelocity(elapsedFrame, kind);
+
+	UpdateVerticalMove(elapsedTime, kind);
+#endif
+
 
 	// êÖïΩà⁄ìÆ
 	//UpdateHorizontalMove(elapsedTime, playerPos);
