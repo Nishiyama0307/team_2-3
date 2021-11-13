@@ -428,18 +428,19 @@ void Game::ImGui()
 
 	ImGui::Text("stage_num : %d", stage_num);
 
-	DirectX::XMFLOAT3 pos = player->GetPosition();
-	ImGui::Text("player pos %.1f, %.1f, %.1f", pos.x, pos.y, pos.z);
-
-	float length;
-	DirectX::XMStoreFloat(&length, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&player->GetVelocity())));
-	ImGui::Text("velo length : %.1f", length);
-
-	DirectX::XMFLOAT3 velo = player->GetVelocity();
-	ImGui::Text("player velo %.1f, %.1f, %.1f", velo.x, velo.y, velo.z);
 
 	if (ImGui::CollapsingHeader("player", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		DirectX::XMFLOAT3 pos = player->GetPosition();
+		ImGui::Text("player pos %.1f, %.1f, %.1f", pos.x, pos.y, pos.z);
+
+		float length;
+		DirectX::XMStoreFloat(&length, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&player->GetVelocity())));
+		ImGui::Text("velo length : %.1f", length);
+
+		DirectX::XMFLOAT3 velo = player->GetVelocity();
+		ImGui::Text("player velo %.1f, %.1f, %.1f", velo.x, velo.y, velo.z);
+
 		player->DrawDebugGUI();
 	}
 
