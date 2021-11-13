@@ -664,7 +664,7 @@ void Player::Damage_change()
 	state = AnimeState::State_Damage;
 	if(model->GetIndex() != Anim_Damage)
 	model->PlayAnimation(Anim_Damage, false);
-	ApplyDamage(1, 1.0f);
+	ApplyDamage(damage, 1.0f);
 }
 //ダメージ更新
 void Player::UpdateDamage(float elapsedTime)
@@ -813,6 +813,23 @@ void Player::EnemyAttckHit()
 				outPosition
 			))
 			{
+				
+				switch (enemy->enemy_tag)
+				{
+				case NORMAL_SWORD:
+					damage = 1;
+					break;
+				case STRONG_SWORD:
+					damage = 1;
+					break;
+				case NORMAL_SPEAR:
+					damage = 1;
+					break;
+				case STRONG_SPEAR:
+					damage = 1;
+					break;
+				}
+
 				//死亡していない時
 				if (!is_dead_)
 				{
@@ -821,7 +838,7 @@ void Player::EnemyAttckHit()
 						Damage_change();
 					//攻撃モーション中(アーマーがついている)時はアニメーションせずそのままダメージ
 					if (armor)
-						ApplyDamage(1, 1.0f);
+						ApplyDamage(damage, 1.0f);
 				}
 			}
 		}

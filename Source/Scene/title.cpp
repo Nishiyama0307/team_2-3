@@ -108,12 +108,12 @@ void Title::Update(float elapsedTime)
 	//スタートのボックス
 	StartBox.left = startPos.x;
 	StartBox.top = startPos.y;
-	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 400, 180);
+	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 400 * 0.8f, 180 * 0.8f);
 
 	//終了ボックス
 	EndBox.left = endPos.x;
 	EndBox.top = endPos.y;
-	C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 400, 180);
+	C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 400 * 0.8f, 180 * 0.8f);
 
 	//判定 (マウスとゲームへのボックス)
 	start_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
@@ -177,34 +177,51 @@ void Title::SpriteRender(ID3D11DeviceContext* dc)
 	float title_logoHeight = CAST_F(spr_title_logo->GetTextureHeight());
 
 	spr_title_logo->Render2(dc,
-		0, 0,						// 表示位置
-		1.0f, 1.0f,									// スケール
+		0, 0,										// 表示位置
+		1.5f, 1.5f,									// スケール
 		0, 0,										// 画像切り抜き位置
-		title_logoWidth, title_logoHeight,				// 画像切り抜きサイズ
-		0, 0,	// 画像基準点
+		title_logoWidth, title_logoHeight,			// 画像切り抜きサイズ
+		0, 0,										// 画像基準点
 		angle,										// 角度
 		1, 1, 1, 1);								// 色情報(r,g,b,a)
 
+	//帯
+	//spr_belt->Render2(dc,
+	//	0, 600,
+	//	1, 1,
+	//	0, 0,
+	//	1920, 180,
+	//	0, 0,
+	//	(0),
+	//	0, 0, 0, 1.0f);
+
 	{
 		//スタート
-		spr_start->Render(dc,
-			startPos.x, startPos.y, 400, 180,
-			0, 0, 400, 180,
-			0,
-			1, 1, 1, 1);
+		spr_start->Render2(dc,
+			startPos.x, startPos.y,
+			0.8f, 0.8f,
+			0, 0,
+			400, 180,
+			0, 0,
+			(0),
+			1, 1, 1, 1
+		);
 
 		//終了
-		spr_endbox->Render(dc,
-			endPos.x, endPos.y, 400, 180,
-			0, 0, 400, 180,
-			0,
+		spr_endbox->Render2(dc,
+			endPos.x, endPos.y,
+			0.8f, 0.8f,
+			0, 0,
+			400, 180,
+			0, 0,
+			(0),
 			1, 1, 1, 1);
 
 		if (hit)
 		{
 			//確認用フレーム
 			spr_frame->Render(dc,
-				framePos.x, framePos.y, 400, 180,
+				framePos.x, framePos.y, 400*0.8f, 180*0.8f,
 				0, 0, 512, 256,
 				0,
 				1, 1, 1, 1);
@@ -231,10 +248,10 @@ void Title::Set()
 	start_check = false;
 	end_check = false;
 
-	startPos.x = 600;
-	startPos.y = 500;
+	startPos.x = 450;
+	startPos.y = 600;
 
-	endPos.x = 600;
+	endPos.x = 450;
 	endPos.y = 800;
 
 	framePos.x = 0;
@@ -246,13 +263,16 @@ void Title::Set()
 
 void Title::Load()
 {
-	spr_title_logo		= std::make_unique<Sprite>("Data/Sprite/タイトルロゴ付き背景画像.png");
+	//spr_title_logo		= std::make_unique<Sprite>("Data/Sprite/タイトルロゴ付き背景画像.png");
+	spr_title_logo		= std::make_unique<Sprite>("Data/Sprite/title.png");
 
 
 	spr_mouseCursor		= std::make_unique<Sprite>("Data/Sprite/cursor.png");
 	spr_start			= std::make_unique<Sprite>("Data/Sprite/start.png");
+	//spr_start			= std::make_unique<Sprite>("Data/Sprite/start2.png");
 	spr_frame			= std::make_unique<Sprite>("Data/Sprite/frame.png");
 	spr_endbox			= std::make_unique<Sprite>("Data/Sprite/end.png");
+	//spr_belt			= std::make_unique<Sprite>("Data/Sprite/帯.png");
 }			
 
 void Title::ImGui()

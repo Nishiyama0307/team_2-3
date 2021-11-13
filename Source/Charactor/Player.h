@@ -165,6 +165,7 @@ private:
 	void Damage_change();
 	//ダメージ更新
 	void UpdateDamage(float elapsedTime);
+	float damage = 0;
 
 	//死んだステートへ
 	//void Deth_change();
