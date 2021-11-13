@@ -86,9 +86,9 @@ void Enemy::UpdateVelocity(float elapsedTime, int kind, const DirectX::XMFLOAT3&
 
 	float elapsedFrame = 60.0f * elapsedTime;
 
-	UpdateVerticalVelocity(elapsedFrame, kind);
-
-	UpdateVerticalMove(elapsedTime, kind);
+	//UpdateVerticalVelocity(elapsedFrame, kind);
+	//
+	//UpdateVerticalMove(elapsedTime, kind);
 
 	// 水平移動
 	//UpdateHorizontalMove(elapsedTime, playerPos);
@@ -319,7 +319,7 @@ void Enemy::RandomMove(float elapsedTime)
 		else
 		{
 			is_action_range_ = false;
-			constexpr float zero_avoidance{ 0.00001f }; // ゼロベクトル回避用
+			constexpr float zero_avoidance{ 0.0001f }; // ゼロベクトル回避用
 
 			target = {start_position.x + zero_avoidance, start_position.y, start_position.z + zero_avoidance };
 		}
@@ -404,7 +404,7 @@ void Enemy::RandomMove(float elapsedTime)
 				}
 
 				// 回転角度があるなら回転処理をする
-				if ((rot) > 0.0001f/*&& fabsf(rot) < 1.0f*/ || is_action_range_ == false) // 後ろを向いているとホーミングしない 
+				if ((rot) > 0.0001f/*&& fabsf(rot) < 1.0f*/ || /*(rot) > 0.0001f &&*/ is_action_range_ == false) // 後ろを向いているとホーミングしない 
 				{
 					// 回転軸を算出
 					DirectX::XMVECTOR Axis = DirectX::XMVector3Cross(Direction, Vec);
@@ -536,7 +536,7 @@ void Enemy::AttackMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 		}
 		//if (this->animTimer > 5.0f)
 		//{
-			attack = true;
+		attack = true;
 		//}
 		if (!model->IsPlayAnimation())
 		{

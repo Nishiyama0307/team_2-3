@@ -222,6 +222,22 @@ void Player::InputMove(float elapsedTime)
 	// 進行ベクトル取得
 	DirectX::XMFLOAT3 moveVec = GetMoveVec();
 
+#if _DEBUG
+	// 移動処理
+	switch (state)
+	{
+		////走ってるとき
+	case AnimeState::State_Run:
+		moveSpeed = 200;
+		break;
+		//それ以外
+	default:
+		moveSpeed = 100;
+		break;
+
+	}
+
+#else
 	// 移動処理
 	switch (state)
 	{
@@ -239,6 +255,8 @@ void Player::InputMove(float elapsedTime)
 			break;
 			
 	}
+
+#endif
 
 	Move(moveVec.x, moveVec.z, moveSpeed);
 

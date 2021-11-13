@@ -389,12 +389,13 @@ void Game::Load()
 
 	black_band = std::make_unique<Sprite>();
 
-	StageManager::Instance().AddStage(new All_Stage());
 	StageManager::Instance().AddStage(new Stage1_Volcano());
 	StageManager::Instance().AddStage(new Stage2_Desert());
 	StageManager::Instance().AddStage(new Stage3_Volcano());
 	StageManager::Instance().AddStage(new Stage4_Volcano());
+	StageManager::Instance().AddStage(new All_Stage());
 	StageManager::Instance().AddStage(new castle());
+	StageManager::Instance().AddStage(new Sky());
 
 	//UI初期化
 	HpBar					= std::make_unique<Sprite>("Data/Sprite/G_HP.png");
@@ -424,6 +425,8 @@ void Game::ImGui()
 	ImGui::Spacing();
 
 	ImGui::Text("now_time : %.1f", GameSystem::Instance().NowTime());
+
+	ImGui::Text("stage_num : %d", stage_num);
 
 	DirectX::XMFLOAT3 pos = player->GetPosition();
 	ImGui::Text("player pos %.1f, %.1f, %.1f", pos.x, pos.y, pos.z);
@@ -505,7 +508,7 @@ void Game::CameraSet()
 		DirectX::XMConvertToRadians(45),
 		graphics.GetScreenWidth() / graphics.GetScreenHeight(),
 		0.1f,
-		1000.0f
+		3000.0f
 	);
 
 	//カメラコントローラー初期化
