@@ -387,7 +387,13 @@ void Game::Load()
 
 	// ƒvƒŒƒCƒ„[‰Šú‰»
 	player = new Player();
-	player->SetPosition(DirectX::XMFLOAT3(0, 0, 15));
+
+#ifdef _DEBUG
+	//player->SetPosition(DirectX::XMFLOAT3(0, 0, kStage4_Start_Position));
+	player->SetPosition(DirectX::XMFLOAT3(0, 0, -160.0f));
+#else
+	player->SetPosition(DirectX::XMFLOAT3(0, 0, -160.0f));
+#endif
 
 	enemy_Arrangement = new Enemy_Arrangement();
 	enemy_Arrangement->enemy_produce();

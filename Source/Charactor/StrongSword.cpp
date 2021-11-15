@@ -20,10 +20,14 @@ StrongSword::~StrongSword()
 	model = NULL;
 }
 
-void StrongSword::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
+void StrongSword::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos, int stage_num)
 {
-	// 速力処理更新
-	UpdateVelocity(elapsedTime, KIND::RARE_ENEMY, playerPos);
+
+	if (stage_num == this->stage_num)
+	{
+		// 速力処理更新
+		UpdateVelocity(elapsedTime, KIND::RARE_ENEMY, playerPos);
+	}
 
 	// オブジェクト行列を更新
 	UpdateTransform();

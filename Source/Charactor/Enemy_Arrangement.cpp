@@ -52,8 +52,13 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
         csv_load(Arrangement,"Data/map/enemy_arrangement._チュートリアル(bomb).csv");
         break;
     case GAME:
-        //csv_load(Arrangement, "Data/map/配置図(size更新)_test_分割.csv");
-        csv_load(Arrangement, "Data/map/配置図(size更新)_本番.csv");
+#ifdef _DEBUG
+        //csv_load(Arrangement, "Data/map/配置図(size更新)_test_分割stage4.csv");
+        csv_load(Arrangement, "Data/map/配置図(size更新)_test_分割.csv");
+#else
+        //csv_load(Arrangement, "Data/map/配置図(size更新)_本番.csv");
+        csv_load(Arrangement, "Data/map/配置図(size更新)_test_分割.csv");
+#endif
         break;
     default:
         break;
@@ -65,7 +70,8 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
    {
        float step_offset{ 0.0f };
 
-       if (kStage2_Start_Position < (y + kMap_Size_Hosei) * CHIP_SIZE && (y + kMap_Size_Hosei) * CHIP_SIZE < kStage3_Start_Position) step_offset = 2.0f;
+       //if (kStage2_Start_Position < (y + kMap_Size_Hosei) * CHIP_SIZE && (y + kMap_Size_Hosei) * CHIP_SIZE < kStage3_Start_Position) step_offset = 2.0f;
+       if (kStage2_Start_Position < y  * CHIP_SIZE + kMap_Size_Hosei && y  * CHIP_SIZE + kMap_Size_Hosei < kStage3_Start_Position) step_offset = 7.0f;
 
        for (int x = 0; x < CHIP_NUM_X; x++)
        {
@@ -111,15 +117,15 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
            
 
            int stage_num;
-           if (kStage2_Start_Position > (y + kMap_Size_Hosei) * CHIP_SIZE)
+           if (kStage2_Start_Position > (y ) * CHIP_SIZE + kMap_Size_Hosei)
            {
                stage_num = 0;
            }
-           else if (kStage3_Start_Position > (y + kMap_Size_Hosei) * CHIP_SIZE)
+           else if (kStage3_Start_Position > (y ) * CHIP_SIZE + kMap_Size_Hosei)
            {
                stage_num = 1;
            }
-           else if (kStage4_Start_Position > (y + kMap_Size_Hosei) * CHIP_SIZE)
+           else if (kStage4_Start_Position > (y ) * CHIP_SIZE + kMap_Size_Hosei)
            {
                stage_num = 2;
            }
@@ -127,12 +133,30 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
            {
                stage_num = 3;
            }
+           /*int stage_num;
+           if (kStage2_Start_Position > y  * CHIP_SIZE)
+           {
+               stage_num = 0;
+           }
+           else if (kStage3_Start_Position > y  * CHIP_SIZE)
+           {
+               stage_num = 1;
+           }
+           else if (kStage4_Start_Position > y  * CHIP_SIZE)
+           {
+               stage_num = 2;
+           }
+           else
+           {
+               stage_num = 3;
+           }*/
 
            if (Arrangement[y][x].num == ENEMYTAG::NORMAL_SWORD)
            {
 
                NormalSword* normalSword = new NormalSword();
-               normalSword->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + y  *CHIP_SIZE));
+               //normalSword->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + (y + kMap_Size_Hosei) * CHIP_SIZE));
+               normalSword->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + y * CHIP_SIZE));
                normalSword->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
                normalSword->SetStageNum(stage_num);
                enemyManager.Register(normalSword, ENEMYTAG::NORMAL_SWORD);
@@ -141,7 +165,8 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
            {
 
                StrongSword* strongSword = new StrongSword();
-               strongSword->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + y *CHIP_SIZE));
+               //strongSword->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + (y + kMap_Size_Hosei) *CHIP_SIZE));
+               strongSword->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + y * CHIP_SIZE));
                strongSword->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
                strongSword->SetStageNum(stage_num);
                enemyManager.Register(strongSword, ENEMYTAG::STRONG_SWORD);
@@ -150,7 +175,8 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
            {
 
                NormalSpear* normalSpear = new NormalSpear();
-               normalSpear->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + y *CHIP_SIZE));
+               //normalSpear->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + (y + kMap_Size_Hosei) *CHIP_SIZE));
+               normalSpear->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + y * CHIP_SIZE));
                normalSpear->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
                normalSpear->SetStageNum(stage_num);
                enemyManager.Register(normalSpear, ENEMYTAG::NORMAL_SPEAR);
@@ -159,7 +185,8 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
            {
 
                StrongSpear* strongSpear = new StrongSpear();
-               strongSpear->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + y *CHIP_SIZE));
+               //strongSpear->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + (y + kMap_Size_Hosei) *CHIP_SIZE));
+               strongSpear->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + y * CHIP_SIZE));
                strongSpear->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
                strongSpear->SetStageNum(stage_num);
                enemyManager.Register(strongSpear, ENEMYTAG::STRONG_SPEAR);

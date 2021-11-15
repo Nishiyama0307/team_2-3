@@ -33,7 +33,7 @@ public:
 	~Enemy() override {}
 
 	//virtual void Update(float elapsedTime) = 0;
-	virtual void Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos = {0,0,0}) = 0;
+	virtual void Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos, int stage_num) = 0;
 	virtual void Render(ID3D11DeviceContext* context, Shader* shader) = 0;
 
 	void UpdateVelocity(float elapsedTime, int kind, const DirectX::XMFLOAT3& playerPos);
@@ -68,6 +68,9 @@ public:
 
 	// Ž€–S
 	void OnDead();
+
+	// ’…’n
+	void OnLanding() override;
 
 	DirectX::XMFLOAT3 GetFront() { return ConvertToIdentityVec(transform._31, transform._32, transform._33); }
 

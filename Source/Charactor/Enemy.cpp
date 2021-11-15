@@ -300,11 +300,20 @@ void Enemy::UpdateMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 	{
 		distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(DirectX::XMVectorSubtract(DirectX::XMLoadFloat3(&position), DirectX::XMLoadFloat3(&playerPos))));
 
+
+#ifdef _DEBUG
+		//AttackMove(elapsedTime, playerPos);
+		//
+		//RandomMove(elapsedTime);
+		//
+		//HomingMove(elapsedTime, playerPos);
+#else
 		AttackMove(elapsedTime, playerPos);
-		
+
 		RandomMove(elapsedTime);
-		
+
 		HomingMove(elapsedTime, playerPos);
+#endif
 	}
 }
 
@@ -571,4 +580,10 @@ void Enemy::OnDead()
 {
 	model->PlayAnimation(ANIMINDEX::DETH, false);
 	is_dead_ = true;
+}
+
+// ’…’n‚µ‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚é
+void Enemy::OnLanding()
+{
+	start_position.y = position.y;
 }

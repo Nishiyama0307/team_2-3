@@ -13,6 +13,8 @@ void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos,
 		//if (enemy->is_dead_ == false)
 		if (enemy->is_dead_ == false && stage_num == enemy->stage_num)
 		{
+			if (enemy->stage_num == 0 && enemy->GetPosition().y <= -15) enemy->ApplyDamage(enemy->par.health, 0);
+
 			enemy->UpdateMove(elapsedTime, playerPos);
 		}
 	}
@@ -20,7 +22,7 @@ void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos,
 	{
 		//if (stage_num == enemy->stage_num)
 		{
-			enemy->Update(elapsedTime, playerPos);
+			enemy->Update(elapsedTime, playerPos, stage_num);
 		}
 	}
 

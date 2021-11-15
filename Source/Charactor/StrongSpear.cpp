@@ -20,16 +20,20 @@ StrongSpear::~StrongSpear()
 	model = NULL;
 }
 
-void StrongSpear::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
+void StrongSpear::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos, int stage_num)
 {
-	// 速力処理更新
-	UpdateVelocity(elapsedTime, KIND::RARE_ENEMY, playerPos);
 
-	// オブジェクト行列を更新
-	UpdateTransform();
+	if (stage_num == this->stage_num)
+	{
+		// 速力処理更新
+		UpdateVelocity(elapsedTime, KIND::RARE_ENEMY, playerPos);
 
-	// 無敵時間更新
-	UpdateInvicibleTimer(elapsedTime);
+		// オブジェクト行列を更新
+		UpdateTransform();
+
+		// 無敵時間更新
+		UpdateInvicibleTimer(elapsedTime);
+	}
 
 	// モデル行列更新
 	model->UpdateTransform(transform);

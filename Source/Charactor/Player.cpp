@@ -487,7 +487,9 @@ void Player::DrawDebugGUI()
 	// デバッグ用GUI描画
 	ImGui::Text("param.hp : %d", par.health);
 
-	ImGui::SliderFloat("moveSpeed.x", &moveSpeed, 0.0f, +100.0f);
+	ImGui::SliderFloat("moveSpeed", &moveSpeed, 0.0f, +100.0f);
+
+	ImGui::SliderFloat("position.y", &position.y, 0.0f, +500.0f);
 
 }
 
@@ -703,7 +705,7 @@ void Player::Damage_change()
 	state = AnimeState::State_Damage;
 	if(model->GetIndex() != Anim_Damage)
 	model->PlayAnimation(Anim_Damage, false);
-	ApplyDamage(damage, 1.0f);
+	ApplyDamage(1, 1.0f);
 }
 //ダメージ更新
 void Player::UpdateDamage(float elapsedTime)

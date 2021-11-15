@@ -1,4 +1,7 @@
 #include "Character.h"
+
+#include <algorithm>
+
 #include "collision.h"
 #include "stageManager.h"
 
@@ -72,6 +75,12 @@ void Character::Move(float vx, float vz, float speed)
 
     // 最大速度の設定
     maxMoveSpeed = speed;
+
+    // 位置制限
+    position.x = std::min(333.0f, position.x);
+    position.x = std::max(-333.0f, position.x);
+    position.z = std::min(2599.0f , position.z);
+    position.z = std::max(-175.5f, position.z);
 }
 
 // 旋回処理
@@ -133,6 +142,20 @@ void Character::UpdateVelocity(float elapsedTime, int kind)
     //　経過フレーム
     float elapsedFrame = 60.0f * elapsedTime;
 
+#ifdef _DEBUG
+    // 垂直速力
+    //UpdateVerticalVelocity(elapsedFrame, kind);
+
+    // 水平速力
+    UpdateHorizontalVelocity(elapsedFrame);
+
+
+    // 垂直移動
+    //UpdateVerticalMove(elapsedTime);
+
+    // 水平移動
+    UpdateHorizontalMove(elapsedTime);
+#else
     // 垂直速力
     UpdateVerticalVelocity(elapsedFrame, kind);
 
@@ -145,6 +168,7 @@ void Character::UpdateVelocity(float elapsedTime, int kind)
 
     // 水平移動
     UpdateHorizontalMove(elapsedTime);
+#endif
 }
 
 // 垂直速力更新処理
