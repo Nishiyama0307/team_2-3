@@ -46,9 +46,15 @@ private:
     Pos mousePos;
 
     std::unique_ptr<Sprite> spr_start = nullptr;
+    std::unique_ptr<Sprite> spr_start2 = nullptr;
     std::unique_ptr<Sprite> spr_frame = nullptr;
     std::unique_ptr<Sprite> spr_endbox = nullptr;
-    std::unique_ptr<Sprite> spr_belt = nullptr;
+    std::unique_ptr<Sprite> spr_endbox2 = nullptr;
+    std::unique_ptr<Sprite> spr_belt1 = nullptr;
+    std::unique_ptr<Sprite> spr_belt2 = nullptr;
+
+    float rgb_A1 = 0.4f;
+    float rgb_A2 = 0.4f;
 
     //“–‚½‚è”»’è
     C_Hitbox MouseBox;
@@ -60,6 +66,8 @@ private:
     int check_state = 0;
 
     Pos startPos;
+    Pos startPos2;
     Pos endPos;
+    Pos endPos2;
     Pos framePos;
 };

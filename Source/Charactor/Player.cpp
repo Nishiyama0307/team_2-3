@@ -852,22 +852,25 @@ void Player::EnemyAttckHit()
 				outPosition
 			))
 			{
-				
+#if 0
+				//敵毎のダメージ分岐
 				switch (enemy->enemy_tag)
 				{
 				case NORMAL_SWORD:
-					damage = 1;
+					damage = enemy->par.power;
 					break;
 				case STRONG_SWORD:
-					damage = 1;
+					damage = enemy->par.power;
 					break;
 				case NORMAL_SPEAR:
-					damage = 1;
+					damage = enemy->par.power;
 					break;
 				case STRONG_SPEAR:
-					damage = 1;
+					damage = enemy->par.power;
 					break;
 				}
+#endif
+				damage = enemy->par.power;
 
 				//死亡していない時
 				if (!is_dead_)
@@ -877,7 +880,7 @@ void Player::EnemyAttckHit()
 						Damage_change();
 					//攻撃モーション中(アーマーがついている)時はアニメーションせずそのままダメージ
 					if (armor)
-						ApplyDamage(damage, 1.0f);
+						ApplyDamage(enemy->par.power, 1.0f);
 				}
 			}
 		}

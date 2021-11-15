@@ -543,7 +543,7 @@ void Enemy::AttackMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 		}
 		//if (this->animTimer > 5.0f)
 		//{
-		attack = true;
+			attack = true;
 		//}
 		if (!model->IsPlayAnimation())
 		{
