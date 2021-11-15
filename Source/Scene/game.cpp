@@ -520,7 +520,7 @@ void Game::CameraSet()
 		DirectX::XMConvertToRadians(45),
 		graphics.GetScreenWidth() / graphics.GetScreenHeight(),
 		0.1f,
-		3000.0f
+		3200.0f
 	);
 
 	//カメラコントローラー初期化

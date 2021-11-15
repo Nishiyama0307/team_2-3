@@ -54,7 +54,8 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
     case GAME:
 #ifdef _DEBUG
         //csv_load(Arrangement, "Data/map/配置図(size更新)_test_分割stage4.csv");
-        csv_load(Arrangement, "Data/map/配置図(size更新)_test_分割.csv");
+        //csv_load(Arrangement, "Data/map/配置図(size更新)_test_分割.csv");
+        csv_load(Arrangement, "Data/map/配置図(size更新)_本番.csv");
 #else
         //csv_load(Arrangement, "Data/map/配置図(size更新)_本番.csv");
         csv_load(Arrangement, "Data/map/配置図(size更新)_test_分割.csv");
