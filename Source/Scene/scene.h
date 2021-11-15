@@ -5,7 +5,6 @@
 class SceneManager;
 
 
-
 // シーンクラス(抽象クラス)
 
 class Scene

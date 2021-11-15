@@ -11,7 +11,7 @@
 #include "gameSystem.h"
 #include "audioManager.h"
 
-
+int result;
 
 void Result::Update(float elapsedTime)
 {
@@ -26,6 +26,12 @@ void Result::Update(float elapsedTime)
 
 	// TODO: 結果処理
 	GamePad& gamePad = Input::Instance().GetGamePad();
+
+	//マウス
+	Mouse& mouse = Input::Instance().GetMouse();
+	mousePos.x = mouse.GetPositionX() - 16;
+	mousePos.y = mouse.GetPositionY() - 26;
+
 
 	if (gamePad.GetButtonDown() & GamePad::BTN_UP)
 	{
@@ -148,9 +154,32 @@ void Result::SpriteRender(ID3D11DeviceContext* dc)
 			1, 1, 1, 1);								// 色情報(r,g,b,a)
 	}
 
+	//分岐
+	switch (result)
+	{
+	case Game_clear:
+		break;
 
-	
-	
+	case Game_over1:
+		spr_over1->Render2(dc,
+			0, 0,
+			1.5f, 1.5f,
+			0, 0,
+			1280, 720,
+			0, 0,
+			angle,
+			1, 1, 1, 1);
+		break;
+
+	case Game_over2:
+		break;
+	}
+	//マウスカーソル
+	spr_mouseCursor->Render(dc,
+		mousePos.x, mousePos.y, 64, 64,
+		0, 0, 64, 64,
+		0,
+		1, 1, 1, 1);
 
 
 	// 黒帯
@@ -190,6 +219,11 @@ void Result::Load()
 
 
 	black_band = std::make_unique<Sprite>();
+
+	spr_mouseCursor = std::make_unique<Sprite>("Data/Sprite/cursor.png");
+
+	spr_clear = std::make_unique<Sprite>("Data/Sprite/クリア.png");
+	spr_over1 = std::make_unique<Sprite>("Data/Sprite/maou_down.png");
 }
 
 

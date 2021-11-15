@@ -65,6 +65,9 @@ private:
     bool end_check = false;
     int check_state = 0;
 
+    float timer1 = 0;
+    float timer2 = 0;
+
     Pos startPos;
     Pos startPos2;
     Pos endPos;

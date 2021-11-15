@@ -5,7 +5,7 @@
 #include "Graphics/Sprite.h"
 #include "sceneManager.h"
 
-
+#include "C_function.h"
 
 // åãâ ÉVÅ[Éì
 
@@ -35,4 +35,8 @@ private:
     std::unique_ptr<Sprite> spr_back = nullptr;
     float angle = 0.0f;
 
+    std::unique_ptr<Sprite> spr_load = nullptr;
+    std::unique_ptr<Sprite> spr_load_word = nullptr;
+    Pos  texPos;
+    float LoadTimer;
 };

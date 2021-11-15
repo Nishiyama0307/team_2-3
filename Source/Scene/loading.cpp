@@ -22,6 +22,21 @@ void Loading::Update(float elapsedTime)
 
 	angle += elapsedTime * 200.0f;/* TEST: 後で消す */
 
+	LoadTimer +=  10.0f;
+	if (LoadTimer > 100.0f)
+	{
+		texPos.x = 464*1;
+	}
+	if (LoadTimer > 200.0f)
+	{
+		texPos.x = 464*2;
+	}
+	if (LoadTimer > 300.0f)
+	{
+		texPos.x = 0;
+		LoadTimer = 0;
+	}
+
 	if (scene->IsSceneLoaded())
 	{
 		ChangeNextScene(scene, false);
@@ -47,23 +62,43 @@ void Loading::SpriteRender(ID3D11DeviceContext* dc)
 	float positionX = screenWidth - textureWidth;
 	float positionY = screenHeight - textureHeight;
 
-	spr_back->Render2(dc,
-		0, 0,						// 表示位置
-		1.0f, 1.0f,									// スケール
-		0, 0,										// 画像切り抜き位置
-		1920, 1080,				// 画像切り抜きサイズ
-		0, 0,	// 画像基準点
-		0,										// 角度
-		1, 1, 1, 1);								// 色情報(r,g,b,a)
+	//spr_back->Render2(dc,
+	//	0, 0,						// 表示位置
+	//	1.0f, 1.0f,									// スケール
+	//	0, 0,										// 画像切り抜き位置
+	//	1920, 1080,				// 画像切り抜きサイズ
+	//	0, 0,	// 画像基準点
+	//	0,										// 角度
+	//	1, 1, 1, 1);								// 色情報(r,g,b,a)
+	//
+	//spr_icon->Render2(dc,
+	//	positionX, positionY,						// 表示位置
+	//	1.0f, 1.0f,									// スケール
+	//	0, 0,										// 画像切り抜き位置
+	//	textureWidth, textureHeight,				// 画像切り抜きサイズ
+	//	textureWidth * 0.5f, textureHeight * 0.5f,	// 画像基準点
+	//	angle,										// 角度
+	//	1, 1, 1, 1);								// 色情報(r,g,b,a)
 
-	spr_icon->Render2(dc,
-		positionX, positionY,						// 表示位置
-		1.0f, 1.0f,									// スケール
-		0, 0,										// 画像切り抜き位置
-		textureWidth, textureHeight,				// 画像切り抜きサイズ
-		textureWidth * 0.5f, textureHeight * 0.5f,	// 画像基準点
-		angle,										// 角度
-		1, 1, 1, 1);								// 色情報(r,g,b,a)
+	//ロード
+	spr_load->Render2(dc,
+		0, 0,
+		1.0f, 1.0f,
+		0, 0,
+		1920, 1080,
+		0, 0,
+		(0),
+		1, 1, 1, 1);
+
+	spr_load_word->Render2(dc,
+		1350, 900,
+		/*1000, 500,*/
+		1.0f, 1.0f,
+		texPos.x, texPos.y,
+		464, 140,
+		0, 0,
+		0,
+		1, 1, 1, 1);
 }
 
 
@@ -84,6 +119,10 @@ void Loading::Set()
 	std::thread thread(LoadingThread, this, GetSceneManager());
 
 	thread.detach();
+
+	texPos.x = 0;
+	texPos.y = 0;
+	LoadTimer = 0;
 }
 
 
@@ -91,6 +130,9 @@ void Loading::Load()
 {
 	spr_back = std::make_unique<Sprite>("Data/Sprite/タイトルロゴなし背景画像（リザルト）.png");
 	spr_icon = new Sprite("Data/Sprite/ローディング.png");
+
+	spr_load = std::make_unique<Sprite>("Data/Sprite/road.png");
+	spr_load_word = std::make_unique<Sprite>("Data/Sprite/road_moji2.png");
 }
 
 

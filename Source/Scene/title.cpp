@@ -53,20 +53,22 @@ void Title::Update(float elapsedTime)
 
 
 	//	↓	　入力処理とかいろいろ書く　	↓	　//
-	startPos.x += 3.0f;
-	if (startPos.x - 450 > 1920)
-		startPos.x = 450 - 1920;
-	startPos2.x += 3.0f;
-	if (startPos2.x - 450 > 1920)
-		startPos2.x = 450 - 1920;
-
-
-	endPos.x += 3.0f;
-	if (endPos.x- 450 > 1920)
-		endPos.x = 450 - 1920;
-	endPos2.x += 3.0f;
-	if (endPos2.x - 450 > 1920)
-		endPos2.x = 450 - 1920;
+#if 0
+	//startPos.x += 3.0f;
+	//if (startPos.x - 450 > 1920)
+	//	startPos.x = 450 - 1920;
+	//startPos2.x += 3.0f;
+	//if (startPos2.x - 450 > 1920)
+	//	startPos2.x = 450 - 1920;
+	//
+	//
+	//endPos.x += 3.0f;
+	//if (endPos.x- 450 > 1920)
+	//	endPos.x = 450 - 1920;
+	//endPos2.x += 3.0f;
+	//if (endPos2.x - 450 > 1920)
+	//	endPos2.x = 450 - 1920;
+#endif
 
 	// TODO: タイトル処理
 #if 0
@@ -121,21 +123,21 @@ void Title::Update(float elapsedTime)
 	C_OffsetBox(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right, 32, 32);
 
 	//スタートのボックス
-	//StartBox.left = startPos.x;
-	//StartBox.top = startPos.y;
-	//C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 400, 180 );
-	StartBox.left = 0;
-	StartBox.top = 600;
-	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 1920, 150 * 0.8f);
+	StartBox.left = startPos.x;
+	StartBox.top = startPos.y;
+	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 500*0.6f, 280*0.6f );
+	//StartBox.left = 0;
+	//StartBox.top = 600;
+	//C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 1920, 150 * 0.8f);
 
 	//終了ボックス
-	//EndBox.left = endPos.x;
-	//EndBox.top = endPos.y;
-	//C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 400 * 0.8f, 180 * 0.8f);
+	EndBox.left = endPos.x;
+	EndBox.top = endPos.y;
+	C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 500 * 0.6f, 280 * 0.6f);
 
-	EndBox.left = 0;
-	EndBox.top = 800;
-	C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 1920, 150 * 0.8f);
+	//EndBox.left = 0;
+	//EndBox.top = 800;
+	//C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 1920, 150 * 0.8f);
 
 	//判定 (マウスとゲームへのボックス)
 	start_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
@@ -153,8 +155,8 @@ void Title::Update(float elapsedTime)
 		framePos.y = startPos.y;
 		check_state = 1;
 
-		rgb_A1 = 0.8f;
-		rgb_A2 = 0.6f;
+		//rgb_A1 = 0.8f;
+		//rgb_A2 = 0.6f;
 	}
 	else if (end_check)
 	{
@@ -163,8 +165,8 @@ void Title::Update(float elapsedTime)
 		framePos.y = endPos.y;
 		check_state = 2;
 
-		rgb_A1 = 0.4f;
-		rgb_A2 = 0.9f;
+		//rgb_A1 = 0.4f;
+		//rgb_A2 = 0.9f;
 
 	}
 	else
@@ -172,8 +174,8 @@ void Title::Update(float elapsedTime)
 		hit = false;
 		check_state = 0;
 
-		rgb_A1 = 0.4f;
-		rgb_A2 = 0.6f;
+		//rgb_A1 = 0.4f;
+		//rgb_A2 = 0.6f;
 	}
 	
 	switch (check_state)
@@ -218,66 +220,67 @@ void Title::SpriteRender(ID3D11DeviceContext* dc)
 		1, 1, 1, 1);								// 色情報(r,g,b,a)
 
 	//帯
-	spr_belt1->Render(dc,
-		0, 600, 1920, 150 * 0.8f,
-		0, 0, 1920, 150,
-		0,
-		1, 1, 1, rgb_A1);
-	spr_belt2->Render(dc,
-		0, 800, 1920, 150 * 0.8f,
-		0, 0, 1920, 150,
-		0,
-		1, 1, 1, rgb_A2);
+	//spr_belt1->Render(dc,
+	//	0, 600, 1920, 150 * 0.8f,
+	//	0, 0, 1920, 150,
+	//	0,
+	//	1, 1, 1, rgb_A1);
+	//spr_belt2->Render(dc,
+	//	0, 800, 1920, 150 * 0.8f,
+	//	0, 0, 1920, 150,
+	//	0,
+	//	1, 1, 1, rgb_A2);
 
 	{
 		//スタート
 		spr_start->Render2(dc,
 			startPos.x, startPos.y,
-			0.8f, 0.8f,
+			0.6f, 0.6f,
 			0, 0,
-			400, 180,
+			500, 280,
 			0, 0,
 			(0),
 			1, 1, 1, 1
 
 		);
-		//スタート
-		spr_start2->Render2(dc,
-			startPos2.x, startPos2.y,
-			0.8f, 0.8f,
-			0, 0,
-			400, 180,
-			0, 0,
-			(0),
-			1, 1, 1, 1);
 
 		//終了
 		spr_endbox->Render2(dc,
 			endPos.x, endPos.y,
-			0.8f, 0.8f,
+			0.6f, 0.6f,
 			0, 0,
-			400, 180,
-			0, 0,
-			(0),
-			1, 1, 1, 1);
-		//終了
-		spr_endbox2->Render2(dc,
-			endPos2.x, endPos2.y,
-			0.8f, 0.8f,
-			0, 0,
-			400, 180,
+			500, 280,
 			0, 0,
 			(0),
 			1, 1, 1, 1);
 
+		////スタート
+		//spr_start2->Render2(dc,
+		//	startPos2.x, startPos2.y,
+		//	0.5f, 0.5f,
+		//	0, 0,
+		//	500, 280,
+		//	0, 0,
+		//	(0),
+		//	1, 1, 1, 1);
+		//終了
+		//spr_endbox2->Render2(dc,
+		//	endPos2.x, endPos2.y,
+		//	0.5f, 0.5f,
+		//	0, 0,
+		//	500, 280,
+		//	0, 0,
+		//	(0),
+		//	1, 1, 1, 1);
+
 		if (hit)
 		{
-			////確認用フレーム
-			//spr_frame->Render(dc,
-			//	framePos.x, framePos.y, 400*0.8f, 180*0.8f,
-			//	0, 0, 512, 256,
-			//	0,
-			//	1, 1, 1, 1);
+			//確認用フレーム
+			spr_frame->Render(dc,
+				framePos.x, framePos.y, 400*0.8f, 180*0.8f,
+				0, 0, 512, 256,
+				0,
+				1, 1, 1, 1);
 		}
 
 		//マウスカーソル
@@ -302,16 +305,16 @@ void Title::Set()
 	end_check = false;
 
 	startPos.x = 450;
-	startPos.y = 600;
+	startPos.y = 500;
 
-	startPos2.x = 450 - 1920;
-	startPos2.y = 600;
+	//startPos2.x = 450 - 1920;
+	//startPos2.y = 600;
 
 	endPos.x = 450;
-	endPos.y = 800;
+	endPos.y = 750;
 
-	endPos2.x = 450 - 1920;
-	endPos2.y = 800;
+	//endPos2.x = 450 - 1920;
+	//endPos2.y = 800;
 
 	framePos.x = 0;
 	framePos.y = 0;
@@ -330,13 +333,13 @@ void Title::Load()
 
 
 	spr_mouseCursor		= std::make_unique<Sprite>("Data/Sprite/cursor.png");
+	spr_start			= std::make_unique<Sprite>("Data/Sprite/start.png");
 	//spr_start			= std::make_unique<Sprite>("Data/Sprite/start.png");
-	spr_start			= std::make_unique<Sprite>("Data/Sprite/start2.png");
-	spr_start2			= std::make_unique<Sprite>("Data/Sprite/start2.png");
+	//spr_start2			= std::make_unique<Sprite>("Data/Sprite/start.png");
 	spr_frame			= std::make_unique<Sprite>("Data/Sprite/frame.png");
-	//spr_endbox			= std::make_unique<Sprite>("Data/Sprite/end.png");
-	spr_endbox			= std::make_unique<Sprite>("Data/Sprite/start2.png");
-	spr_endbox2			= std::make_unique<Sprite>("Data/Sprite/start2.png");
+	spr_endbox			= std::make_unique<Sprite>("Data/Sprite/end.png");
+	//spr_endbox			= std::make_unique<Sprite>("Data/Sprite/start.png");
+	//spr_endbox2			= std::make_unique<Sprite>("Data/Sprite/start.png");
 	spr_belt1			= std::make_unique<Sprite>("Data/Sprite/帯3.png");
 	spr_belt2			= std::make_unique<Sprite>("Data/Sprite/帯3.png");
 }			

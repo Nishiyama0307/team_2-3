@@ -3,7 +3,7 @@
 #include "scene.h"
 #include "Graphics/Graphics.h"
 #include "Graphics/Sprite.h"
-
+#include "C_function.h"
 
 
 // 結果シーン
@@ -56,4 +56,21 @@ private:
     bool did_first = false;
     bool did = false;
 
+
+    //クリア、ゲームオーバー１、ゲームオーバー２
+    std::unique_ptr<Sprite> spr_clear = nullptr;
+    std::unique_ptr<Sprite> spr_over1 = nullptr;
+    std::unique_ptr<Sprite> spr_over2 = nullptr;
+
+    std::unique_ptr<Sprite> spr_mouseCursor = nullptr;
+    Pos mousePos;
+    C_Hitbox MouseBox;
+
+};
+
+enum 
+{
+    Game_clear,
+    Game_over1,
+    Game_over2
 };

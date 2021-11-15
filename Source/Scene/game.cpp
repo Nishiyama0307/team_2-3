@@ -19,6 +19,7 @@
 extern int scene_tag;
 int attck_select_state = 0;
 extern bool f1;
+extern int result;
 
 void Game::Update(float elapsedTime)
 {
@@ -30,7 +31,7 @@ void Game::Update(float elapsedTime)
 
 	// ポーズ
 	if (pause->Update(elapsedTime)) return;
-	
+
 
 	BGMStart();
 
@@ -42,11 +43,14 @@ void Game::Update(float elapsedTime)
 	if (CastleHP < 0)
 		CastleHP = 0;
 	//プレイヤーが死んだらゲームオーバーへ(仮)
-	if (player->animdeth)
-		ChangeNextScene(new Title);
+	if (player->animdeth) {
+		result = Game_over1;
+		ChangeNextScene(new Result);
+	}
 	//城の体力が無くなったらゲームオーバーへ(仮)
-	//if(CastleHP < 0)
+	//if(CastleHP < 0){
 	//	ChangeNextScene(new Title);
+	//}
 
 	GameSystem::Instance().HitStopUpdate(elapsedTime);
 
@@ -223,6 +227,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0,
 			1, 1, 1, 1);
 
+#if 0
 		//お金のフレーム
 		StressBarFrame->Render(dc,
 			20, 160, 384, 64,
@@ -249,7 +254,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0, 0,
 			0,
 			1, 1, 1, 1);
-
+#endif
 		//ミニマップ
 		Minimap->Render2(dc,
 			1600, 10,
