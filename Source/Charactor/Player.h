@@ -81,11 +81,7 @@ private:
 private:
 	Model* model = nullptr;
 
-#if _DEBUG
 	float	moveSpeed = 25.0f;
-#else
-	float	moveSpeed = 25.0f;
-#endif
 
 	float	turnSpeed = DirectX::XMConvertToRadians(720);
 
@@ -171,7 +167,7 @@ private:
 	//void Deth_change();
 	////死んだステート更新
 	//void UpdateDeth(float elapsedTime);
-	
+
 
 	//歩きステートへ
 	void Walk_change();
@@ -190,7 +186,7 @@ private:
 	bool zeroVec = false;
 	//シフトキー離した時のチェック
 	bool isbuttn = false;
-	
+
 public:
 	//shiftダッシュのスタミナゲージ
 	float stamina = 0;

@@ -222,6 +222,40 @@ void Player::InputMove(float elapsedTime)
 	// 進行ベクトル取得
 	DirectX::XMFLOAT3 moveVec = GetMoveVec();
 
+#if _DEBUG
+
+	// こまちゃんに調整で投げる時用(imguiでいじれるように更新を止める)
+#if 0
+	//// 移動処理
+	//switch (state)
+	//{
+	//	////走ってるとき
+	//case AnimeState::State_Run:
+	//	moveSpeed = 200;
+	//	break;
+	//	//それ以外
+	//default:
+	//	moveSpeed = 100;
+	//	break;
+	//}
+#else
+
+	// 移動処理
+	switch (state)
+	{
+		////走ってるとき
+	case AnimeState::State_Run:
+		moveSpeed = 200;
+		break;
+		//それ以外
+	default:
+		moveSpeed = 100;
+		break;
+	}
+#endif
+
+
+#else
 	// 移動処理
 	switch (state)
 	{
@@ -239,6 +273,8 @@ void Player::InputMove(float elapsedTime)
 			break;
 			
 	}
+
+#endif
 
 	Move(moveVec.x, moveVec.z, moveSpeed);
 
@@ -336,7 +372,7 @@ void Player::InputInhale()
 void Player::Stage1_Gimmick()
 {
 
-	if (position.y > 22 || position.y <= -15) ApplyDamage(1, 2.0f);
+	if ((position.y > 22 || position.y <= -15) && isGround) ApplyDamage(1, 2.0f);
 
 	//要らなくなるかも
 	//if (position.y >= 35) position.y = 35;
@@ -450,6 +486,9 @@ void Player::DrawDebugGUI()
 {
 	// デバッグ用GUI描画
 	ImGui::Text("param.hp : %d", par.health);
+
+	ImGui::SliderFloat("moveSpeed.x", &moveSpeed, 0.0f, +100.0f);
+
 }
 
 

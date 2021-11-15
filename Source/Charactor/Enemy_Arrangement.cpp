@@ -1,4 +1,6 @@
 #include "Charactor/Enemy_Arrangement.h"
+
+#include "Scene/game.h"
 //#include "Enemy.h"
 
 void csv_load(Block data[][Enemy_Arrangement::CHIP_NUM_X], const char* filename)
@@ -50,86 +52,118 @@ void Enemy_Arrangement::enemy_produce(csv_file_num csv_file)
         csv_load(Arrangement,"Data/map/enemy_arrangement._チュートリアル(bomb).csv");
         break;
     case GAME:
-        csv_load(Arrangement,"Data/map/配置図.csv");
+        //csv_load(Arrangement, "Data/map/配置図(size更新)_test_分割.csv");
+        csv_load(Arrangement, "Data/map/配置図(size更新)_本番.csv");
         break;
     default:
         break;
     }
 
-    for (int y = 0; y < CHIP_NUM_Y; y++)
-    {
-        for (int x = 0; x < CHIP_NUM_X; x++)
-        {
-            // 基準点補正　ステージの左上の座標から始まるように
-            constexpr float Reference_point_correction = -499;
-            //float randam_scale = 1;
-            constexpr float Fixed_value_angle = 22.5f;
+	constexpr int kMap_Size_Hosei{ -175 };
 
-            //if (Arrangement[y][x].num == ENEMYTAG::NORMAL)
-            //{
-            //    if ((y < 100 || y > 150) /*&& (x < 100 || x > 150)*/)
-            //        if (csv_file == csv_file_num::GAME) random_scaling(Arrangement[y][x].num);
+   for (int y = 0; y < CHIP_NUM_Y; y++)
+   {
+       float step_offset{ 0.0f };
 
-            //    NormalEnemy* normalEnemy = new NormalEnemy();
-            //    normalEnemy->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
+       if (kStage2_Start_Position < (y + kMap_Size_Hosei) * CHIP_SIZE && (y + kMap_Size_Hosei) * CHIP_SIZE < kStage3_Start_Position) step_offset = 2.0f;
 
-            //    normalEnemy->SetScale({ random_scale, random_scale, random_scale });
-            //    if (csv_file == csv_file_num::TUTORIAL_NORMAL) normalEnemy->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
-            //    if (csv_file == csv_file_num::GAME)
-            //    {
-            //        random_angling();
-            //        normalEnemy->SetAngle({ 0, DirectX::XMConvertToRadians(Fixed_value_angle * random_angle), 0 });
-            //    }
-            //    enemyManager.Register(normalEnemy, ENEMYTAG::NORMAL);
-            //}
-            //if (Arrangement[y][x].num == ENEMYTAG::BOMB)
-            //{       
-            //    if ((y < 100 || y > 150) /*&& (x < 100 || x > 150)*/)
-            //        if (csv_file == csv_file_num::GAME) random_scaling(Arrangement[y][x].num);
-            //    BombEnemy* bombEnemy = new BombEnemy();
-            //    bombEnemy->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
-            //    
-            //    bombEnemy->SetScale({ random_scale, random_scale, random_scale });
-            //    if (csv_file == csv_file_num::TUTORIAL_BOMB) bombEnemy->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
-            //    if (csv_file == csv_file_num::GAME)
-            //    {
-            //        random_angling();
-            //        bombEnemy->SetAngle({ 0, DirectX::XMConvertToRadians(Fixed_value_angle * random_angle), 0 });
-            //    }
-            //    enemyManager.Register(bombEnemy, ENEMYTAG::BOMB);
-            //}
-            if (Arrangement[y][x].num == ENEMYTAG::NORMAL_SWORD)
-            {
+       for (int x = 0; x < CHIP_NUM_X; x++)
+       {
+           // 基準点補正　ステージの左上の座標から始まるように
+           //constexpr float Reference_point_correction = -499;
+           constexpr DirectX::XMFLOAT2 Reference_point_correction = { -337, -347 + 175 }; // (CHIP_NUM / 2) x: -337, y: -347
+       	//float randam_scale = 1;
+           constexpr float Fixed_value_angle = 22.5f;
 
-                NormalSword* normalSword = new NormalSword();
-                normalSword->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
-                normalSword->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
-                enemyManager.Register(normalSword, ENEMYTAG::NORMAL_SWORD);
-            }
-            if (Arrangement[y][x].num == ENEMYTAG::STRONG_SWORD)
-            {
+           //if (Arrangement[y][x].num == ENEMYTAG::NORMAL)
+           //{
+           //    if ((y < 100 || y > 150) /*&& (x < 100 || x > 150)*/)
+           //        if (csv_file == csv_file_num::GAME) random_scaling(Arrangement[y][x].num);
 
-                StrongSword* strongSword = new StrongSword();
-                strongSword->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
-                strongSword->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
-                enemyManager.Register(strongSword, ENEMYTAG::STRONG_SWORD);
-            }
-            if (Arrangement[y][x].num == ENEMYTAG::NORMAL_SPEAR)
-            {
+           //    NormalEnemy* normalEnemy = new NormalEnemy();
+           //    normalEnemy->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
 
-                NormalSpear* normalSpear = new NormalSpear();
-                normalSpear->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
-                normalSpear->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
-                enemyManager.Register(normalSpear, ENEMYTAG::NORMAL_SPEAR);
-            }
-            if (Arrangement[y][x].num == ENEMYTAG::STRONG_SPEAR)
-            {
+           //    normalEnemy->SetScale({ random_scale, random_scale, random_scale });
+           //    if (csv_file == csv_file_num::TUTORIAL_NORMAL) normalEnemy->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
+           //    if (csv_file == csv_file_num::GAME)
+           //    {
+           //        random_angling();
+           //        normalEnemy->SetAngle({ 0, DirectX::XMConvertToRadians(Fixed_value_angle * random_angle), 0 });
+           //    }
+           //    enemyManager.Register(normalEnemy, ENEMYTAG::NORMAL);
+           //}
+           //if (Arrangement[y][x].num == ENEMYTAG::BOMB)
+           //{       
+           //    if ((y < 100 || y > 150) /*&& (x < 100 || x > 150)*/)
+           //        if (csv_file == csv_file_num::GAME) random_scaling(Arrangement[y][x].num);
+           //    BombEnemy* bombEnemy = new BombEnemy();
+           //    bombEnemy->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
+           //    
+           //    bombEnemy->SetScale({ random_scale, random_scale, random_scale });
+           //    if (csv_file == csv_file_num::TUTORIAL_BOMB) bombEnemy->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
+           //    if (csv_file == csv_file_num::GAME)
+           //    {
+           //        random_angling();
+           //        bombEnemy->SetAngle({ 0, DirectX::XMConvertToRadians(Fixed_value_angle * random_angle), 0 });
+           //    }
+           //    enemyManager.Register(bombEnemy, ENEMYTAG::BOMB);
+           //}
+           
 
-                StrongSpear* strongSpear = new StrongSpear();
-                strongSpear->SetPosition(DirectX::XMFLOAT3(Reference_point_correction + x * CHIP_SIZE, 0, Reference_point_correction + y * CHIP_SIZE));
-                strongSpear->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
-                enemyManager.Register(strongSpear, ENEMYTAG::STRONG_SPEAR);
-            }
-        }
-    }
+           int stage_num;
+           if (kStage2_Start_Position > (y + kMap_Size_Hosei) * CHIP_SIZE)
+           {
+               stage_num = 0;
+           }
+           else if (kStage3_Start_Position > (y + kMap_Size_Hosei) * CHIP_SIZE)
+           {
+               stage_num = 1;
+           }
+           else if (kStage4_Start_Position > (y + kMap_Size_Hosei) * CHIP_SIZE)
+           {
+               stage_num = 2;
+           }
+           else
+           {
+               stage_num = 3;
+           }
+
+           if (Arrangement[y][x].num == ENEMYTAG::NORMAL_SWORD)
+           {
+
+               NormalSword* normalSword = new NormalSword();
+               normalSword->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + y  *CHIP_SIZE));
+               normalSword->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
+               normalSword->SetStageNum(stage_num);
+               enemyManager.Register(normalSword, ENEMYTAG::NORMAL_SWORD);
+           }
+           if (Arrangement[y][x].num == ENEMYTAG::STRONG_SWORD)
+           {
+
+               StrongSword* strongSword = new StrongSword();
+               strongSword->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + y *CHIP_SIZE));
+               strongSword->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
+               strongSword->SetStageNum(stage_num);
+               enemyManager.Register(strongSword, ENEMYTAG::STRONG_SWORD);
+           }
+           if (Arrangement[y][x].num == ENEMYTAG::NORMAL_SPEAR)
+           {
+
+               NormalSpear* normalSpear = new NormalSpear();
+               normalSpear->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + y *CHIP_SIZE));
+               normalSpear->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
+               normalSpear->SetStageNum(stage_num);
+               enemyManager.Register(normalSpear, ENEMYTAG::NORMAL_SPEAR);
+           }
+           if (Arrangement[y][x].num == ENEMYTAG::STRONG_SPEAR)
+           {
+
+               StrongSpear* strongSpear = new StrongSpear();
+               strongSpear->SetPosition(DirectX::XMFLOAT3(Reference_point_correction.x + x * CHIP_SIZE, step_offset, Reference_point_correction.y + y *CHIP_SIZE));
+               strongSpear->SetAngle({ 0, DirectX::XMConvertToRadians(180), 0 });
+               strongSpear->SetStageNum(stage_num);
+               enemyManager.Register(strongSpear, ENEMYTAG::STRONG_SPEAR);
+           }
+       }
+   }
 }

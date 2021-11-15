@@ -389,12 +389,13 @@ void Game::Load()
 
 	black_band = std::make_unique<Sprite>();
 
-	StageManager::Instance().AddStage(new All_Stage());
 	StageManager::Instance().AddStage(new Stage1_Volcano());
 	StageManager::Instance().AddStage(new Stage2_Desert());
 	StageManager::Instance().AddStage(new Stage3_Volcano());
 	StageManager::Instance().AddStage(new Stage4_Volcano());
+	StageManager::Instance().AddStage(new All_Stage());
 	StageManager::Instance().AddStage(new castle());
+	StageManager::Instance().AddStage(new Sky());
 
 	//UI初期化
 	HpBar					= std::make_unique<Sprite>("Data/Sprite/G_HP.png");
@@ -425,18 +426,21 @@ void Game::ImGui()
 
 	ImGui::Text("now_time : %.1f", GameSystem::Instance().NowTime());
 
-	DirectX::XMFLOAT3 pos = player->GetPosition();
-	ImGui::Text("player pos %.1f, %.1f, %.1f", pos.x, pos.y, pos.z);
+	ImGui::Text("stage_num : %d", stage_num);
 
-	float length;
-	DirectX::XMStoreFloat(&length, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&player->GetVelocity())));
-	ImGui::Text("velo length : %.1f", length);
-
-	DirectX::XMFLOAT3 velo = player->GetVelocity();
-	ImGui::Text("player velo %.1f, %.1f, %.1f", velo.x, velo.y, velo.z);
 
 	if (ImGui::CollapsingHeader("player", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		DirectX::XMFLOAT3 pos = player->GetPosition();
+		ImGui::Text("player pos %.1f, %.1f, %.1f", pos.x, pos.y, pos.z);
+
+		float length;
+		DirectX::XMStoreFloat(&length, DirectX::XMVector3Length(DirectX::XMLoadFloat3(&player->GetVelocity())));
+		ImGui::Text("velo length : %.1f", length);
+
+		DirectX::XMFLOAT3 velo = player->GetVelocity();
+		ImGui::Text("player velo %.1f, %.1f, %.1f", velo.x, velo.y, velo.z);
+
 		player->DrawDebugGUI();
 	}
 
@@ -505,7 +509,7 @@ void Game::CameraSet()
 		DirectX::XMConvertToRadians(45),
 		graphics.GetScreenWidth() / graphics.GetScreenHeight(),
 		0.1f,
-		1000.0f
+		3000.0f
 	);
 
 	//カメラコントローラー初期化

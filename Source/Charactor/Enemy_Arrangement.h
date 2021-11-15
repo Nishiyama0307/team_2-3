@@ -26,9 +26,10 @@ class Enemy_Arrangement
 public:
 
     //------< 定数 >------------------------------------------------------------
-    static const int CHIP_NUM_X = 500;       // マップの横方向のチップ数
-    static const int CHIP_NUM_Y = 500;       // マップの縦方向のチップ数
-    static const int CHIP_SIZE = 2;       // %演算子を使用するためint型を使用する
+
+    static const int CHIP_NUM_X = 225;       // マップの横方向のチップ数
+    static const int CHIP_NUM_Y = 926;       // マップの縦方向のチップ数
+    static const int CHIP_SIZE = 3;       // %演算子を使用するためint型を使用する
     static const int NORMAL_ENEMY_NUM = 170;       // normal_enemyの数
     static const int BOMB_ENEMY_NUM = 108;       // normal_enemyの数
 

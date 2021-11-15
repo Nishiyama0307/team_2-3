@@ -33,6 +33,7 @@
 
 # Others
 *.ini
+*.zip
 基盤/
 Data/
 External/
@@ -40,3 +41,4 @@ Shader/
 bin/
 obj/
 .vs/
+test/
