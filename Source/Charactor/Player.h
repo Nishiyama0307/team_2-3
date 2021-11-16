@@ -189,6 +189,6 @@ private:
 
 public:
 	//shiftダッシュのスタミナゲージ
-	float stamina = 0;
+	float stamina = 512;
 
 };

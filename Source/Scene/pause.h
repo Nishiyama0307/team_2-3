@@ -49,6 +49,9 @@ private:
     std::unique_ptr<Sprite> spr_endbox = nullptr;
     std::unique_ptr<Sprite> spr_back2 = nullptr;
 
+    std::unique_ptr<Sprite> spr_wood1 = nullptr;
+    std::unique_ptr<Sprite> spr_wood2 = nullptr;
+
     //“–‚½‚è”»’è
     C_Hitbox MouseBox;
     C_Hitbox StartBox;
@@ -61,4 +64,8 @@ private:
     Pos startPos;
     Pos endPos;
     Pos framePos;
+
+    //“_–Å
+    int timer1 = 0;
+    int timer2 = 0;
 };

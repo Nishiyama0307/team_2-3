@@ -26,10 +26,13 @@ Pause::Pause(Scene* scene_) : scene(scene_)
 
 
 	spr_mouseCursor = std::make_unique<Sprite>("Data/Sprite/cursor.png");
-	spr_start = std::make_unique<Sprite>("Data/Sprite/gamebuck.png");
+	spr_start = std::make_unique<Sprite>("Data/Sprite/select/gamebuck.png");
 	spr_frame = std::make_unique<Sprite>("Data/Sprite/frame.png");
-	spr_endbox = std::make_unique<Sprite>("Data/Sprite/titlebuck.png");
+	spr_endbox = std::make_unique<Sprite>("Data/Sprite/select/titlebuck.png");
 	spr_back2 = std::make_unique<Sprite>("Data/Sprite/back.png");
+
+	spr_wood1 = std::make_unique<Sprite>("Data/Sprite/select/wood.png");
+	spr_wood2 = std::make_unique<Sprite>("Data/Sprite/select/wood.png");
 
 	start_check = false;
 	end_check = false;
@@ -129,12 +132,12 @@ bool Pause::Update(float elapsedTime)
 	//ゲーム続行のボックス
 	StartBox.left = startPos.x;
 	StartBox.top = startPos.y;
-	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 400, 180);
+	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 500, 280);
 
 	//タイトルへボックス
 	EndBox.left = endPos.x;
 	EndBox.top = endPos.y;
-	C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 400, 180);
+	C_OffsetBox(EndBox.top, EndBox.left, EndBox.bottom, EndBox.right, 500, 280);
 
 	//判定 (マウスとゲーム続行へのボックス)
 	start_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
@@ -152,6 +155,9 @@ bool Pause::Update(float elapsedTime)
 			framePos.x = startPos.x;
 			framePos.y = startPos.y;
 			check_state = 1;
+
+			timer1++;
+			timer2 = 0;
 		}
 		else if (end_check)
 		{
@@ -159,11 +165,17 @@ bool Pause::Update(float elapsedTime)
 			framePos.x = endPos.x;
 			framePos.y = endPos.y;
 			check_state = 2;
+
+			timer1 = 0;
+			timer2++;
 		}
 		else
 		{
 			hit = false;
 			check_state = 0;
+
+			timer1 = 0;
+			timer2 = 0;
 		}
 
 		switch (check_state)
@@ -205,6 +217,8 @@ void Pause::SpriteRender(ID3D11DeviceContext* dc)
 	float spr_endWidth = CAST_F(spr_end->GetTextureWidth());
 	float spr_endHeight = CAST_F(spr_end->GetTextureHeight());
 
+	
+
 	{
 		//背面
 		spr_back2->Render(dc,
@@ -213,28 +227,47 @@ void Pause::SpriteRender(ID3D11DeviceContext* dc)
 			0,
 			0, 0, 0, 0.6f);
 
+		spr_wood1->Render2(dc,
+			startPos.x, startPos.y,
+			1.0f, 1.0f,
+			0, 0,
+			500, 280,
+			0, 0,
+			(0),
+			1, 1, 1, 1);
+		spr_wood2->Render2(dc,
+			endPos.x, endPos.y,
+			1.0f, 1.0f,
+			0, 0,
+			500, 280,
+			0, 0,
+			(0),
+			1, 1, 1, 1);
+
 		//続行
+		if(timer1 / 32 % 2 || !start_check)
 		spr_start->Render(dc,
-			startPos.x, startPos.y, 400, 180,
-			0, 0, 400, 180,
+			startPos.x, startPos.y, 500, 280,
+			0, 0, 500, 280,
 			0,
 			1, 1, 1, 1);
 
 		//タイトルへ
+		if(timer2 / 32 % 2 || !end_check)
 		spr_endbox->Render(dc,
-			endPos.x, endPos.y, 400, 180,
-			0, 0, 400, 180,
+			endPos.x, endPos.y, 500 , 280 ,
+			0, 0, 500, 280,
 			0,
 			1, 1, 1, 1);
 
 		if (hit)
 		{
 			//確認用フレーム
-			spr_frame->Render(dc,
-				framePos.x, framePos.y, 400, 180,
-				0, 0, 512, 256,
-				0,
-				1, 1, 1, 1);
+			//spr_frame->Render(dc,
+			//	framePos.x, framePos.y, 400, 180,
+			//	0, 0, 512, 256,
+			//	0,
+			//	1, 1, 1, 1);
 		}
 
 		//マウスカーソル

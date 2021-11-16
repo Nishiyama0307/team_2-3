@@ -23,15 +23,17 @@ void Loading::Update(float elapsedTime)
 	angle += elapsedTime * 200.0f;/* TEST: 後で消す */
 
 	LoadTimer +=  10.0f;
-	if (LoadTimer > 100.0f)
+	if (LoadTimer > 150.0f)
 	{
-		texPos.x = 464*1;
-	}
-	if (LoadTimer > 200.0f)
-	{
-		texPos.x = 464*2;
+		//texPos.x = 464*1;
+		texPos.x = 1920*1;
 	}
 	if (LoadTimer > 300.0f)
+	{
+		//texPos.x = 464*2;
+		texPos.x = 1920 * 2;
+	}
+	if (LoadTimer > 450.0f)
 	{
 		texPos.x = 0;
 		LoadTimer = 0;
@@ -90,12 +92,22 @@ void Loading::SpriteRender(ID3D11DeviceContext* dc)
 		(0),
 		1, 1, 1, 1);
 
+	//spr_load_word->Render2(dc,
+	//	1350, 900,
+	//	/*1000, 500,*/
+	//	1.0f, 1.0f,
+	//	texPos.x, texPos.y,
+	//	464, 140,
+	//	0, 0,
+	//	0,
+	//	1, 1, 1, 1);
+
 	spr_load_word->Render2(dc,
-		1350, 900,
-		/*1000, 500,*/
+		/*1350, 900,*/
+		0, -30,
 		1.0f, 1.0f,
 		texPos.x, texPos.y,
-		464, 140,
+		1920, 1080,
 		0, 0,
 		0,
 		1, 1, 1, 1);
@@ -131,8 +143,8 @@ void Loading::Load()
 	spr_back = std::make_unique<Sprite>("Data/Sprite/タイトルロゴなし背景画像（リザルト）.png");
 	spr_icon = new Sprite("Data/Sprite/ローディング.png");
 
-	spr_load = std::make_unique<Sprite>("Data/Sprite/road.png");
-	spr_load_word = std::make_unique<Sprite>("Data/Sprite/road_moji2.png");
+	spr_load		= std::make_unique<Sprite>("Data/Sprite/scene/road.png");
+	spr_load_word	= std::make_unique<Sprite>("Data/Sprite/scene/road_moji3.png");
 }
 
 

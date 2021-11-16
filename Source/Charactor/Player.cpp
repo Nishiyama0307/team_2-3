@@ -261,7 +261,7 @@ void Player::InputMove(float elapsedTime)
 	{
 		////走ってるとき
 		case AnimeState::State_Run:
-			if (stamina == 512)
+			if (stamina == 0)
 				moveSpeed = 10;
 			else
 				moveSpeed = 50;
@@ -538,9 +538,9 @@ void Player::Idel_change()
 //待機ステート更新
 void Player::UpdateIdel(float elapsedTime)
 {
-	stamina -= 20 * elapsedTime;
-	if (stamina < 0)
-		stamina = 0;
+	stamina += 20 * elapsedTime;
+	if (stamina > 512)
+		stamina = 512;
 
 	//ポーズ解除時、攻撃とポーズ解除の左クリックが同時に処理されるので１フレームだけ動かさない
 	if (f1)
@@ -759,9 +759,9 @@ void Player::UpdateWalk(float elapsedTime)
 	Input(elapsedTime);							// 入力処理
 	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
 
-	stamina -= 20 * elapsedTime;
-	if (stamina < 0)
-		stamina = 0;
+	stamina += 20 * elapsedTime;
+	if (stamina > 512)
+		stamina = 512;
 
 	GamePad& pad = Input::Instance().GetGamePad();
 	const GamePadButton button = GamePad::BTN_SHIFT;
@@ -796,9 +796,9 @@ void Player::UpdateRun(float elapsedTime)
 	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
 
 	//スタミナ
-	stamina += 40 * elapsedTime;
-	if (stamina > 512)
-		stamina = 512;
+	stamina -= 40 * elapsedTime;
+	if (stamina < 0)
+		stamina = 0;
 
 	GamePad& pad = Input::Instance().GetGamePad();
 	const GamePadButton button = GamePad::BTN_SHIFT;

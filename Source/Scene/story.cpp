@@ -19,10 +19,19 @@
 
 void Story::Update(float elapsedtime)
 {
+
 	ShowCursor(false);
 	GamePad& gamePad = Input::Instance().GetGamePad();
 	Mouse& mouseButton = Input::Instance().GetMouse();
 
+
+	if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)
+	{
+		story_state++;
+	}
+	if (story_state > 6)
+		story_state = 6;
+	
 	//マウスボックス
 	Mouse& mouse = Input::Instance().GetMouse();
 	mousePos.x = mouse.GetPositionX() - 16;
@@ -34,12 +43,12 @@ void Story::Update(float elapsedtime)
 	//スタートのボックス
 	StartBox.left = startPos.x;
 	StartBox.top = startPos.y;
-	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 400, 180);
+	C_OffsetBox(StartBox.top, StartBox.left, StartBox.bottom, StartBox.right, 500*0.6, 280*0.6);
 
 	//チュートリアルへボックス
 	tutorialBox.left = tutorialPos.x;
 	tutorialBox.top =  tutorialPos.y;
-	C_OffsetBox(tutorialBox.top, tutorialBox.left, tutorialBox.bottom, tutorialBox.right, 400, 180);
+	C_OffsetBox(tutorialBox.top, tutorialBox.left, tutorialBox.bottom, tutorialBox.right, 500* 0.6, 280*0.6);
 
 	//判定 (マウスとゲームへのボックス)
 	start_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
@@ -49,36 +58,49 @@ void Story::Update(float elapsedtime)
 	tutorial_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
 		tutorialBox.top, tutorialBox.left, tutorialBox.bottom, tutorialBox.right);
 
-	//当たった時の処理
-	if (start_check)
+	if (story_state == 6)
 	{
-		hit = true;
-		framePos.x = startPos.x;
-		framePos.y = startPos.y;
-		check_state = 1;
-	}
-	else if (tutorial_check)
-	{
-		hit = true;
-		framePos.x = tutorialPos.x;
-		framePos.y = tutorialPos.y;
-		check_state = 2;
-	}
-	else
-	{
-		hit = false;
-		check_state = 0;
-	}
 
-	switch (check_state)
-	{
-	case 1:	//ゲームシーンへ
-		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new Game());
-		break;
+		//当たった時の処理
+		if (start_check)
+		{
+			hit = true;
+			framePos.x = startPos.x;
+			framePos.y = startPos.y;
+			check_state = 1;
 
-	case 2: //チュートリアルへ
-		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)ChangeNextScene(new Tutorial());
-		break;
+			timer1++;
+			timer2 = 0;
+		}
+		else if (tutorial_check)
+		{
+			hit = true;
+			framePos.x = tutorialPos.x;
+			framePos.y = tutorialPos.y;
+			check_state = 2;
+
+			timer1 = 0;
+			timer2++;
+		}
+		else
+		{
+			hit = false;
+			check_state = 0;
+
+			timer1 = 0;
+			timer2 = 0;
+		}
+
+		switch (check_state)
+		{
+		case 1:	//ゲームシーンへ
+			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new Game());
+			break;
+
+		case 2: //チュートリアルへ
+			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)ChangeNextScene(new Tutorial());
+			break;
+		}
 	}
 }
 
@@ -99,28 +121,145 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 		1, 1, 1, 1);
 
 	{
-		//NO
-		spr_start->Render(dc,
-			startPos.x, startPos.y, 400, 180,
-			0, 0, 400, 180,
-			0,
-			1, 1, 1, 1);
+		switch (story_state)
+		{
+		case 0:
+			spr_story1->Render2(dc,
+				0, 0,
+				1, 1,
+				0, 0,
+				1920, 1080,
+				0, 0,
+				0,
+				1, 1, 1, 1);
+			break;
 
-		//Yes
-		spr_tutorial->Render(dc,
-			tutorialPos.x, tutorialPos.y, 400, 180,
-			0, 0, 400, 180,
-			0,
-			1, 1, 1, 1);
+		case 1:
+			spr_story2->Render2(dc,
+				0, 0,
+				1, 1,
+				0, 0,
+				1920, 1080,
+				0, 0,
+				0,
+				1, 1, 1, 1);
+			break;
+
+		case 2:
+			spr_story3->Render2(dc,
+				0, 0,
+				1, 1,
+				0, 0,
+				1920, 1080,
+				0, 0,
+				0,
+				1, 1, 1, 1);
+			break;
+
+		case 3:
+			spr_story4->Render2(dc,
+				0, 0,
+				1, 1,
+				0, 0,
+				1920, 1080,
+				0, 0,
+				0,
+				1, 1, 1, 1);
+			break;
+
+		case 4:
+			spr_story5->Render2(dc,
+				0, 0,
+				1, 1,
+				0, 0,
+				1920, 1080,
+				0, 0,
+				0,
+				1, 1, 1, 1);
+			break;
+
+		case 5:
+			spr_story6->Render2(dc,
+				0, 0,
+				1, 1,
+				0, 0,
+				1920, 1080,
+				0, 0,
+				0,
+				1, 1, 1, 1);
+			break;
+
+		case 6:
+			//チュートリアルへ
+			{
+				//木の板
+				spr_wood1->Render2(dc,
+					startPos.x, startPos.y,
+					0.6f, 0.6f,
+					0, 0,
+					500, 280,
+					0, 0,
+					(0),
+					1, 1, 1, 1);
+				spr_wood2->Render2(dc,
+					tutorialPos.x, tutorialPos.y,
+					0.6f, 0.6f,
+					0, 0,
+					500, 280,
+					0, 0,
+					(0),
+					1, 1, 1, 1);
+				spr_wood3->Render2(dc,
+					600, 200,
+					1, 1,
+					0, 0,
+					500, 280,
+					0, 0,
+					0,
+					1, 1, 1, 1);
+
+
+				//NO
+				if(timer1 / 32 % 2 || !start_check)
+				spr_start->Render(dc,
+					startPos.x, startPos.y, 500 * 0.6, 280 * 0.6,
+					0, 0, 500, 280,
+					0,
+					1, 1, 1, 1);
+
+				//Yes
+				if(timer2 / 32 % 2 || !tutorial_check)
+				spr_tutorial->Render(dc,
+					tutorialPos.x, tutorialPos.y, 500 * 0.6, 280 * 0.6,
+					0, 0, 500, 280,
+					0,
+					1, 1, 1, 1);
+
+				//question
+				spr_question->Render2(dc,
+					600, 200,
+					1, 1,
+					0, 0,
+					500, 280,
+					0, 0,
+					0,
+					1, 1, 1, 1);
+			}
+		break;
+		}
+	}
+
+
+	
 
 		if (hit)
 		{
 			//確認用フレーム
-			spr_frame->Render(dc,
-				framePos.x, framePos.y, 400, 180,
-				0, 0, 512, 256,
-				0,
-				1, 1, 1, 1);
+			//spr_frame->Render(dc,
+			//	framePos.x, framePos.y, 400, 180,
+			//	0, 0, 512, 256,
+			//	0,
+			//	1, 1, 1, 1);
 		}
 
 		//マウスカーソル
@@ -129,7 +268,7 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 			0, 0, 64, 64,
 			0,
 			1, 1, 1, 1);
-	}
+	
 }
 
 void Story::DeInit()
@@ -142,11 +281,11 @@ void Story::Set()
 	start_check = false;
 	tutorial_check = false;
 
-	startPos.x = 300;
-	startPos.y = 700;
+	startPos.x = 1400;
+	startPos.y = 800;
 
-	tutorialPos.x = 1000;
-	tutorialPos.y = 700;
+	tutorialPos.x = 1400;
+	tutorialPos.y = 500;
 
 	framePos.x = 0;
 	framePos.y = 0;
@@ -155,10 +294,22 @@ void Story::Set()
 void Story::Load()
 {
 	spr_mouseCursor = std::make_unique<Sprite>("Data/Sprite/cursor.png");
-	spr_haikei = std::make_unique<Sprite>("Data/Sprite/ストーリー.png");
-	spr_start = std::make_unique<Sprite>("Data/Sprite/no.png");
+	spr_haikei = std::make_unique<Sprite>("Data/Sprite/story/maou02.png");
+	spr_start = std::make_unique<Sprite>("Data/Sprite/select/no.png");
 	spr_frame = std::make_unique<Sprite>("Data/Sprite/frame.png");
-	spr_tutorial = std::make_unique<Sprite>("Data/Sprite/yes.png");
+	spr_tutorial = std::make_unique<Sprite>("Data/Sprite/select/yes.png");
+
+	spr_story1 = std::make_unique<Sprite>("Data/Sprite/story/Story1.png");
+	spr_story2 = std::make_unique<Sprite>("Data/Sprite/story/Story2.png");
+	spr_story3 = std::make_unique<Sprite>("Data/Sprite/story/Story3.png");
+	spr_story4 = std::make_unique<Sprite>("Data/Sprite/story/Story4.png");
+	spr_story5 = std::make_unique<Sprite>("Data/Sprite/story/Story5.png");
+	spr_story6 = std::make_unique<Sprite>("Data/Sprite/story/Story6.png");
+
+	spr_wood1 = std::make_unique<Sprite>("Data/Sprite/select/wood.png");
+	spr_wood2 = std::make_unique<Sprite>("Data/Sprite/select/wood.png");
+	spr_wood3 = std::make_unique<Sprite>("Data/Sprite/select/wood2.png");
+	spr_question = std::make_unique<Sprite>("Data/Sprite/select/tutorial_what.png");
 }
 
 void Story::ImGui()

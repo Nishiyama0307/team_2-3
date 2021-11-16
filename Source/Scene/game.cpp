@@ -48,8 +48,9 @@ void Game::Update(float elapsedTime)
 		ChangeNextScene(new Result);
 	}
 	//城の体力が無くなったらゲームオーバーへ(仮)
-	//if(CastleHP < 0){
-	//	ChangeNextScene(new Title);
+	//if(CastleHP == 0){
+	//	result = Game_over2;
+	//	ChangeNextScene(new Result);
 	//}
 
 	GameSystem::Instance().HitStopUpdate(elapsedTime);
@@ -217,7 +218,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0,
 			1, 1, 1, 1);
 
-		//ストレスアイコン
+		//スタミナアイコン
 		StressIcon->Render2(dc,
 			26, 103,
 			1.0f, 1.0f,
@@ -409,21 +410,21 @@ void Game::Load()
 	StageManager::Instance().AddStage(new Sky());
 
 	//UI初期化
-	HpBar					= std::make_unique<Sprite>("Data/Sprite/G_HP.png");
-	HpBarFrame				= std::make_unique<Sprite>("Data/Sprite/HP黒帯.png");
-	HpIcon					= std::make_unique<Sprite>("Data/Sprite/I_HP.png");
-	StressBar				= std::make_unique<Sprite>("Data/Sprite/ストレス.png");
-	StressBarFrame			= std::make_unique<Sprite>("Data/Sprite/ストレス黒帯.png");
-	StressIcon				= std::make_unique<Sprite>("Data/Sprite/I_box.png");
-	GoldBar					= std::make_unique<Sprite>("Data/Sprite/G_gold.png");
-	GoldIcon				= std::make_unique<Sprite>("Data/Sprite/I_gold.png");
-	Minimap					= std::make_unique<Sprite>("Data/Sprite/map.png");
-	Castlebar				= std::make_unique<Sprite>("Data/Sprite/城.png");
-	CastlebarFrame			= std::make_unique<Sprite>("Data/Sprite/城黒帯.png");
-	AttackSlot1				= std::make_unique<Sprite>("Data/Sprite/AT1.png");
-	AttackSlot2				= std::make_unique<Sprite>("Data/Sprite/AT2.png");
-	AttackSlot3				= std::make_unique<Sprite>("Data/Sprite/AT3.png");
-	AttackSelect			= std::make_unique<Sprite>("Data/Sprite/attack_waku_R.png");
+	HpBar					= std::make_unique<Sprite>("Data/Sprite/ui/G_HP.png");
+	HpBarFrame				= std::make_unique<Sprite>("Data/Sprite/ui/HP黒帯.png");
+	HpIcon					= std::make_unique<Sprite>("Data/Sprite/ui/I_HP.png");
+	StressBar				= std::make_unique<Sprite>("Data/Sprite/ui/ストレス.png");
+	StressBarFrame			= std::make_unique<Sprite>("Data/Sprite/ui/ストレス黒帯.png");
+	StressIcon				= std::make_unique<Sprite>("Data/Sprite/ui/I_box.png");
+	//GoldBar				= std::make_unique<Sprite>("Data/Sprite/G_gold.png");
+	//GoldIcon				= std::make_unique<Sprite>("Data/Sprite/I_gold.png");
+	Minimap					= std::make_unique<Sprite>("Data/Sprite/ui/map.png");
+	Castlebar				= std::make_unique<Sprite>("Data/Sprite/ui/城.png");
+	CastlebarFrame			= std::make_unique<Sprite>("Data/Sprite/ui/城黒帯.png");
+	AttackSlot1				= std::make_unique<Sprite>("Data/Sprite/ui/AT1.png");
+	AttackSlot2				= std::make_unique<Sprite>("Data/Sprite/ui/AT2.png");
+	AttackSlot3				= std::make_unique<Sprite>("Data/Sprite/ui/AT3.png");
+	AttackSelect			= std::make_unique<Sprite>("Data/Sprite/ui/attack_waku_R.png");
 }
 
 

@@ -46,12 +46,11 @@ private:
     Pos mousePos;
 
     std::unique_ptr<Sprite> spr_start = nullptr;
-    std::unique_ptr<Sprite> spr_start2 = nullptr;
     std::unique_ptr<Sprite> spr_frame = nullptr;
     std::unique_ptr<Sprite> spr_endbox = nullptr;
-    std::unique_ptr<Sprite> spr_endbox2 = nullptr;
-    std::unique_ptr<Sprite> spr_belt1 = nullptr;
-    std::unique_ptr<Sprite> spr_belt2 = nullptr;
+
+    std::unique_ptr<Sprite> spr_wood1 = nullptr;
+    std::unique_ptr<Sprite> spr_wood2 = nullptr;
 
     float rgb_A1 = 0.4f;
     float rgb_A2 = 0.4f;
@@ -65,12 +64,14 @@ private:
     bool end_check = false;
     int check_state = 0;
 
-    float timer1 = 0;
-    float timer2 = 0;
-
     Pos startPos;
     Pos startPos2;
     Pos endPos;
     Pos endPos2;
     Pos framePos;
+
+    //“_–Å
+    int timer1 = 0;
+    int timer2 = 0;
+
 };

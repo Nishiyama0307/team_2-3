@@ -93,6 +93,8 @@ void Result::SpriteRender(ID3D11DeviceContext* dc)
 	float spr_endWidth = CAST_F(spr_end->GetTextureWidth());
 	float spr_endHeight = CAST_F(spr_end->GetTextureHeight());
 
+#if 0
+
 	spr_back->Render2(dc,
 		0, 0,						// 表示位置
 		1.0f, 1.0f,									// スケール
@@ -153,13 +155,16 @@ void Result::SpriteRender(ID3D11DeviceContext* dc)
 			angle,										// 角度
 			1, 1, 1, 1);								// 色情報(r,g,b,a)
 	}
+# endif
 
 	//分岐
 	switch (result)
 	{
+		//クリア
 	case Game_clear:
 		break;
 
+		//自身の体力が0
 	case Game_over1:
 		spr_over1->Render2(dc,
 			0, 0,
@@ -171,7 +176,16 @@ void Result::SpriteRender(ID3D11DeviceContext* dc)
 			1, 1, 1, 1);
 		break;
 
+		//城の体力が0
 	case Game_over2:
+		spr_over2->Render2(dc,
+			0, 0,
+			1.5f, 1.5f,
+			0, 0,
+			1280, 720,
+			0, 0,
+			angle,
+			1, 1, 1, 1);
 		break;
 	}
 	//マウスカーソル
@@ -222,8 +236,9 @@ void Result::Load()
 
 	spr_mouseCursor = std::make_unique<Sprite>("Data/Sprite/cursor.png");
 
-	spr_clear = std::make_unique<Sprite>("Data/Sprite/クリア.png");
-	spr_over1 = std::make_unique<Sprite>("Data/Sprite/maou_down.png");
+	spr_clear = std::make_unique<Sprite>("Data/Sprite/scene/クリア.png");
+	spr_over1 = std::make_unique<Sprite>("Data/Sprite/scene/maou_down.png");
+	spr_over2 = std::make_unique<Sprite>("Data/Sprite/scene/maou_houkai.png");
 }
 
 

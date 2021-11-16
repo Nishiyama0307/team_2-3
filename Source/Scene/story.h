@@ -30,7 +30,21 @@ private:
     std::unique_ptr<Sprite> spr_frame = nullptr;
     std::unique_ptr<Sprite> spr_tutorial = nullptr;
     std::unique_ptr<Sprite> spr_mouseCursor = nullptr;
+    std::unique_ptr<Sprite> spr_question = nullptr;
+
     Pos mousePos;
+
+    int story_state = 0;
+    std::unique_ptr<Sprite> spr_story1 = nullptr;
+    std::unique_ptr<Sprite> spr_story2 = nullptr;
+    std::unique_ptr<Sprite> spr_story3 = nullptr;
+    std::unique_ptr<Sprite> spr_story4 = nullptr;
+    std::unique_ptr<Sprite> spr_story5 = nullptr;
+    std::unique_ptr<Sprite> spr_story6 = nullptr;
+
+    std::unique_ptr<Sprite> spr_wood1 = nullptr;
+    std::unique_ptr<Sprite> spr_wood2 = nullptr;
+    std::unique_ptr<Sprite> spr_wood3 = nullptr;
 
     //“–‚½‚è”»’è
     C_Hitbox MouseBox;
@@ -44,5 +58,9 @@ private:
     Pos startPos;
     Pos tutorialPos;
     Pos framePos;
+
+    //“_–Å
+    int timer1 = 0;
+    int timer2 = 0;
 
 };
