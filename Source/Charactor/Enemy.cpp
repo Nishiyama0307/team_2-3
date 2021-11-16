@@ -102,8 +102,6 @@ void Enemy::UpdateVelocity(float elapsedTime, int kind, const DirectX::XMFLOAT3&
 
 	//if (!wall_hit) UpdateMove(elapsedTime, playerPos);
 
-	if (Is_inhaling == false) return;
-
 
 }
 //
@@ -585,5 +583,9 @@ void Enemy::OnDead()
 // ’…’n‚µ‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚é
 void Enemy::OnLanding()
 {
-	start_position.y = position.y;
+	if(/*Only_once &&*/ stage_num == 1) // ˆê“x‚¾‚¯’Ê‚é
+	{
+		start_position.y = position.y;
+		//Only_once = false;
+	}
 }

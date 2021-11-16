@@ -225,7 +225,6 @@
     <ClInclude Include="Source\Charactor\Enemy.h" />
     <ClInclude Include="Source\Charactor\EnemyManager.h" />
     <ClInclude Include="Source\Charactor\Enemy_Arrangement.h" />
-    <ClInclude Include="Source\Charactor\inhale.h" />
     <ClInclude Include="Source\Charactor\NormalSpear.h" />
     <ClInclude Include="Source\Charactor\NormalSword.h" />
     <ClInclude Include="Source\Charactor\Player.h" />
@@ -291,7 +290,6 @@
     <ClCompile Include="Source\Charactor\Enemy.cpp" />
     <ClCompile Include="Source\Charactor\EnemyManager.cpp" />
     <ClCompile Include="Source\Charactor\Enemy_Arrangement.cpp" />
-    <ClCompile Include="Source\Charactor\inhale.cpp" />
     <ClCompile Include="Source\Charactor\NormalSpear.cpp" />
     <ClCompile Include="Source\Charactor\NormalSword.cpp" />
     <ClCompile Include="Source\Charactor\Player.cpp" />

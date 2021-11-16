@@ -20,7 +20,7 @@ void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos,
 	}
 	for (auto& enemy : enemies)
 	{
-		//if (stage_num == enemy->stage_num)
+		if (stage_num == enemy->stage_num)
 		{
 			enemy->Update(elapsedTime, playerPos, stage_num);
 		}
@@ -168,10 +168,15 @@ void EnemyManager::DrawDebugGUI()
 // エネミー登録
 void EnemyManager::Register(Enemy* enemy, ENEMYTAG tag)
 {
+	// 基準点の設定
 	enemy->start_position = enemy->GetPosition();
-	enemy->SetInhaleParameter();
-	enemies.emplace_back(enemy);
+	// 配置後に一度だけ更新することで原点から移動させる
+	enemy->UpdateTransform();
+	enemy->model->UpdateTransform(enemy->GetTransform());
+	// どの種類の敵か
 	enemy->enemy_tag = tag;
+	// 登録
+	enemies.emplace_back(enemy);
 }
 void EnemyManager::Clear()
 {

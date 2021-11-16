@@ -21,8 +21,6 @@ Player::Player()
 
 	radius = 5.0f;
 
-	inhale = new Inhale(this);
-
 	position.y = scale.y + scale.y * 1.7f;
 
 	height = 10.0f;
@@ -51,7 +49,6 @@ Player::Player()
 Player::~Player()
 {
 	safe_delete(model);
-	safe_delete(inhale);
 }
 
 
@@ -137,8 +134,6 @@ void Player::Update(float elapsedTime, int stage_num, bool explaining)
 
 		if (stage_num == 0) Stage1_Gimmick();
 
-		inhale->Update(elapsedTime);				// 掃除機機能の更新
-
 		front = GetFront();
 
 		EnemyAttckHit();
@@ -212,8 +207,6 @@ void Player::Input(float elapsedTime)
 	// ジャンプ入力処理
 	InputJump();
 
-	// 吸い込みの入力処理
-	//InputInhale();
 }
 
 
@@ -362,13 +355,6 @@ void Player::Turn(float elapsedTime, float vx, float vz, float speed)
 
 }
 
-
-void Player::InputInhale()
-{
-	inhale->InputInhale();
-
-}
-
 void Player::Stage1_Gimmick()
 {
 
@@ -478,7 +464,6 @@ void Player::DrawDebugPrimitive()
 		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 2)) },
 			radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 
-	inhale->DebugRender();
 }
 
 

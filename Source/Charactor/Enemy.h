@@ -39,9 +39,6 @@ public:
 	void UpdateVelocity(float elapsedTime, int kind, const DirectX::XMFLOAT3& playerPos);
 	//void UpdateHorizontalMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos);
 
-	// inhaled(形容詞で吸い込まれた)
-	virtual DirectX::XMFLOAT3 inhaled() = 0;
-
 	// デバッグプリミティブ描画
 	virtual void DrawDebugPrimitive();
 
@@ -75,9 +72,9 @@ public:
 	DirectX::XMFLOAT3 GetFront() { return ConvertToIdentityVec(transform._31, transform._32, transform._33); }
 
 public: // Get関数
+	const DirectX::XMFLOAT4X4& GetTransform() const { return transform; }
 public: // Set関数
 	void SetPlayerAddress(Player* player_) { player = player_; }
-	virtual void SetInhaleParameter() = 0;
 	void SetStageNum(int stage_num) { this->stage_num = stage_num; }
 
 public: // length
@@ -89,7 +86,6 @@ public:
 
 	float lengthSq;
 
-	bool Is_inhaling = false; // Is_inhaling(吸入中) = 吸い込まれてるかどうか
 	Player* player = nullptr;
 
 
@@ -114,6 +110,7 @@ public:
 	int stage_num;
 
 	float animTimer = 0;
+	bool Only_once{ true };
 
 private:
 	DirectX::XMFLOAT3 ConvertToIdentityVec(float x, float y, float z)

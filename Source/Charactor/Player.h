@@ -3,7 +3,6 @@
 #include "Graphics/Shader.h"
 #include "Graphics/Model.h"
 #include "Character.h"
-#include "inhale.h"
 
 //#include "Audio/Audio.h"
 
@@ -59,8 +58,6 @@ private:
 
 	void Turn(float elapsedTime, float vx, float vz, float speed)override;
 
-	void InputInhale();
-
 	void Stage1_Gimmick();
 
 	void OnDead();
@@ -94,8 +91,6 @@ private:
 #else
 	int				jumpLimit = 1;
 #endif
-
-	Inhale* inhale = nullptr;				// ‹z‚¢‚İŠÖŒW‚Ìˆ—ƒNƒ‰ƒX
 
 	//float	velocity_calc = 0;
 

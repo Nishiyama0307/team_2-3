@@ -231,9 +231,6 @@
     <ClInclude Include="Source\Charactor\EnemyManager.h">
       <Filter>Source\Charater</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Charactor\inhale.h">
-      <Filter>Source\Charater</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Charactor\NormalSpear.h">
       <Filter>Source\Charater</Filter>
     </ClInclude>
@@ -402,9 +399,6 @@
       <Filter>Source\Charater</Filter>
     </ClCompile>
     <ClCompile Include="Source\Charactor\EnemyManager.cpp">
-      <Filter>Source\Charater</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Charactor\inhale.cpp">
       <Filter>Source\Charater</Filter>
     </ClCompile>
     <ClCompile Include="Source\Charactor\NormalSpear.cpp">

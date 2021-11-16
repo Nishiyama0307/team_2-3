@@ -13,13 +13,9 @@ public:
 	void Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos, int stage_num) override;
 	void Render(ID3D11DeviceContext* dc, Shader* shader) override;
 
-	DirectX::XMFLOAT3 inhaled() override;
-
-
 	//// ƒvƒŒƒCƒ„[‚É‘Î‚µ‚Ä‚Ì’Ç”ö“®ì
 	//void HomingMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos);
 
-	void SetInhaleParameter();
 	void SetParameter(Parameter param) { this->par = param; };
 
 
