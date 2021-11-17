@@ -300,11 +300,11 @@ void Enemy::UpdateMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 
 
 #ifdef _DEBUG
-		//AttackMove(elapsedTime, playerPos);
-		//
-		//RandomMove(elapsedTime);
-		//
-		//HomingMove(elapsedTime, playerPos);
+		AttackMove(elapsedTime, playerPos);
+		
+		RandomMove(elapsedTime);
+		
+		HomingMove(elapsedTime, playerPos);
 #else
 		AttackMove(elapsedTime, playerPos);
 
@@ -546,19 +546,20 @@ void Enemy::AttackMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 		if (model->GetIndex() != ANIMINDEX::ATTACK)
 		{
 			model->PlayAnimation(ANIMINDEX::ATTACK, false);
-			//アニメのフレームのタイマー...のつもりだが攻撃回数分しかtimerがプラスされていない状態
+			animTimer = 0;
+			attack = false;
 		}
 		animTimer++;
 		if (animTimer > 38.28f /*5*/) //約0.6秒 
 		{
 			attack = true;
 		}
-		if (model->GetIndex() == ANIMINDEX::ATTACK)
-		if (!model->IsPlayAnimation()) //このifを通っていない->何故分からない…
-		{
-			animTimer = 0;
-			attack = false;
-		}
+		//if (model->GetIndex() == ANIMINDEX::ATTACK)
+		//if (!model->IsPlayAnimation()) //このifを通っていない->何故分からない…
+		//{
+		//	animTimer = 0;
+		//	attack = false;
+		//}
 	}
 	else if(is_attacking_ && model->IsPlayAnimation() == false)
 	{
