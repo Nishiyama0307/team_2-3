@@ -105,4 +105,9 @@ private:
     float attackPosY3 = 0;
 
     float CastleHP = 0;
+
+    //ゲームオーバー時フェードアウト
+    std::unique_ptr<Sprite> spr_fadeOut = nullptr;
+    float fade_timer = 0;
+    bool is_fadeSprite = false;
 };

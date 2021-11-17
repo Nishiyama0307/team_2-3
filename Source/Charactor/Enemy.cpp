@@ -31,7 +31,7 @@ void Enemy::DrawDebugPrimitive()
 
 	if(attack)
 		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 4)) },
-			radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+			radius, height, DirectX::XMFLOAT4(1, 0, 0, 1));
 
 	switch (enemy_tag)
 	{
@@ -546,20 +546,23 @@ void Enemy::AttackMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 		if (model->GetIndex() != ANIMINDEX::ATTACK)
 		{
 			model->PlayAnimation(ANIMINDEX::ATTACK, false);
-			this->animTimer = 1 * elapsedTime;
+			//アニメのフレームのタイマー...のつもりだが攻撃回数分しかtimerがプラスされていない状態
 		}
-		//if (this->animTimer > 5.0f)
-		//{
-			attack = true;
-		//}
-		if (!model->IsPlayAnimation())
+		animTimer++;
+		if (animTimer > 38.28f /*5*/) //約0.6秒 
 		{
-			//this->animTimer = 0;
+			attack = true;
+		}
+		if (model->GetIndex() == ANIMINDEX::ATTACK)
+		if (!model->IsPlayAnimation()) //このifを通っていない->何故分からない…
+		{
+			animTimer = 0;
 			attack = false;
 		}
 	}
 	else if(is_attacking_ && model->IsPlayAnimation() == false)
 	{
+		attack = false;
 		is_attacking_ = false;
 		if (model->GetIndex() != ANIMINDEX::RUN) model->PlayAnimation(ANIMINDEX::RUN, true);
 	}

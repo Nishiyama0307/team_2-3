@@ -34,6 +34,7 @@ private:
 
     Pos mousePos;
 
+    //ストーリーの1枚絵
     int story_state = 0;
     std::unique_ptr<Sprite> spr_story1 = nullptr;
     std::unique_ptr<Sprite> spr_story2 = nullptr;
@@ -42,6 +43,15 @@ private:
     std::unique_ptr<Sprite> spr_story5 = nullptr;
     std::unique_ptr<Sprite> spr_story6 = nullptr;
 
+    float posx1;
+    float posx2;
+    float posx3;
+    float posx4;
+    float posx5;
+    float posx6;
+    bool is_change = false;
+
+    //選択
     std::unique_ptr<Sprite> spr_wood1 = nullptr;
     std::unique_ptr<Sprite> spr_wood2 = nullptr;
     std::unique_ptr<Sprite> spr_wood3 = nullptr;

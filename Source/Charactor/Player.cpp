@@ -690,7 +690,7 @@ void Player::Damage_change()
 	state = AnimeState::State_Damage;
 	if(model->GetIndex() != Anim_Damage)
 	model->PlayAnimation(Anim_Damage, false);
-	ApplyDamage(1, 1.0f);
+	ApplyDamage(damage, 1.0f);
 }
 //ダメージ更新
 void Player::UpdateDamage(float elapsedTime)

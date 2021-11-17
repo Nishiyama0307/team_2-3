@@ -31,6 +31,47 @@ void Story::Update(float elapsedtime)
 	}
 	if (story_state > 6)
 		story_state = 6;
+
+	//スライドショー
+	switch (story_state)
+	{
+	case 0:
+		break;
+	case 1:
+		posx1 -= 70;
+		break;
+	case 2:
+		posx1 -= 70;
+		posx2 -= 70;
+		break; 
+	case 3:
+		posx1 -= 70;
+		posx2 -= 70;
+		posx3 -= 70;
+		break;
+	case 4:
+		posx1 -= 70;
+		posx2 -= 70;
+		posx3 -= 70;
+		posx4 -= 70;
+		break;
+	case 5:
+		posx1 -= 70;
+		posx2 -= 70;
+		posx3 -= 70;
+		posx4 -= 70;
+		posx5 -= 70;
+		break;
+	case 6:
+		posx1 -= 70;
+		posx2 -= 70;
+		posx3 -= 70;
+		posx4 -= 70;
+		posx5 -= 70;
+		posx6 -= 70;
+		is_change = true;
+		break;
+	}
 	
 	//マウスボックス
 	Mouse& mouse = Input::Instance().GetMouse();
@@ -120,10 +161,11 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 		0,
 		1, 1, 1, 1);
 
+#if 0
 	{
-		switch (story_state)
-		{
-		case 0:
+		//switch (story_state)
+		//{
+		//case 0:
 			spr_story1->Render2(dc,
 				0, 0,
 				1, 1,
@@ -132,9 +174,9 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 				0, 0,
 				0,
 				1, 1, 1, 1);
-			break;
+		//	break;
 
-		case 1:
+		//case 1:
 			spr_story2->Render2(dc,
 				0, 0,
 				1, 1,
@@ -143,9 +185,9 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 				0, 0,
 				0,
 				1, 1, 1, 1);
-			break;
+		//	break;
 
-		case 2:
+		//case 2:
 			spr_story3->Render2(dc,
 				0, 0,
 				1, 1,
@@ -154,9 +196,9 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 				0, 0,
 				0,
 				1, 1, 1, 1);
-			break;
+		//	break;
 
-		case 3:
+		//case 3:
 			spr_story4->Render2(dc,
 				0, 0,
 				1, 1,
@@ -165,9 +207,9 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 				0, 0,
 				0,
 				1, 1, 1, 1);
-			break;
+		//	break;
 
-		case 4:
+		//case 4:
 			spr_story5->Render2(dc,
 				0, 0,
 				1, 1,
@@ -176,9 +218,9 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 				0, 0,
 				0,
 				1, 1, 1, 1);
-			break;
+		//	break;
 
-		case 5:
+		//case 5:
 			spr_story6->Render2(dc,
 				0, 0,
 				1, 1,
@@ -187,88 +229,145 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 				0, 0,
 				0,
 				1, 1, 1, 1);
-			break;
+		//	break;
+		//case 6:
+#endif
 
-		case 6:
-			//チュートリアルへ
-			{
-				//木の板
-				spr_wood1->Render2(dc,
-					startPos.x, startPos.y,
-					0.6f, 0.6f,
-					0, 0,
-					500, 280,
-					0, 0,
-					(0),
-					1, 1, 1, 1);
-				spr_wood2->Render2(dc,
-					tutorialPos.x, tutorialPos.y,
-					0.6f, 0.6f,
-					0, 0,
-					500, 280,
-					0, 0,
-					(0),
-					1, 1, 1, 1);
-				spr_wood3->Render2(dc,
-					600, 200,
-					1, 1,
-					0, 0,
-					500, 280,
-					0, 0,
-					0,
-					1, 1, 1, 1);
+			
+
+#if 1
+	if (is_change)
+	{
+		//チュートリアルへ
+		{
+			//木の板
+			spr_wood1->Render2(dc,
+				startPos.x, startPos.y,
+				0.6f, 0.6f,
+				0, 0,
+				500, 280,
+				0, 0,
+				(0),
+				1, 1, 1, 1);
+			spr_wood2->Render2(dc,
+				tutorialPos.x, tutorialPos.y,
+				0.6f, 0.6f,
+				0, 0,
+				500, 280,
+				0, 0,
+				(0),
+				1, 1, 1, 1);
+			spr_wood3->Render2(dc,
+				700, 130,
+				1, 1,
+				0, 0,
+				500, 280,
+				0, 0,
+				0,
+				1, 1, 1, 1);
 
 
-				//NO
-				if(timer1 / 32 % 2 || !start_check)
+			//NO
+			if (timer1 / 32 % 2 || !start_check)
 				spr_start->Render(dc,
 					startPos.x, startPos.y, 500 * 0.6, 280 * 0.6,
 					0, 0, 500, 280,
 					0,
 					1, 1, 1, 1);
 
-				//Yes
-				if(timer2 / 32 % 2 || !tutorial_check)
+			//Yes
+			if (timer2 / 32 % 2 || !tutorial_check)
 				spr_tutorial->Render(dc,
 					tutorialPos.x, tutorialPos.y, 500 * 0.6, 280 * 0.6,
 					0, 0, 500, 280,
 					0,
 					1, 1, 1, 1);
 
-				//question
-				spr_question->Render2(dc,
-					600, 200,
-					1, 1,
-					0, 0,
-					500, 280,
-					0, 0,
-					0,
-					1, 1, 1, 1);
+			//question
+			spr_question->Render2(dc,
+				700, 130,
+				1, 1,
+				0, 0,
+				500, 280,
+				0, 0,
+				0,
+				1, 1, 1, 1);
+		}
+				//break;
+				//}
+				if (hit)
+				{
+					//確認用フレーム
+					//spr_frame->Render(dc,
+					//	framePos.x, framePos.y, 400, 180,
+					//	0, 0, 512, 256,
+					//	0,
+					//	1, 1, 1, 1);
+				}
 			}
-		break;
-		}
-	}
 
+	//ストーリー
+	spr_story6->Render2(dc,
+		posx6, 0,
+		1, 1,
+		0, 0,
+		1920, 1080,
+		0, 0,
+		0,
+		1, 1, 1, 1);
 
-	
+	spr_story5->Render2(dc,
+		posx5, 0,
+		1, 1,
+		0, 0,
+		1920, 1080,
+		0, 0,
+		0,
+		1, 1, 1, 1);
 
-		if (hit)
-		{
-			//確認用フレーム
-			//spr_frame->Render(dc,
-			//	framePos.x, framePos.y, 400, 180,
-			//	0, 0, 512, 256,
-			//	0,
-			//	1, 1, 1, 1);
-		}
+	spr_story4->Render2(dc,
+		posx4, 0,
+		1, 1,
+		0, 0,
+		1920, 1080,
+		0, 0,
+		0,
+		1, 1, 1, 1);
 
-		//マウスカーソル
-		spr_mouseCursor->Render(dc,
-			mousePos.x, mousePos.y, 64, 64,
-			0, 0, 64, 64,
-			0,
-			1, 1, 1, 1);
-	
+	spr_story3->Render2(dc,
+		posx3, 0,
+		1, 1,
+		0, 0,
+		1920, 1080,
+		0, 0,
+		0,
+		1, 1, 1, 1);
+
+	spr_story2->Render2(dc,
+		posx2, 0,
+		1, 1,
+		0, 0,
+		1920, 1080,
+		0, 0,
+		0,
+		1, 1, 1, 1);
+
+	spr_story1->Render2(dc,
+		posx1, 0,
+		1, 1,
+		0, 0,
+		1920, 1080,
+		0, 0,
+		0,
+		1, 1, 1, 1);
+
+	//マウスカーソル
+	spr_mouseCursor->Render(dc,
+		mousePos.x, mousePos.y, 64, 64,
+		0, 0, 64, 64,
+		0,
+		1, 1, 1, 1);
+#endif
 }
 
 void Story::DeInit()
@@ -289,6 +388,14 @@ void Story::Set()
 
 	framePos.x = 0;
 	framePos.y = 0;
+
+	posx1	= 0;
+	posx2	= 0;
+	posx3	= 0;
+	posx4	= 0;
+	posx5	= 0;
+	posx6	= 0;
+	is_change = false;
 }
 
 void Story::Load()

@@ -40,18 +40,29 @@ void Game::Update(float elapsedTime)
 	// TODO: ゲーム処理
 
 	CastleHP -= 10 * elapsedTime;
-	if (CastleHP < 0)
+	if (CastleHP < 0) {
 		CastleHP = 0;
+	}
 	//プレイヤーが死んだらゲームオーバーへ(仮)
 	if (player->animdeth) {
-		result = Game_over1;
-		ChangeNextScene(new Result);
+		is_fadeSprite = true;
+		fade_timer++;
+		if (fade_timer > 120)
+		{
+			result = Game_over1;
+			ChangeNextScene(new Result);
+		}
 	}
 	//城の体力が無くなったらゲームオーバーへ(仮)
-	//if(CastleHP == 0){
-	//	result = Game_over2;
-	//	ChangeNextScene(new Result);
-	//}
+	if(CastleHP == 0){
+		is_fadeSprite = true;
+		fade_timer++;
+		if (fade_timer > 120)
+		{
+			result = Game_over2;
+			ChangeNextScene(new Result);
+		}
+	}
 
 	GameSystem::Instance().HitStopUpdate(elapsedTime);
 
@@ -326,6 +337,14 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 		//	1, 1, 1, 1);
 	}
 
+	//フェードアウト
+	if(is_fadeSprite)
+	spr_fadeOut->Render(dc,
+		0, 0, 1920, 1080,
+		0, 0, 1920, 1080,
+		0,
+		1, 1, 1, 1 - (1 - fade_timer / 120));
+
 	pause->SpriteRender(dc);
 	ClearedSpriteRender(dc);
 }
@@ -379,6 +398,8 @@ void Game::Set()
 	attackPosY3 = 850;
 
 	CastleHP = 256;
+
+	fade_timer = 0;
 }
 
 
@@ -425,6 +446,8 @@ void Game::Load()
 	AttackSlot2				= std::make_unique<Sprite>("Data/Sprite/ui/AT2.png");
 	AttackSlot3				= std::make_unique<Sprite>("Data/Sprite/ui/AT3.png");
 	AttackSelect			= std::make_unique<Sprite>("Data/Sprite/ui/attack_waku_R.png");
+
+	spr_fadeOut				= std::make_unique<Sprite>("Data/Sprite/back.png");
 }
 
 
