@@ -28,6 +28,7 @@ public:	// Getä÷êî
 	DirectX::XMFLOAT3 GetFront() { return ConvertToIdentityVec(transform._31, transform._32, transform._33); }
 	DirectX::XMFLOAT3 GetRight() { return ConvertToIdentityVec(transform._11, transform._12, transform._13); }
 	DirectX::XMFLOAT3 GetVelocity() { return velocity; }
+	Model* GetModel() { return model; }
 	
 	DirectX::XMFLOAT3 front;
 public: // Setä÷êî
