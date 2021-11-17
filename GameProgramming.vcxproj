@@ -265,7 +265,6 @@
     <ClInclude Include="Source\Scene\sceneManager.h" />
     <ClInclude Include="Source\Scene\story.h" />
     <ClInclude Include="Source\Scene\title.h" />
-    <ClInclude Include="Source\Scene\tutorial.h" />
     <ClInclude Include="Source\Stage\stage.h" />
     <ClInclude Include="Source\Stage\stageManager.h" />
     <ClInclude Include="Source\Stage\stage_type.h" />
@@ -324,7 +323,6 @@
     <ClCompile Include="Source\Scene\sceneManager.cpp" />
     <ClCompile Include="Source\Scene\story.cpp" />
     <ClCompile Include="Source\Scene\title.cpp" />
-    <ClCompile Include="Source\Scene\tutorial.cpp" />
     <ClCompile Include="Source\Stage\stage.cpp" />
     <ClCompile Include="Source\Stage\stageManager.cpp" />
     <ClCompile Include="Source\Stage\stage_type.cpp" />

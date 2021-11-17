@@ -119,6 +119,49 @@ void Player::Update(float elapsedTime, int stage_num, bool explaining)
 		{
 			//Input(elapsedTime);							// 入力処理
 			//UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
+
+			switch (state)
+			{
+				//待機
+			case AnimeState::State_Idel:
+				UpdateIdel(elapsedTime);
+				break;
+
+				//攻撃1
+			case AnimeState::State_Attack1:
+				UpdateAttack1(elapsedTime);
+				break;
+
+				//攻撃2
+			case AnimeState::State_Attack2:
+				UpdateAttack2(elapsedTime);
+				break;
+
+				//攻撃3
+			case AnimeState::State_Attack3:
+				UpdateAttack3(elapsedTime);
+				break;
+
+				//ダメージ
+			case AnimeState::State_Damage:
+				UpdateDamage(elapsedTime);
+				break;
+
+				//死亡
+			//case AnimeState::State_deth:
+			//	UpdateDeth(elapsedTime);
+			//	break;
+
+				//歩き
+			case AnimeState::State_walk:
+				UpdateWalk(elapsedTime);
+				break;
+
+				//走り
+			case AnimeState::State_Run:
+				UpdateRun(elapsedTime);
+				break;
+			}
 		}
 		// 速力をなしにする (速力が摩擦以下)
 		else
@@ -127,6 +170,51 @@ void Player::Update(float elapsedTime, int stage_num, bool explaining)
 			velocity.x = 0.0f;
 			velocity.z = 0.0f;
 
+			if (model->IsPlayAnimation() == false)
+			{
+				switch (state)
+				{
+					//待機
+				case AnimeState::State_Idel:
+					UpdateIdel(elapsedTime);
+					break;
+
+					//攻撃1
+				case AnimeState::State_Attack1:
+					UpdateAttack1(elapsedTime);
+					break;
+
+					//攻撃2
+				case AnimeState::State_Attack2:
+					UpdateAttack2(elapsedTime);
+					break;
+
+					//攻撃3
+				case AnimeState::State_Attack3:
+					UpdateAttack3(elapsedTime);
+					break;
+
+					//ダメージ
+				case AnimeState::State_Damage:
+					UpdateDamage(elapsedTime);
+					break;
+
+					//死亡
+				//case AnimeState::State_deth:
+				//	UpdateDeth(elapsedTime);
+				//	break;
+
+					//歩き
+				case AnimeState::State_walk:
+					UpdateWalk(elapsedTime);
+					break;
+
+					//走り
+				case AnimeState::State_Run:
+					UpdateRun(elapsedTime);
+					break;
+				}
+			}
 		}
 
 		if (position.y < -13) jumpspeed = 40.0f;
@@ -142,48 +230,6 @@ void Player::Update(float elapsedTime, int stage_num, bool explaining)
 		Mouse& mouse = Input::Instance().GetMouse();
 		const MouseButton& anyButton = Mouse::BTN_LEFT;
 
-		switch (state)
-		{
-			//待機
-		case AnimeState::State_Idel:
-			UpdateIdel(elapsedTime);
-			break;
-
-			//攻撃1
-		case AnimeState::State_Attack1:
-			UpdateAttack1(elapsedTime);
-			break;
-
-			//攻撃2
-		case AnimeState::State_Attack2:
-			UpdateAttack2(elapsedTime);
-			break;
-
-			//攻撃3
-		case AnimeState::State_Attack3:
-			UpdateAttack3(elapsedTime);
-			break;
-
-			//ダメージ
-		case AnimeState::State_Damage:
-			UpdateDamage(elapsedTime);
-			break;
-
-			//死亡
-		//case AnimeState::State_deth:
-		//	UpdateDeth(elapsedTime);
-		//	break;
-
-			//歩き
-		case AnimeState::State_walk:
-			UpdateWalk(elapsedTime);
-			break;
-
-			//走り
-		case AnimeState::State_Run:
-			UpdateRun(elapsedTime);
-			break;
-		}
 
 		// モデルアニメーション更新処理
 		model->UpdateAnimation(elapsedTime);

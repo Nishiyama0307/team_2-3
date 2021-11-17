@@ -21,6 +21,8 @@ int attck_select_state = 0;
 extern bool f1;
 extern int result;
 
+bool is_do_tutorial = { false }; // チュートリアルを行うかどうか
+
 void Game::Update(float elapsedTime)
 {
 	// シーン変更
@@ -54,7 +56,7 @@ void Game::Update(float elapsedTime)
 		}
 	}
 	//城の体力が無くなったらゲームオーバーへ(仮)
-	if(CastleHP == 0){
+	if (CastleHP == 0) {
 		is_fadeSprite = true;
 		fade_timer++;
 		if (fade_timer > 120)
@@ -79,7 +81,7 @@ void Game::Update(float elapsedTime)
 	target.y += 12.0f;
 	//target.z -= 10.0f;
 	cameraController->SetTarget(target);
-	cameraController->Update(elapsedTime);
+	cameraController->Update(elapsedTime, explaining);
 
 	//攻撃選択
 	Mouse& mouse = Input::Instance().GetMouse();
@@ -134,7 +136,7 @@ void Game::Update(float elapsedTime)
 		break;
 	}
 
-	player->Update(elapsedTime, stage_num);
+	player->Update(elapsedTime, stage_num, explaining);
 
 #ifdef _DEBUG
 	// デバッグのみのワープキー
@@ -154,8 +156,141 @@ void Game::Update(float elapsedTime)
 	//CameraController::Instance()->SetTarget({ player->GetPosition().x, player->GetPosition().y + 10, player->GetPosition().z - 3});
 	//CameraController::Instance()->Update(elapsedTime);
 
+	if (is_do_tutorial)
+	{
+		// TODO: チュートリアル処理
+		if (explaining && explanation < 7 && mouse.GetButtonDown() & Mouse::BTN_LEFT)
+			explanation++;
 
-	GameSystem::Instance().Update(elapsedTime);
+		// 行動制限
+		if (player->GetPosition().x > 25.0f) player->SetPosition({ 25.0f, player->GetPosition().y, player->GetPosition().z });
+		if (player->GetPosition().x < -25.0f) player->SetPosition({ -25.0f, player->GetPosition().y, player->GetPosition().z });
+		if (player->GetPosition().z > -120.0f) player->SetPosition({ player->GetPosition().x, player->GetPosition().y, -120.0f });
+		if (player->GetPosition().z < -160.0f) player->SetPosition({ player->GetPosition().x, player->GetPosition().y, -160.0f });
+
+		GamePad& gamePad = Input::Instance().GetGamePad();
+		switch (tutorial_state)
+		{
+		case PLAYER_MOVE:
+			if (explanation == 1)
+			{
+				// 自機移動(WASD)
+				explaining = false;
+				if (gamePad.GetButtonDown() & GamePad::BTN_UP)		wasd_[0] = true;
+				if (gamePad.GetButtonDown() & GamePad::BTN_LEFT)	wasd_[1] = true;
+				if (gamePad.GetButtonDown() & GamePad::BTN_DOWN)	wasd_[2] = true;
+				if (gamePad.GetButtonDown() & GamePad::BTN_RIGHT)	wasd_[3] = true;
+
+				// ジャンプ(Space)
+				if (gamePad.GetButtonDown() & GamePad::BTN_SPACE) jump_ = true;
+				// ダッシュ(WASD + Shift)
+				if ((gamePad.GetButton() & GamePad::BTN_UP || gamePad.GetButton() & GamePad::BTN_LEFT || gamePad.GetButton() & GamePad::BTN_DOWN || gamePad.GetButton() & GamePad::BTN_RIGHT) && gamePad.GetButton() & GamePad::BTN_SHIFT) dash_ = true;
+				// 視点移動(マウス)
+				if (mouse.GetPositionX() != mouse.GetOldPositionX() || mouse.GetPositionY() != mouse.GetOldPositionY()) camera_move_ = true;
+
+
+
+				if (wasd_[0] && wasd_[1] && wasd_[2] && wasd_[3] && jump_ && dash_ && camera_move_)
+				{
+					if (check_timer > 60)
+					{
+						End_of_explanation(elapsedTime);
+						//enemy_Arrangement->enemy_produce(Enemy_Arrangement::csv_file_num::TUTORIAL_NORMAL);
+						check_timer = 0;
+					}
+					else
+					{
+						check_timer++;
+					}
+				}
+
+			}
+			else
+			{
+				explaining = true;
+			}
+			break;
+		case ATTACK_MOVE:
+			if (explanation == 2)
+			{
+				explaining = false;
+				if (mouse.GetButtonDown() & Mouse::BTN_RIGHT)	attack_[0] = true;
+				if (mouse.GetButtonDown() & Mouse::BTN_LEFT)	attack_[1] = true;
+
+				if (attack_[0] && attack_[1])
+				{
+					if (check_timer > 60)
+					{
+						End_of_explanation(elapsedTime);
+						//enemy_Arrangement->enemy_produce(Enemy_Arrangement::csv_file_num::TUTORIAL_NORMAL);
+						check_timer = 0;
+					}
+					else
+					{
+						check_timer++;
+					}
+				}
+			}
+			else
+			{
+				explaining = true;
+			}
+			break;
+		case END:
+			// シーン変更
+			//if(gamePad.GetButtonDown() & GamePad::BTN_SPACE)
+			//{ 
+			//	ChangeNextScene(new Game()); // 急にシーンが変わると不自然なので任意のタイミングで変える
+			//	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Stop();
+			//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_SUCCESS)->Stop();
+			//}
+			if (explanation == 7)
+			{
+				// はい
+				//if (mouse.GetButtonDown() & Mouse::BTN_LEFT && tutorial_retry_[0])
+				if (mouse.GetButtonDown() & Mouse::BTN_LEFT)
+				{
+					explanation = 0; // チュートリアルをもう一度(初期化したらいい)
+					tutorial_state = 0;
+
+					for (int i = 0; i < 2; i++)
+					{
+						attack_[i] = false;
+					}
+					
+					for (int i = 0; i < 4; i++)
+					{
+						wasd_[i] = false;
+					}
+
+					jump_ = false;
+					dash_ = false;
+					camera_move_ = false;
+				}
+
+				// いいえ
+				if (mouse.GetButtonDown() & Mouse::BTN_LEFT && tutorial_retry_[1])
+				//if (mouse.GetButtonDown() & Mouse::BTN_LEFT)
+				{
+					//ChangeNextScene(new Game()); // ゲームへ
+					is_do_tutorial = false;
+					explaining = false;
+
+				}
+			}
+			else
+			{
+				explaining = true;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		GameSystem::Instance().Update(elapsedTime);
+	}
 }
 
 
@@ -267,6 +402,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0,
 			1, 1, 1, 1);
 #endif
+
 		//ミニマップ
 		Minimap->Render2(dc,
 			1600, 10,
@@ -275,6 +411,28 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			248, 248,
 			0, 0,
 			0,
+			1, 1, 1, 1);
+
+		//ミニマップの勇者アイコン
+		Minimap_Brave->Render2(dc,
+			1600 + 124, 10 + 124,
+			1.0f, 1.0f,
+			0, 0,
+			248, 248,
+			124, 124,
+			Minimap_Brave_angle,
+			1, 1, 1, 1);
+
+		Minimap_Player_angle = DirectX::XMConvertToRadians((175 + player->GetPosition().z) * 0.0648f); // (スタート地点が-175なので原点に戻すために+175 + 進んだ距離) * 0.0648f回転させる
+
+		//ミニマップのプレイヤーアイコン
+		Minimap_Player->Render2(dc,
+			1600 + 124, 10 + 124,
+			1.0f, 1.0f,
+			0, 0,
+			248, 248,
+			124, 124,
+			Minimap_Player_angle,
 			1, 1, 1, 1);
 
 		//城フレーム
@@ -337,13 +495,202 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 		//	1, 1, 1, 1);
 	}
 
+	// チュートリアル
+	if (is_do_tutorial)
+	{
+		float spr_Width{ 1920.0f };
+		float spr_Height{ 1080.0f };
+
+		switch (explanation)
+		{
+		case 0:
+			// 説明文
+			spr_explanation_[0]->Render2(dc,
+				0, 0,						// 表示位置
+				1.0f, 1.0f,									// スケール
+				0, 0,										// 画像切り抜き位置
+				spr_Width, spr_Height,				// 画像切り抜きサイズ
+				0, 0,	// 画像基準点
+				angle,										// 角度
+				1, 1, 1, 1);								// 色情報(r,g,b,a)
+			break;
+
+		case 1:
+			// 説明文
+			spr_explanation_[1]->Render2(dc,
+				0, 0,						// 表示位置
+				1.0f, 1.0f,									// スケール
+				0, 0,										// 画像切り抜き位置
+				spr_Width, spr_Height,				// 画像切り抜きサイズ
+				0, 0,	// 画像基準点
+				angle,										// 角度
+				1, 1, 1, 1);								// 色情報(r,g,b,a)
+
+			if (wasd_[0] && wasd_[1] && wasd_[2] && wasd_[3])
+			{
+				spr_check_1_[0]->Render2(dc,
+					0, 0,						// 表示位置
+					1.0f, 1.0f,									// スケール
+					0, 0,										// 画像切り抜き位置
+					spr_Width, spr_Height,				// 画像切り抜きサイズ
+					0, 0,	// 画像基準点
+					angle,										// 角度
+					1, 1, 1, 1);								// 色情報(r,g,b,a)
+			}
+			if (jump_)
+			{
+				spr_check_1_[1]->Render2(dc,
+					0, 0,						// 表示位置
+					1.0f, 1.0f,									// スケール
+					0, 0,										// 画像切り抜き位置
+					spr_Width, spr_Height,				// 画像切り抜きサイズ
+					0, 0,	// 画像基準点
+					angle,										// 角度
+					1, 1, 1, 1);								// 色情報(r,g,b,a)
+			}
+			if (dash_)
+			{
+				spr_check_1_[2]->Render2(dc,
+					0, 0,						// 表示位置
+					1.0f, 1.0f,									// スケール
+					0, 0,										// 画像切り抜き位置
+					spr_Width, spr_Height,				// 画像切り抜きサイズ
+					0, 0,	// 画像基準点
+					angle,										// 角度
+					1, 1, 1, 1);								// 色情報(r,g,b,a)
+			}
+			if (camera_move_)
+			{
+				spr_check_1_[3]->Render2(dc,
+					0, 0,						// 表示位置
+					1.0f, 1.0f,									// スケール
+					0, 0,										// 画像切り抜き位置
+					spr_Width, spr_Height,				// 画像切り抜きサイズ
+					0, 0,	// 画像基準点
+					angle,										// 角度
+					1, 1, 1, 1);								// 色情報(r,g,b,a)
+			}
+
+			break;
+
+		case 2:
+			// 説明文
+			spr_explanation_[2]->Render2(dc,
+				0, 0,						// 表示位置
+				1.0f, 1.0f,									// スケール
+				0, 0,										// 画像切り抜き位置
+				spr_Width, spr_Height,				// 画像切り抜きサイズ
+				0, 0,	// 画像基準点
+				angle,										// 角度
+				1, 1, 1, 1);								// 色情報(r,g,b,a)
+
+			if (attack_[0])
+			{
+				spr_check_2_[0]->Render2(dc,
+					0, 0,						// 表示位置
+					1.0f, 1.0f,									// スケール
+					0, 0,										// 画像切り抜き位置
+					spr_Width, spr_Height,				// 画像切り抜きサイズ
+					0, 0,	// 画像基準点
+					angle,										// 角度
+					1, 1, 1, 1);								// 色情報(r,g,b,a)
+			}
+			if (attack_[1])
+			{
+				spr_check_2_[1]->Render2(dc,
+					0, 0,						// 表示位置
+					1.0f, 1.0f,									// スケール
+					0, 0,										// 画像切り抜き位置
+					spr_Width, spr_Height,				// 画像切り抜きサイズ
+					0, 0,	// 画像基準点
+					angle,										// 角度
+					1, 1, 1, 1);								// 色情報(r,g,b,a)
+			}
+
+			break;
+
+		case 3:
+			// 説明文
+			spr_explanation_[3]->Render2(dc,
+				0, 0,						// 表示位置
+				1.0f, 1.0f,									// スケール
+				0, 0,										// 画像切り抜き位置
+				spr_Width, spr_Height,				// 画像切り抜きサイズ
+				0, 0,	// 画像基準点
+				angle,										// 角度
+				1, 1, 1, 1);								// 色情報(r,g,b,a)
+			break;
+
+		case 4:
+			// 説明文
+			spr_explanation_[4]->Render2(dc,
+				0, 0,						// 表示位置
+				1.0f, 1.0f,									// スケール
+				0, 0,										// 画像切り抜き位置
+				spr_Width, spr_Height,				// 画像切り抜きサイズ
+				0, 0,	// 画像基準点
+				angle,										// 角度
+				1, 1, 1, 1);								// 色情報(r,g,b,a)
+			break;
+
+		case 5:
+			// 説明文
+			spr_explanation_[5]->Render2(dc,
+				0, 0,						// 表示位置
+				1.0f, 1.0f,									// スケール
+				0, 0,										// 画像切り抜き位置
+				spr_Width, spr_Height,				// 画像切り抜きサイズ
+				0, 0,	// 画像基準点
+				angle,										// 角度
+				1, 1, 1, 1);								// 色情報(r,g,b,a)
+			break;
+
+		case 6:
+			// 説明文
+			spr_explanation_[6]->Render2(dc,
+				0, 0,						// 表示位置
+				1.0f, 1.0f,									// スケール
+				0, 0,										// 画像切り抜き位置
+				spr_Width, spr_Height,				// 画像切り抜きサイズ
+				0, 0,	// 画像基準点
+				angle,										// 角度
+				1, 1, 1, 1);								// 色情報(r,g,b,a)
+
+			if (tutorial_retry_[0])
+			{
+
+				spr_choice_arrow_[0]->Render2(dc,
+					0, 0,						// 表示位置
+					1.0f, 1.0f,									// スケール
+					0, 0,										// 画像切り抜き位置
+					spr_Width, spr_Height,				// 画像切り抜きサイズ
+					0, 0,	// 画像基準点
+					angle,										// 角度
+					1, 1, 1, 1);								// 色情報(r,g,b,a)
+			}
+			if (tutorial_retry_[1])
+			{
+
+				spr_choice_arrow_[1]->Render2(dc,
+					0, 0,						// 表示位置
+					1.0f, 1.0f,									// スケール
+					0, 0,										// 画像切り抜き位置
+					spr_Width, spr_Height,				// 画像切り抜きサイズ
+					0, 0,	// 画像基準点
+					angle,										// 角度
+					1, 1, 1, 1);								// 色情報(r,g,b,a)
+			}
+			break;
+		}
+	}
+
 	//フェードアウト
-	if(is_fadeSprite)
-	spr_fadeOut->Render(dc,
-		0, 0, 1920, 1080,
-		0, 0, 1920, 1080,
-		0,
-		1, 1, 1, 1 - (1 - fade_timer / 120));
+	if (is_fadeSprite)
+		spr_fadeOut->Render(dc,
+			0, 0, 1920, 1080,
+			0, 0, 1920, 1080,
+			0,
+			1, 1, 1, 1 - (1 - fade_timer / 120));
 
 	pause->SpriteRender(dc);
 	ClearedSpriteRender(dc);
@@ -400,6 +747,10 @@ void Game::Set()
 	CastleHP = 256;
 
 	fade_timer = 0;
+
+	if (is_do_tutorial == false) explaining = false; // チュートリアルをやらないなら最初から動けるように
+
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Play(true);
 }
 
 
@@ -409,6 +760,7 @@ void Game::Load()
 
 	// プレイヤー初期化
 	player = new Player();
+	//player->ResetTransform();
 
 #ifdef _DEBUG
 	//player->SetPosition(DirectX::XMFLOAT3(0, 0, kStage4_Start_Position));
@@ -431,6 +783,8 @@ void Game::Load()
 	StageManager::Instance().AddStage(new Sky());
 
 	//UI初期化
+	//UI達
+#if 1
 	HpBar					= std::make_unique<Sprite>("Data/Sprite/ui/G_HP.png");
 	HpBarFrame				= std::make_unique<Sprite>("Data/Sprite/ui/HP黒帯.png");
 	HpIcon					= std::make_unique<Sprite>("Data/Sprite/ui/I_HP.png");
@@ -446,8 +800,38 @@ void Game::Load()
 	AttackSlot2				= std::make_unique<Sprite>("Data/Sprite/ui/AT2.png");
 	AttackSlot3				= std::make_unique<Sprite>("Data/Sprite/ui/AT3.png");
 	AttackSelect			= std::make_unique<Sprite>("Data/Sprite/ui/attack_waku_R.png");
+	Minimap_Brave			= std::make_unique<Sprite>("Data/Sprite/ui/Brave.png");
+	Minimap_Player			= std::make_unique<Sprite>("Data/Sprite/ui/Player.png");
+#endif
 
-	spr_fadeOut				= std::make_unique<Sprite>("Data/Sprite/back.png");
+	// チュートリアル
+#if 1
+	if (is_do_tutorial)
+	{
+
+		spr_explanation_[0] = std::make_unique<Sprite>("Data/Sprite/tutorial/Tutorial2.png");
+		spr_explanation_[1] = std::make_unique<Sprite>("Data/Sprite/tutorial/Tutorial3.png");
+		spr_explanation_[2] = std::make_unique<Sprite>("Data/Sprite/tutorial/Tutorial4.png");
+		spr_explanation_[3] = std::make_unique<Sprite>("Data/Sprite/tutorial/Tutorial5.png");
+		spr_explanation_[4] = std::make_unique<Sprite>("Data/Sprite/tutorial/Tutorial6.png");
+		spr_explanation_[5] = std::make_unique<Sprite>("Data/Sprite/tutorial/Tutorial7.png");
+		spr_explanation_[6] = std::make_unique<Sprite>("Data/Sprite/tutorial/Tutorial8.png");
+
+		spr_check_1_[0] = std::make_unique<Sprite>("Data/Sprite/tutorial/Check1_1.png");
+		spr_check_1_[1] = std::make_unique<Sprite>("Data/Sprite/tutorial/Check1_2.png");
+		spr_check_1_[2] = std::make_unique<Sprite>("Data/Sprite/tutorial/Check1_3.png");
+		spr_check_1_[3] = std::make_unique<Sprite>("Data/Sprite/tutorial/Check1_4.png");
+
+		spr_check_2_[0] = std::make_unique<Sprite>("Data/Sprite/tutorial/Check2_1.png");
+		spr_check_2_[1] = std::make_unique<Sprite>("Data/Sprite/tutorial/Check2_2.png");
+
+		spr_choice_arrow_[0] = std::make_unique<Sprite>("Data/Sprite/tutorial/はいの時の矢印.png");
+		spr_choice_arrow_[1] = std::make_unique<Sprite>("Data/Sprite/tutorial/いいえの時の矢印.png");
+	}
+#endif
+
+	//ゲームオーバー時フェードアウト
+	spr_fadeOut = std::make_unique<Sprite>("Data/Sprite/back.png");
 }
 
 
@@ -455,14 +839,16 @@ void Game::ImGui()
 {
 	ImGui::Text("scene : Game");
 
-	//ImGui::SliderFloat("camera range", &CameraController::Instance()->GerRange(), 1, 1000);
-
 	ImGui::Spacing();
 
 	ImGui::Text("now_time : %.1f", GameSystem::Instance().NowTime());
 
 	ImGui::Text("stage_num : %d", stage_num);
 
+	if (ImGui::CollapsingHeader("tutorial", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::Text("tutorial_state : %d", tutorial_state);
+	}
 
 	if (ImGui::CollapsingHeader("player", ImGuiTreeNodeFlags_DefaultOpen))
 	{
@@ -494,9 +880,6 @@ void Game::DebugRender()
 
 void Game::StageNumUpdate()
 {
-	//constexpr int STAGE2_start_position{ 565 };
-	//constexpr int STAGE3_start_position{ 1240 };
-	//constexpr int STAGE4_start_position{ 1920 };
 
 	if (kStage3_Start_Position > player->GetPosition().z && player->GetPosition().z >= kStage2_Start_Position) stage_num = N_STAGE2_DESERT; // 1240 > p >= 565
 	if (player->GetPosition().z < kStage2_Start_Position) stage_num = N_STAGE1_VOLCANO;						  // p < 565
@@ -603,4 +986,19 @@ void Game::BGMStart()
 		bgm_caution = true;
 		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_SPEED)->Play(true);
 	}
+}
+
+void Game::End_of_explanation(float elapsedTime)
+{
+	AudioManager::Instance().GetAudio(Audio_INDEX::SE_SUCCESS)->Stop();
+	AudioManager::Instance().GetAudio(Audio_INDEX::SE_SUCCESS)->Play(false);
+
+	tutorial_state++;
+
+	//player->ResetTransform();
+
+	//CameraSet();
+
+	if (explanation < 7) explanation++;
+	explaining = true;
 }

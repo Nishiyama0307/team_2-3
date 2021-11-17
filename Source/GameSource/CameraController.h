@@ -104,7 +104,7 @@ public:
     ~CameraController() {}
 
     //更新処理
-    void Update(float elapsedTime);
+    void Update(float elapsedTime, bool explaining = false);
 
     //ターゲット位置設
     void SetTarget(const DirectX::XMFLOAT3& target) { this->target = target; }

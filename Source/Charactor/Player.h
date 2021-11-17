@@ -34,7 +34,7 @@ public: // Setä÷êî
 	void AddImpact(const DirectX::XMFLOAT3 impact_);
 	void ResetTransform()
 	{
-		position = { 0, scale.y + scale.y * 1.7f, 0 };
+		position = { 0, 0, -160.0f };
 		angle = {};
 
 

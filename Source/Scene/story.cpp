@@ -4,7 +4,6 @@
 
 
 #include "story.h"
-#include "tutorial.h"
 #include "game.h"
 #include "sceneManager.h"
 #include "common.h"
@@ -16,6 +15,8 @@
 #include "gameSystem.h"
 #include "audioManager.h"
 #include<Windows.h>
+
+extern bool is_do_tutorial;
 
 void Story::Update(float elapsedtime)
 {
@@ -136,10 +137,12 @@ void Story::Update(float elapsedtime)
 		{
 		case 1:	//ゲームシーンへ
 			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new Game());
+			is_do_tutorial = false; // チュートリアルなし
 			break;
 
 		case 2: //チュートリアルへ
-			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)ChangeNextScene(new Tutorial());
+			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)ChangeNextScene(new Game());
+			is_do_tutorial = true; // チュートリアルあり
 			break;
 		}
 	}

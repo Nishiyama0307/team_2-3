@@ -76,8 +76,10 @@ private:
 
     STAGENUM stage_num;
     
+    CameraController* cameraController = nullptr;
 
     //UI達
+#if 1
     std::unique_ptr<Sprite> HpBar               = nullptr;      //HP
     std::unique_ptr<Sprite> HpBarFrame          = nullptr;      //
     std::unique_ptr<Sprite> HpIcon              = nullptr;      //
@@ -93,8 +95,11 @@ private:
     std::unique_ptr<Sprite> AttackSlot2         = nullptr;      //攻撃スロット2
     std::unique_ptr<Sprite> AttackSlot3         = nullptr;      //攻撃スロット3
     std::unique_ptr<Sprite> AttackSelect        = nullptr;      //攻撃選択
-    CameraController* cameraController = nullptr;
-    float AttackSlotScale1 = 1.0f;
+    std::unique_ptr<Sprite> Minimap_Brave       = nullptr;      //ミニマップの勇者アイコン
+    std::unique_ptr<Sprite> Minimap_Player      = nullptr;      //ミニマップのプレイヤーアイコン
+
+
+	float AttackSlotScale1 = 1.0f;
     float AttackSlotScale2 = 1.0f;
     float AttackSlotScale3 = 1.0f;
     float attackPosx1 = 0;
@@ -103,11 +108,49 @@ private:
     float attackPosY1 = 0;
     float attackPosY2 = 0;
     float attackPosY3 = 0;
-
+    float Minimap_Brave_angle{ DirectX::XMConvertToRadians(0) };
+	float Minimap_Player_angle{ DirectX::XMConvertToRadians(180) };
     float CastleHP = 0;
 
     //ゲームオーバー時フェードアウト
     std::unique_ptr<Sprite> spr_fadeOut = nullptr;
     float fade_timer = 0;
     bool is_fadeSprite = false;
+#endif
+
+    // チュートリアル
+#if 1
+    void End_of_explanation(float elapsedTime);
+
+    std::unique_ptr<Sprite> spr_explanation_[7]{ nullptr };
+    std::unique_ptr<Sprite> spr_check_1_[4]{ nullptr };
+    std::unique_ptr<Sprite> spr_check_2_[2]{ nullptr };
+    std::unique_ptr<Sprite> spr_choice_arrow_[2]{ nullptr };
+
+    int tutorial_state = 0;
+    int explanation = 0;
+    int check_timer = 0;
+
+    float angle = 0.0f;
+    float foot_length = 1.5f;
+
+    bool explaining = true; // 説明中
+
+    bool wasd_[4]{ false };
+    bool jump_{ false };
+    bool dash_{ false };
+    bool camera_move_{ false };
+    bool attack_[2]{ false };
+
+    bool tutorial_retry_[2]{ false };
+
+    enum tutorial_contents
+    {
+        PLAYER_MOVE,            // プレイヤー移動操作＋ジャンプ＋ダッシュ＋カメラ操作
+        ATTACK_MOVE,            // 攻撃
+        END,                    // 終了
+    };
+#endif
+
+
 };

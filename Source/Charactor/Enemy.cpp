@@ -11,6 +11,7 @@
 #include "easy_math.h"
 #include "stageManager.h"
 
+extern bool is_do_tutorial;
 
 // デバッグプリミティブ描画
 void Enemy::DrawDebugPrimitive()
@@ -306,11 +307,14 @@ void Enemy::UpdateMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 		
 		HomingMove(elapsedTime, playerPos);
 #else
-		AttackMove(elapsedTime, playerPos);
+		if (is_do_tutorial == false)
+		{
+			AttackMove(elapsedTime, playerPos);
 
-		RandomMove(elapsedTime);
+			RandomMove(elapsedTime);
 
-		HomingMove(elapsedTime, playerPos);
+			HomingMove(elapsedTime, playerPos);
+		}
 #endif
 	}
 }
