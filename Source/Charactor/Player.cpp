@@ -109,6 +109,10 @@ void Player::Update(float elapsedTime, int stage_num, bool explaining)
 	//死亡した時アニメーションが終わるまではまだ動ける用にする為のanimdeth
 	if (is_dead_)
 	{
+		if (magumaDeath)
+		{
+			animdeth = true;
+		}
 		if (!model->IsPlayAnimation())
 		{
 			animdeth = true;

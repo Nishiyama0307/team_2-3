@@ -87,11 +87,15 @@ void Game::Update(float elapsedTime)
 		fade_timer++;
 		if (fade_timer > 120)
 		{
-			if (player->magumaDeath == true)
+			if (player->magumaDeath == true) {
 				result = Game_over3;
+				ChangeNextScene(new Result);
+			}
 			else
+			{
 				result = Game_over1;
-			ChangeNextScene(new Result);
+				ChangeNextScene(new Result);
+			}
 		}
 	}
 	//城の体力が無くなったらゲームオーバーへ(仮)
