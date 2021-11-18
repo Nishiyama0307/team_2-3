@@ -410,7 +410,7 @@ void Player::Turn(float elapsedTime, float vx, float vz, float speed)
 void Player::Stage1_Gimmick()
 {
 
-	if ((position.y > 22 || position.y <= -15) && isGround)
+	if (position.y > 22  || (position.y <= -15 && isGround))
 	{
 		ApplyDamage(1, KIND::PLAYER, 2.0f);
 		magumaDeath = true;
@@ -649,6 +649,9 @@ void Player::UpdateAttack1(float elapsedTime)
 					{
 						stamina += kstamina_recovery;
 						if (stamina > stamina_limit) stamina = stamina_limit;
+
+						par.health += khealth_recovery;
+						if (par.health > health_limit) par.health = health_limit;
 					}
 				}
 			}
@@ -717,6 +720,9 @@ void Player::UpdateAttack2(float elapsedTime)
 					{
 						stamina += kstamina_recovery;
 						if (stamina > stamina_limit) stamina = stamina_limit;
+
+						par.health += khealth_recovery;
+						if (par.health > health_limit) par.health = health_limit;
 					}
 				}
 			}
@@ -781,6 +787,9 @@ void Player::UpdateAttack3(float elapsedTime)
 					{
 						stamina += kstamina_recovery;
 						if (stamina > stamina_limit) stamina = stamina_limit;
+
+						par.health += khealth_recovery;
+						if (par.health > health_limit) par.health = health_limit;
 					}
 				}
 			}
