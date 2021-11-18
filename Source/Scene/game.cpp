@@ -56,11 +56,14 @@ void Game::Update(float elapsedTime)
 		}
 	}
 
-	CastleHP -= 10 * elapsedTime;
+	if (brave_timer_ < brave_timelimit_) brave_timer_++;
+
+	if (brave_timer_ >= brave_timelimit_ - 1) CastleHP -= 6.4 * elapsedTime;
 	//CastleHP -= 100;
 	if (CastleHP < 0) {
 		CastleHP = 0;
 	}
+
 	//プレイヤーが死んだらゲームオーバーへ(仮)
 	if (player->animdeth) {
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
@@ -509,6 +512,8 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0, 0,
 			0,
 			1, 1, 1, 1);
+
+		Minimap_Brave_angle = DirectX::XMConvertToRadians(brave_timer_ * 0.0375f);
 
 		//ミニマップの勇者アイコン
 		Minimap_Brave->Render2(dc,
@@ -1125,8 +1130,7 @@ void Game::ChangeScene(float elapsedTime)
 	ChangeNextScene(new Result(), GamePad::BTN_A, false);
 #endif
 
-	if (GameSystem::Instance().NowTime() > 0.0f && smallest == false) return;
-
+	if (CastleHP > 0.0f) return;
 
 	// 黒帯の更新
 	black_band_timer += 1.0f * elapsedTime;
@@ -1135,6 +1139,8 @@ void Game::ChangeScene(float elapsedTime)
 	// 黒帯が降りきったら
 	if (black_band_timer >= 1.4f)
 	{
+
+		result = Game_over2;
 		// 残り時間がゼロになった際シーン遷移をする
 		ChangeNextScene(new Result(), false);
 
@@ -1151,8 +1157,8 @@ void Game::ClearedSpriteRender(ID3D11DeviceContext* dc)
 	// 黒帯
 	constexpr float scale = 300.0f;
 
-	black_band->Render(dc, 0, 0, 1920, scale * pow(black_band_timer, 5), 0, 0, 0, 0, 0, 1, 1, 1, 1);
-	black_band->Render(dc, 0, 1080, 1920, -scale * pow(black_band_timer, 5), 0, 0, 0, 0, 0, 1, 1, 1, 1);
+	black_band->Render(dc, 0, 0, 1920, scale * pow(black_band_timer, 5), 0, 0, 0, 0, 0, 0, 0, 0, 1);
+	black_band->Render(dc, 0, 1080, 1920, -scale * pow(black_band_timer, 5), 0, 0, 0, 0, 0, 0, 0, 0, 1);
 }
 
 

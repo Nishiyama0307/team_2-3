@@ -113,6 +113,10 @@ private:
 	float Minimap_Player_angle{ DirectX::XMConvertToRadians(180) };
     float CastleHP = 0;
 
+    bool brave_timer_count{ false };
+    int brave_timer_{ 0 };
+    int brave_timelimit_{ 4800 }; // 90 * 60
+
     //ゲームオーバー時フェードアウト
     std::unique_ptr<Sprite> spr_fadeOut = nullptr;
     float fade_timer = 0;
