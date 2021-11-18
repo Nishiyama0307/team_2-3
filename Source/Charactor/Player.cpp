@@ -903,7 +903,8 @@ void Player::UpdateRun(float elapsedTime)
 	UpdateVelocity(elapsedTime, KIND::PLAYER);	// 速力更新処理
 
 	//スタミナ
-	stamina -= 40 * elapsedTime;
+	//stamina -= 40 * elapsedTime;
+	stamina -= 80 * elapsedTime;
 	if (stamina < 0)
 		stamina = 0;
 
