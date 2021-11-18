@@ -21,7 +21,8 @@ void AudioManager::Init()
     bgm_gameover = Audio::Instance().LoadAudioSource("Data/Audio/Result/GameOver.wav");
 
     bgm_stage1 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage1.wav");
-    bgm_stage2 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage2.wav");
+    //bgm_stage2 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage2.wav");
+    bgm_stage2 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage2_2.wav");
     bgm_stage3 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage3.wav");
     bgm_stage4 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage4.wav");
 

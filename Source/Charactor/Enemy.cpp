@@ -301,11 +301,11 @@ void Enemy::UpdateMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 
 
 #ifdef _DEBUG
-		//AttackMove(elapsedTime, playerPos);
-		//
-		//RandomMove(elapsedTime);
-		//
-		//HomingMove(elapsedTime, playerPos);
+		AttackMove(elapsedTime, playerPos);
+		
+		RandomMove(elapsedTime);
+		
+		HomingMove(elapsedTime, playerPos);
 #else
 		if (is_do_tutorial == false)
 		{

@@ -66,6 +66,15 @@ private:
     Pos mousePos;
     C_Hitbox MouseBox;
 
+    std::unique_ptr<Sprite> spr_wood1 = nullptr;
+    std::unique_ptr<Sprite> spr_back2 = nullptr;
+    Pos backPos;
+    C_Hitbox backBox;
+
+    bool hit;
+    bool back_check = false;
+    int timer1 = 0;
+
 };
 
 enum 

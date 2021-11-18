@@ -112,7 +112,11 @@ bool Pause::Update(float elapsedTime)
 #endif
 
 	ShowCursor(false);
+#ifdef _DEBUG
 	if (Input::Instance().GetGamePad().GetButtonDown() & GamePad::BTN_R)
+#else
+	if(Input::Instance().GetGamePad().GetButtonDown() & GamePad::BTN_ESC)
+#endif
 	{
 		now_pause = !now_pause;
 

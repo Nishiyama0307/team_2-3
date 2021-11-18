@@ -23,7 +23,7 @@ AudioSource::~AudioSource()
 }
 
 // 再生
-void AudioSource::Play(bool loop)
+void AudioSource::Play(bool loop, float vol)
 {
 	// ソースボイスにデータを送信
 	XAUDIO2_BUFFER buffer = { 0 };
@@ -36,7 +36,7 @@ void AudioSource::Play(bool loop)
 
 	HRESULT hr = sourceVoice->Start();
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	sourceVoice->SetVolume(1.0f);
+	sourceVoice->SetVolume(vol);
 }
 
 // 停止

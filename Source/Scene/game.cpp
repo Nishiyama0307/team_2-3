@@ -41,7 +41,20 @@ void Game::Update(float elapsedTime)
 
 	// TODO: ゲーム処理
 
-	CastleHP -= 10 * elapsedTime;
+	//ゲームクリア
+	if (player->GetPosition().z > 2545)
+	{
+		is_fadeSprite = true;
+		fade_timer++;
+		if (fade_timer > 120)
+		{
+			result = Game_clear;
+			ChangeNextScene(new Result);
+		}
+	}
+
+	//CastleHP -= 10 * elapsedTime;
+	CastleHP -= 100;
 	if (CastleHP < 0) {
 		CastleHP = 0;
 	}
@@ -841,7 +854,8 @@ void Game::Set()
 	if (is_do_tutorial == false) explaining = false; // チュートリアルをやらないなら最初から動けるように
 
 	//AudioManager::Instance().GetAudio(Audio_INDEX::BGM_TITLE)->Stop();
-	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Play(true);
+	//AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Play(true);
+	//AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Play(true);
 
 	//チュートリアルのはい、いいえ確認
 	tutorial_retry_[0] = false;
@@ -1082,28 +1096,36 @@ void Game::ClearedSpriteRender(ID3D11DeviceContext* dc)
 
 void Game::BGMStart()
 {
-	if (bgm_normal == false && bgm_caution == false)
-	{
-		bgm_normal = true;
-		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Play(true);
-	}
-	
-	if (bgm_normal == true && bgm_caution == false && GameSystem::Instance().NowTime() <= 20.0f)
-	{
-		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Stop();
-		bgm_caution = true;
-		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_SPEED)->Play(true);
-	}
+	//if (bgm_normal == false && bgm_caution == false)
+	//{
+	//	bgm_normal = true;
+	//	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Play(true);
+	//}
+	//
+	//if (bgm_normal == true && bgm_caution == false && GameSystem::Instance().NowTime() <= 20.0f)
+	//{
+	//	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Stop();
+	//	bgm_caution = true;
+	//	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_SPEED)->Play(true);
+	//}
 
 	switch (stage_num)
 	{
 	case N_STAGE1_VOLCANO:
+		//if(AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE1)->
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE1)->Play(true);
 		break;
 	case N_STAGE2_DESERT:
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE1)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE2)->Play(true, 1.0f);
 		break;
 	case N_STAGE3_:
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE2)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE3)->Play(true);
 		break;
 	case N_STAGE4_:
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE3)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE4)->Play(true);
 		break;
 	default:
 		break;

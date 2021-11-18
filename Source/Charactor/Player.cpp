@@ -802,7 +802,7 @@ void Player::UpdateWalk(float elapsedTime)
 		Idel_change();
 	}
 	//shiftキーでダッシュ
-	if (pad.GetButtonDown() & button)
+	if (pad.GetButton() & button)
 	{
 		isbuttn = false;	//ボタンを押した状態を引き継ぐ為
 		Run_change();	//ステートのチェンジ

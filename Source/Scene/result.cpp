@@ -15,7 +15,7 @@ int result;
 
 void Result::Update(float elapsedTime)
 {
-
+	Mouse& mouseButton = Input::Instance().GetMouse();
 	// シーン変更
 	{
 		ChangeScene(elapsedTime);
@@ -31,44 +31,77 @@ void Result::Update(float elapsedTime)
 	Mouse& mouse = Input::Instance().GetMouse();
 	mousePos.x = mouse.GetPositionX() - 16;
 	mousePos.y = mouse.GetPositionY() - 26;
+	MouseBox.left = mousePos.x;
+	MouseBox.top = mousePos.y;
+	C_OffsetBox(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right, 32, 32);
 
+	//スタートのボックス
+	backBox.left = backPos.x;
+	backBox.top = backPos.y;
+	C_OffsetBox(backBox.top, backBox.left, backBox.bottom, backBox.right, 500 * 0.6f, 280 * 0.6f);
 
-	if (gamePad.GetButtonDown() & GamePad::BTN_UP)
+	//判定 (マウスとゲームへのボックス)
+	back_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
+		backBox.top, backBox.left, backBox.bottom, backBox.right);
+
+	//当たった時の処理
+	if (back_check)
 	{
-		AudioManager::Instance().GetAudio(Audio_INDEX::SE_SELECT)->Stop();
-		AudioManager::Instance().GetAudio(Audio_INDEX::SE_SELECT)->Play(false);
-
-		selecting -= 1;  
-
-		if (selecting < 0) selecting = RETRY;
-		else select_timer = 0;
+		hit = true;
+		timer1++;
 	}
-	if (gamePad.GetButtonDown() & GamePad::BTN_DOWN)
+	else
 	{
-		AudioManager::Instance().GetAudio(Audio_INDEX::SE_SELECT)->Stop();
-		AudioManager::Instance().GetAudio(Audio_INDEX::SE_SELECT)->Play(false);
-
-		selecting += 1;
-
-		if (selecting > 1) selecting = END;
-		else select_timer = 0;
+		timer1 = 0;
+		hit = false;
 	}
-	if (elapsedTime) select_timer++;
+
+	if (hit && mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	
+	{
+		ChangeNextScene(new Title());
+	}
+
+	//if (gamePad.GetButtonDown() & GamePad::BTN_UP)
+	//{
+	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_SELECT)->Stop();
+	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_SELECT)->Play(false);
+	//
+	//	selecting -= 1;  
+	//
+	//	if (selecting < 0) selecting = RETRY;
+	//	else select_timer = 0;
+	//}
+	//if (gamePad.GetButtonDown() & GamePad::BTN_DOWN)
+	//{
+	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_SELECT)->Stop();
+	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_SELECT)->Play(false);
+	//
+	//	selecting += 1;
+	//
+	//	if (selecting > 1) selecting = END;
+	//	else select_timer = 0;
+	//}
+	//if (elapsedTime) select_timer++;
 
 
 	switch (result)
 	{
 		//クリア
 	case Game_clear:
-
+		backPos.x = 300;
+		backPos.y = 650;
 		break;
 
 		//自身の体力が0
 	case Game_over1:
+		backPos.x = 700;
+		backPos.y = 850;
 		break;
 
 		//城の体力が0
 	case Game_over2:
+		backPos.x = 300;
+		backPos.y = 350;
 		break;
 	}
 
@@ -177,6 +210,14 @@ void Result::SpriteRender(ID3D11DeviceContext* dc)
 	{
 		//クリア
 	case Game_clear:
+		spr_clear->Render2(dc,
+			0, 0,
+			1.0f, 1.0f,
+			0, 0,
+			1920, 1080,
+			0, 0,
+			0,
+			1, 1, 1, 1);
 		break;
 
 		//自身の体力が0
@@ -203,6 +244,29 @@ void Result::SpriteRender(ID3D11DeviceContext* dc)
 			1, 1, 1, 1);
 		break;
 	}
+
+
+	//看板みたいなやつ
+	spr_wood1->Render2(dc,
+		backPos.x, backPos.y,
+		0.6f, 0.6f,
+		0, 0,
+		500, 280,
+		0, 0,
+		(0),
+		1, 1, 1, 1);
+
+	//タイトルへ戻る
+	if (timer1 / 32 % 2 || !back_check)
+	spr_back2->Render2(dc,
+		backPos.x, backPos.y,
+		0.6f, 0.6f,
+		0, 0,
+		500, 280,
+		0, 0,
+		(0),
+		1, 1, 1, 1);
+
 	//マウスカーソル
 	spr_mouseCursor->Render(dc,
 		mousePos.x, mousePos.y, 64, 64,
@@ -234,7 +298,10 @@ void Result::Set()
 	did_first = false;
 	did = false;
 
-	
+	backPos.x = 700;
+	backPos.y = 850;
+
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE4)->Stop();
 	AudioManager::Instance().GetAudio(Audio_INDEX::SE_RESULT)->Play(false);
 }
 
@@ -254,6 +321,10 @@ void Result::Load()
 	spr_clear = std::make_unique<Sprite>("Data/Sprite/scene/クリア.png");
 	spr_over1 = std::make_unique<Sprite>("Data/Sprite/scene/maou_down.png");
 	spr_over2 = std::make_unique<Sprite>("Data/Sprite/scene/maou_houkai.png");
+
+	spr_wood1 = std::make_unique<Sprite>("Data/Sprite/select/wood.png");
+	spr_back2 = std::make_unique<Sprite>("Data/Sprite/select/titlebuck.png");
+
 }
 
 

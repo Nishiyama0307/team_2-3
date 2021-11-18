@@ -261,10 +261,10 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 				(0),
 				1, 1, 1, 1);
 			spr_wood3->Render2(dc,
-				700, 130,
+				500, 130,
 				1, 1,
 				0, 0,
-				500, 280,
+				900, 280,
 				0, 0,
 				0,
 				1, 1, 1, 1);
@@ -288,10 +288,10 @@ void Story::SpriteRender(ID3D11DeviceContext* dc)
 
 			//question
 			spr_question->Render2(dc,
-				700, 130,
+				500, 130,
 				1, 1,
 				0, 0,
-				500, 280,
+				900, 280,
 				0, 0,
 				0,
 				1, 1, 1, 1);
@@ -421,8 +421,8 @@ void Story::Load()
 
 	spr_wood1 = std::make_unique<Sprite>("Data/Sprite/select/wood.png");
 	spr_wood2 = std::make_unique<Sprite>("Data/Sprite/select/wood.png");
-	spr_wood3 = std::make_unique<Sprite>("Data/Sprite/select/wood2.png");
-	spr_question = std::make_unique<Sprite>("Data/Sprite/select/tutorial_what.png");
+	spr_wood3 = std::make_unique<Sprite>("Data/Sprite/select/wood3.png");
+	spr_question = std::make_unique<Sprite>("Data/Sprite/select/tutorial_what2.png");
 }
 
 void Story::ImGui()

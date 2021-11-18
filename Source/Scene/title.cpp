@@ -279,7 +279,7 @@ void Title::Set()
 
 	scene_tag = Scene::SCENE_TITLE;
 
-	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_TITLE)->Play(true);
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_TITLE)->Play(true, 0.2f);
 }
 
 
