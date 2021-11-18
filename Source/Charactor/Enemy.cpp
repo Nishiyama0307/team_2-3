@@ -440,7 +440,7 @@ void Enemy::RandomMove(float elapsedTime)
 		}
 
 		// ˆÚ“®
-		float walkSpeed = (this->moveSpeed * elapsedTime) / 2;
+		float walkSpeed = (10 * elapsedTime) / 2;
 		position.x += direction.x * walkSpeed;
 		position.y += direction.y * walkSpeed;
 		position.z += direction.z * walkSpeed;

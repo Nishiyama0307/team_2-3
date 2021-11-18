@@ -188,7 +188,7 @@ public:
 	float stamina_limit{ 512 };
 	float stamina = stamina_limit;
 
-	int kstamina_recovery{ 50 };
+	int kstamina_recovery{ 70 };
 
 	bool is_stamina_recovering{ false };
 
