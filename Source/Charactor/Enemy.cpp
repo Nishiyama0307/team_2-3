@@ -508,7 +508,7 @@ void Enemy::HomingMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 			}
 
 			// 回転角度があるなら回転処理をする
-			if (((is_detection_  && (rot) > 0.0001f && fabsf(rot) < 1.0f) || is_group_behavior_)) // 検知範囲外か、後ろを向いているとホーミングしない または団体行動中なら通る
+			if (((is_detection_  && (rot) > 0.0001f /*&& fabsf(rot) < 1.0f*/) || is_group_behavior_)) // 検知範囲外か、後ろを向いているとホーミングしない または団体行動中なら通る
 			{
 				// 回転軸を算出
 				DirectX::XMVECTOR Axis = DirectX::XMVector3Cross(Direction, Vec);

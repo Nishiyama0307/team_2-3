@@ -115,7 +115,8 @@ private:
 
     bool brave_timer_count{ false };
     int brave_timer_{ 0 };
-    int brave_timelimit_{ 5400 }; // 90 * 60
+    //int brave_timelimit_{ 5400 }; // 90 * 60
+    int brave_timelimit_{ 8400 }; // 140 * 60
 
     //ゲームオーバー時フェードアウト
     std::unique_ptr<Sprite> spr_fadeOut = nullptr;

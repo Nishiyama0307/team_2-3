@@ -524,7 +524,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0,
 			1, 1, 1, 1);
 
-		Minimap_Brave_angle = DirectX::XMConvertToRadians(brave_timer_ * 0.0333f);
+		Minimap_Brave_angle = DirectX::XMConvertToRadians(brave_timer_ * 0.0214f);
 
 		//ミニマップの勇者アイコン
 		Minimap_Brave->Render2(dc,
