@@ -506,15 +506,15 @@ void Player::DrawDebugPrimitive()
 	//UŒ‚‚P
 	if(colstion_check1)
 		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 2)) },
-		radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+		radius * 2, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 	//UŒ‚‚Q
 	if (colstion_check2)
 		debugRenderer->DrawCylinder({ position.x,position.y,position.z},
-			12.5, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+			15.0, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 	//UŒ‚‚R
 	if (colstion_check3)
 		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 2)) },
-			radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+			radius * 2.0f, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 
 }
 
@@ -640,7 +640,7 @@ void Player::UpdateAttack1(float elapsedTime)
 				// ‰~’Œ‚Æ‰~’Œ‚ÌÕ“Ëˆ—
 				DirectX::XMFLOAT3 outPosition;
 				if (Collision3D::IntersectCylinderVsCylinder(
-					attackPosition, radius, height,
+					attackPosition, radius * 2.0f, height,
 					enemy->GetPosition(),
 					enemy->GetRadius(),
 					enemy->GetHeight(),
@@ -707,7 +707,7 @@ void Player::UpdateAttack2(float elapsedTime)
 			// ‰~’Œ‚Æ‰~’Œ‚ÌÕ“Ëˆ—
 			DirectX::XMFLOAT3 outPosition;
 			if (Collision3D::IntersectCylinderVsCylinder(
-				attackPosition, 12.5, height,
+				attackPosition, 15.0, height,
 				enemy->GetPosition(),
 				enemy->GetRadius(),
 				enemy->GetHeight(),
@@ -768,7 +768,7 @@ void Player::UpdateAttack3(float elapsedTime)
 			// ‰~’Œ‚Æ‰~’Œ‚ÌÕ“Ëˆ—
 			DirectX::XMFLOAT3 outPosition;
 			if (Collision3D::IntersectCylinderVsCylinder(
-				attackPosition, radius, height,
+				attackPosition, radius * 2.0f, height,
 				enemy->GetPosition(),
 				enemy->GetRadius(),
 				enemy->GetHeight(),

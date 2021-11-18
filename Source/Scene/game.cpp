@@ -37,7 +37,8 @@ void Game::Update(float elapsedTime)
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Stop();
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
-
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DAMAGE)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DIE)->Stop();
 
 		return;
 	}
@@ -57,6 +58,9 @@ void Game::Update(float elapsedTime)
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Stop();
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DAMAGE)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DIE)->Stop();
+
 		is_fadeSprite = true;
 		fade_timer++;
 		if (fade_timer > 120)
@@ -78,6 +82,9 @@ void Game::Update(float elapsedTime)
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Stop();
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DAMAGE)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DIE)->Stop();
+
 		is_fadeSprite = true;
 		fade_timer++;
 		if (fade_timer > 120)
@@ -94,6 +101,9 @@ void Game::Update(float elapsedTime)
 	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
 	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Stop();
 	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
+	//  AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DAMAGE)->Stop();
+	//  AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DIE)->Stop();
+
 	//	is_fadeSprite = true;
 	//	fade_timer++;
 	//	if (fade_timer > 120)
