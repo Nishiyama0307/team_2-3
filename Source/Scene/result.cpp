@@ -94,14 +94,20 @@ void Result::Update(float elapsedTime)
 
 		//自身の体力が0
 	case Game_over1:
-		backPos.x = 700;
-		backPos.y = 850;
+		//backPos.x = 700;
+		//backPos.y = 850;
 		break;
 
 		//城の体力が0
 	case Game_over2:
-		backPos.x = 300;
-		backPos.y = 350;
+		//backPos.x = 300;
+		//backPos.y = 350;
+		break;
+
+		//マグマに落ちた
+	case Game_over3:
+		//backPos.x = 300;
+		//backPos.y = 350;
 		break;
 	}
 
@@ -243,6 +249,17 @@ void Result::SpriteRender(ID3D11DeviceContext* dc)
 			angle,
 			1, 1, 1, 1);
 		break;
+
+		//マグマに落ちた
+	case Game_over3:
+		spr_over3->Render2(dc,
+			0, 0,
+			1.5f, 1.5f,
+			0, 0,
+			1280, 720,
+			0, 0, (0),
+			1, 1, 1, 1
+		);
 	}
 
 
@@ -278,8 +295,8 @@ void Result::SpriteRender(ID3D11DeviceContext* dc)
 	// 黒帯
 	constexpr float scale = 300.0f;
 
-	if(did_first == false)black_band->Render(dc, 0, 0, 1920, 540 - scale * pow(black_band_timer, 5), 0, 0, 0, 0, 0, 1, 1, 1, 1);
-	if(did_first == false)black_band->Render(dc, 0, 540 + scale * pow(black_band_timer, 5), 1920, 540, 0, 0, 0, 0, 0, 1, 1, 1, 1);
+	if(did_first == false)black_band->Render(dc, 0, 0, 1920, 540 - scale * pow(black_band_timer, 5), 0, 0, 0, 0, 0, 0, 0, 0, 1);
+	if(did_first == false)black_band->Render(dc, 0, 540 + scale * pow(black_band_timer, 5), 1920, 540, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 
 	if(did_first)ChangeSceneSpriteRender(dc);
 
@@ -298,7 +315,7 @@ void Result::Set()
 	did_first = false;
 	did = false;
 
-	backPos.x = 700;
+	backPos.x = 100;
 	backPos.y = 850;
 
 	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE4)->Stop();
@@ -321,6 +338,7 @@ void Result::Load()
 	spr_clear = std::make_unique<Sprite>("Data/Sprite/scene/クリア.png");
 	spr_over1 = std::make_unique<Sprite>("Data/Sprite/scene/maou_down.png");
 	spr_over2 = std::make_unique<Sprite>("Data/Sprite/scene/maou_houkai.png");
+	spr_over3 = std::make_unique<Sprite>("Data/Sprite/scene/maou_maguma.png");
 
 	spr_wood1 = std::make_unique<Sprite>("Data/Sprite/select/wood.png");
 	spr_back2 = std::make_unique<Sprite>("Data/Sprite/select/titlebuck.png");

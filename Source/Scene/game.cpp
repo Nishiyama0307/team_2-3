@@ -42,7 +42,7 @@ void Game::Update(float elapsedTime)
 	// TODO: ゲーム処理
 
 	//ゲームクリア
-	if (player->GetPosition().z > 2545)
+	if (player->GetPosition().z > 2545 && player->GetPosition().x < 25.0f && player->GetPosition().x > -25.0f)
 	{
 		is_fadeSprite = true;
 		fade_timer++;
@@ -53,8 +53,8 @@ void Game::Update(float elapsedTime)
 		}
 	}
 
-	//CastleHP -= 10 * elapsedTime;
-	CastleHP -= 100;
+	CastleHP -= 10 * elapsedTime;
+	//CastleHP -= 100;
 	if (CastleHP < 0) {
 		CastleHP = 0;
 	}
@@ -69,15 +69,15 @@ void Game::Update(float elapsedTime)
 		}
 	}
 	//城の体力が無くなったらゲームオーバーへ(仮)
-	//if (CastleHP == 0) {
-	//	is_fadeSprite = true;
-	//	fade_timer++;
-	//	if (fade_timer > 120)
-	//	{
-	//		result = Game_over2;
-	//		ChangeNextScene(new Result);
-	//	}
-	//}
+	if (CastleHP == 0) {
+		is_fadeSprite = true;
+		fade_timer++;
+		if (fade_timer > 120)
+		{
+			result = Game_over2;
+			ChangeNextScene(new Result);
+		}
+	}
 
 	GameSystem::Instance().HitStopUpdate(elapsedTime);
 
@@ -522,6 +522,16 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0,
 			1, 1, 1, 1);
 
+		//城アイコン
+		CastleIcon->Render2(dc,
+			1610, 285,
+			1.0f, 1.0f,
+			0, 0,
+			43, 44,
+			0, 0,
+			0,
+			1, 1, 1, 1);
+
 		//攻撃スロット1
 		AttackSlot1->Render2(dc,
 			attackPosx1, attackPosY1,
@@ -532,6 +542,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0,
 			1, 1, 1, 1);
 
+		
 		//攻撃スロット2
 		AttackSlot2->Render2(dc,
 			attackPosx2, attackPosY2,
@@ -912,6 +923,7 @@ void Game::Load()
 	Minimap					= std::make_unique<Sprite>("Data/Sprite/ui/map.png");
 	Castlebar				= std::make_unique<Sprite>("Data/Sprite/ui/城.png");
 	CastlebarFrame			= std::make_unique<Sprite>("Data/Sprite/ui/城黒帯.png");
+	CastleIcon				= std::make_unique<Sprite>("Data/Sprite/ui/I_castle.png");
 	AttackSlot1				= std::make_unique<Sprite>("Data/Sprite/ui/AT1.png");
 	AttackSlot2				= std::make_unique<Sprite>("Data/Sprite/ui/AT2.png");
 	AttackSlot3				= std::make_unique<Sprite>("Data/Sprite/ui/AT3.png");

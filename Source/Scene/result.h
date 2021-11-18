@@ -61,6 +61,7 @@ private:
     std::unique_ptr<Sprite> spr_clear = nullptr;
     std::unique_ptr<Sprite> spr_over1 = nullptr;
     std::unique_ptr<Sprite> spr_over2 = nullptr;
+    std::unique_ptr<Sprite> spr_over3 = nullptr;
 
     std::unique_ptr<Sprite> spr_mouseCursor = nullptr;
     Pos mousePos;
@@ -81,5 +82,6 @@ enum
 {
     Game_clear,
     Game_over1,
-    Game_over2
+    Game_over2,
+    Game_over3
 };

@@ -91,6 +91,7 @@ private:
     std::unique_ptr<Sprite> Minimap             = nullptr;      //ミニマップ
     std::unique_ptr<Sprite> Castlebar           = nullptr;      //城
     std::unique_ptr<Sprite> CastlebarFrame      = nullptr;      //
+    std::unique_ptr<Sprite> CastleIcon          = nullptr;      //
     std::unique_ptr<Sprite> AttackSlot1         = nullptr;      //攻撃スロット1
     std::unique_ptr<Sprite> AttackSlot2         = nullptr;      //攻撃スロット2
     std::unique_ptr<Sprite> AttackSlot3         = nullptr;      //攻撃スロット3
