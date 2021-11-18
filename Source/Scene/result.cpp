@@ -147,12 +147,12 @@ void Result::SpriteRender(ID3D11DeviceContext* dc)
 	/* 2Dスプライトの描画 */
 	Graphics& graphics = Graphics::Instance();
 
-	float screenWidth = CAST_F(graphics.GetScreenWidth());
-	float screenHeight = CAST_F(graphics.GetScreenHeight());
-	float spr_retryWidth = CAST_F(spr_retry->GetTextureWidth());
-	float spr_retryHeight = CAST_F(spr_retry->GetTextureHeight());
-	float spr_endWidth = CAST_F(spr_end->GetTextureWidth());
-	float spr_endHeight = CAST_F(spr_end->GetTextureHeight());
+	//float screenWidth = CAST_F(graphics.GetScreenWidth());
+	//float screenHeight = CAST_F(graphics.GetScreenHeight());
+	//float spr_retryWidth = CAST_F(spr_retry->GetTextureWidth());
+	//float spr_retryHeight = CAST_F(spr_retry->GetTextureHeight());
+	//float spr_endWidth = CAST_F(spr_end->GetTextureWidth());
+	//float spr_endHeight = CAST_F(spr_end->GetTextureHeight());
 
 #if 0
 
@@ -329,7 +329,6 @@ void Result::Set()
 	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE3)->Stop();
 	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE2)->Stop();
 	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE1)->Stop();
-	//AudioManager::Instance().GetAudio(Audio_INDEX::SE_RESULT)->Play(false);
 
 	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
 	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Stop();
@@ -365,10 +364,10 @@ void Result::Set()
 
 void Result::Load()
 {
-	spr_back = std::make_unique<Sprite>("Data/Sprite/タイトルロゴなし背景画像（リザルト）.png");
-	spr_retry = std::make_unique<Sprite>("Data/Sprite/リトライ（リザルト）.png");
-	spr_end = std::make_unique<Sprite>("Data/Sprite/やめる（リザルト）.png");
-	spr_font = std::make_unique<Sprite>("Data/Sprite/数字.png");
+	//spr_back = std::make_unique<Sprite>("Data/Sprite/タイトルロゴなし背景画像（リザルト）.png");
+	//spr_retry = std::make_unique<Sprite>("Data/Sprite/リトライ（リザルト）.png");
+	//spr_end = std::make_unique<Sprite>("Data/Sprite/やめる（リザルト）.png");
+	//spr_font = std::make_unique<Sprite>("Data/Sprite/数字.png");
 
 
 	black_band = std::make_unique<Sprite>();

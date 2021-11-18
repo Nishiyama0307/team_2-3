@@ -64,15 +64,15 @@ public:
 public: // Getä÷êî
     AudioSource* GetAudio(Audio_INDEX index)
     {
-        if(index == Audio_INDEX::BGM_NORMAL)        return bgm_normal      .get();
-        if(index == Audio_INDEX::BGM_SPEED)         return bgm_speed       .get();
-        if(index == Audio_INDEX::SE_SELECT)         return se_select       .get();
-        if(index == Audio_INDEX::SE_ENTER)          return se_enter        .get();
-        if(index == Audio_INDEX::SE_SUCCESS)        return se_success      .get();
-        if(index == Audio_INDEX::SE_WALLHIT)        return se_wallhit      .get();
-        if(index == Audio_INDEX::SE_GROWUP)         return se_growup       .get();
-        if(index == Audio_INDEX::SE_TIMEUP)         return se_timeup       .get();
-        if(index == Audio_INDEX::SE_RESULT)         return se_result       .get();
+        //if(index == Audio_INDEX::BGM_NORMAL)        return bgm_normal      .get();
+        //if(index == Audio_INDEX::BGM_SPEED)         return bgm_speed       .get();
+        //if(index == Audio_INDEX::SE_SELECT)         return se_select       .get();
+        //if(index == Audio_INDEX::SE_ENTER)          return se_enter        .get();
+        //if(index == Audio_INDEX::SE_SUCCESS)        return se_success      .get();
+        //if(index == Audio_INDEX::SE_WALLHIT)        return se_wallhit      .get();
+        //if(index == Audio_INDEX::SE_GROWUP)         return se_growup       .get();
+        //if(index == Audio_INDEX::SE_TIMEUP)         return se_timeup       .get();
+        //if(index == Audio_INDEX::SE_RESULT)         return se_result       .get();
 
         //í«â¡
         if (index == Audio_INDEX::BGM_TITLE)                    return bgm_title.get();
@@ -102,15 +102,15 @@ public: // Getä÷êî
 public: // Setä÷êî
     
 private:
-    std::unique_ptr<AudioSource> bgm_normal             = nullptr;
-    std::unique_ptr<AudioSource> bgm_speed              = nullptr;
-    std::unique_ptr<AudioSource> se_select              = nullptr;
-    std::unique_ptr<AudioSource> se_enter               = nullptr;
-    std::unique_ptr<AudioSource> se_success             = nullptr;
-    std::unique_ptr<AudioSource> se_wallhit             = nullptr;
-    std::unique_ptr<AudioSource> se_growup              = nullptr;
-    std::unique_ptr<AudioSource> se_timeup              = nullptr;
-    std::unique_ptr<AudioSource> se_result              = nullptr;
+    //std::unique_ptr<AudioSource> bgm_normal             = nullptr;
+    //std::unique_ptr<AudioSource> bgm_speed              = nullptr;
+    //std::unique_ptr<AudioSource> se_select              = nullptr;
+    //std::unique_ptr<AudioSource> se_enter               = nullptr;
+    //std::unique_ptr<AudioSource> se_success             = nullptr;
+    //std::unique_ptr<AudioSource> se_wallhit             = nullptr;
+    //std::unique_ptr<AudioSource> se_growup              = nullptr;
+    //std::unique_ptr<AudioSource> se_timeup              = nullptr;
+    //std::unique_ptr<AudioSource> se_result              = nullptr;
 
     //í«â¡
     std::unique_ptr<AudioSource> bgm_title              = nullptr;
