@@ -36,7 +36,7 @@ public: // Setä÷êî
 	void AddImpact(const DirectX::XMFLOAT3 impact_);
 	void ResetTransform()
 	{
-		position = { 0, 0, -160.0f };
+		position = { 0, 0, -155.0f };
 		angle = {};
 
 
@@ -190,8 +190,6 @@ public:
 	float stamina = stamina_limit;
 
 	int kstamina_recovery{ 70 };
-
-	bool is_stamina_recovering{ false };
 
 	//É}ÉOÉ}Ç≈éÄñSÇµÇΩÇ©
 	bool magumaDeath = false;

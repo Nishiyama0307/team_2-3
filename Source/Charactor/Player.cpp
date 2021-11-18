@@ -504,12 +504,12 @@ void Player::DrawDebugPrimitive()
 	debugRenderer->DrawSphere({ position.x,position.y + stepOffset,position.z }, 0.1f, DirectX::XMFLOAT4(0, 0, 0, 1));
 
 	//UŒ‚‚P
-	if(colstion_check1)
+	if (colstion_check1)
 		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 2)) },
-		radius * 2, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+			radius * 2, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 	//UŒ‚‚Q
 	if (colstion_check2)
-		debugRenderer->DrawCylinder({ position.x,position.y,position.z},
+		debugRenderer->DrawCylinder({ position.x,position.y,position.z },
 			15.0, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 	//UŒ‚‚R
 	if (colstion_check3)
@@ -550,7 +550,6 @@ void Player::attack_Branch()
 	if (mouse.GetButtonDown() & anyButton)
 	{
 		armor = true;
-		is_stamina_recovering = true;
 		switch (attck_select_state)
 		{
 		case 0:
@@ -608,64 +607,58 @@ void Player::Attack1_change()
 //UŒ‚ƒXƒe[ƒgXV  1
 void Player::UpdateAttack1(float elapsedTime)
 {
-
 	velocity.x = 0;
 	velocity.z = 0;
-	//if (!pause->Update(elapsedTime))
-	//{
-		//AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
-		//AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Stop();
-		//AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
 
-	
-		animeTimer++;
-		//colstion_check1 = true;
-		EnemyManager& enemyManager = EnemyManager::Instance();
-		int enemyCount = enemyManager.GetEnemyCount();
+	animeTimer++;
+	//colstion_check1 = true;
+	EnemyManager& enemyManager = EnemyManager::Instance();
+	int enemyCount = enemyManager.GetEnemyCount();
 
-		DirectX::XMFLOAT3 attackPosition;
-		attackPosition = { float3SUM(position,float3Scaling(GetFront(), radius * 2)) };
-		if (animeTimer > 12.0f)
+	DirectX::XMFLOAT3 attackPosition;
+	attackPosition = { float3SUM(position,float3Scaling(GetFront(), radius * 2)) };
+	if (animeTimer > 12.0f)
+	{
+		colstion_check1 = true;
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Play(false);
+	}
+	if (animeTimer > 33.0f)colstion_check1 = false;
+
+	if (colstion_check1)
+	{
+		for (int i = 0; i < enemyCount; ++i)
 		{
-			colstion_check1 = true;
-			AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Play(false);
-		}
-		if (animeTimer > 33.0f)colstion_check1 = false;
-
-		if (colstion_check1)
-		{
-			for (int i = 0; i < enemyCount; ++i)
+			Enemy* enemy = enemyManager.GetEnemy(i);
+			// ‰~’Œ‚Æ‰~’Œ‚ÌÕ“Ëˆ—
+			DirectX::XMFLOAT3 outPosition;
+			if (Collision3D::IntersectCylinderVsCylinder(
+				attackPosition, radius * 2.0f, height,
+				enemy->GetPosition(),
+				enemy->GetRadius(),
+				enemy->GetHeight(),
+				outPosition))
 			{
-				Enemy* enemy = enemyManager.GetEnemy(i);
-				// ‰~’Œ‚Æ‰~’Œ‚ÌÕ“Ëˆ—
-				DirectX::XMFLOAT3 outPosition;
-				if (Collision3D::IntersectCylinderVsCylinder(
-					attackPosition, radius * 2.0f, height,
-					enemy->GetPosition(),
-					enemy->GetRadius(),
-					enemy->GetHeight(),
-					outPosition))
+				if (enemy->is_dead_ == false)
 				{
 					enemy->ApplyDamage(this->par.power[0], KIND::RARE_ENEMY, 5);
-					if (enemy->par.health <= 0 && is_stamina_recovering)
+					if (enemy->par.health <= 0 )
 					{
 						stamina += kstamina_recovery;
 						if (stamina > stamina_limit) stamina = stamina_limit;
-						is_stamina_recovering = false;
 					}
 				}
-
 			}
-		}
 
-		if (!model->IsPlayAnimation())
-		{
-			AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
-			armor = false;
-			colstion_check1 = false;
-			Idel_change();
 		}
-	//}
+	}
+
+	if (!model->IsPlayAnimation())
+	{
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
+		armor = false;
+		colstion_check1 = false;
+		Idel_change();
+	}
 }
 
 //UŒ‚ƒXƒe[ƒg‚Ö  2
@@ -713,12 +706,14 @@ void Player::UpdateAttack2(float elapsedTime)
 				enemy->GetHeight(),
 				outPosition))
 			{
-				enemy->ApplyDamage(this->par.power[1], KIND::RARE_ENEMY, 5);
-				if (enemy->par.health <= 0 && is_stamina_recovering)
+				if (enemy->is_dead_ == false)
 				{
-					stamina += kstamina_recovery;
-					if (stamina > stamina_limit) stamina = stamina_limit;
-					is_stamina_recovering = false;
+					enemy->ApplyDamage(this->par.power[1], KIND::RARE_ENEMY, 5);
+					if (enemy->par.health <= 0)
+					{
+						stamina += kstamina_recovery;
+						if (stamina > stamina_limit) stamina = stamina_limit;
+					}
 				}
 			}
 		}
@@ -774,12 +769,15 @@ void Player::UpdateAttack3(float elapsedTime)
 				enemy->GetHeight(),
 				outPosition))
 			{
-				enemy->ApplyDamage(this->par.power[2], KIND::RARE_ENEMY, 5);
-				if (enemy->par.health <= 0 && is_stamina_recovering)
+
+				if (enemy->is_dead_ == false)
 				{
-					stamina += kstamina_recovery;
-					if (stamina > stamina_limit) stamina = stamina_limit;
-					is_stamina_recovering = false;
+					enemy->ApplyDamage(this->par.power[2], KIND::RARE_ENEMY, 5);
+					if (enemy->par.health <= 0)
+					{
+						stamina += kstamina_recovery;
+						if (stamina > stamina_limit) stamina = stamina_limit;
+					}
 				}
 			}
 		}

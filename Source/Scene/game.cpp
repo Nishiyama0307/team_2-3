@@ -39,10 +39,8 @@ void Game::Update(float elapsedTime)
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DAMAGE)->Stop();
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DIE)->Stop();
-
 		return;
 	}
-	if (pause->Update(elapsedTime)) return;
 
 	if (is_do_tutorial == false) countdown->Update(elapsedTime);
 
@@ -102,7 +100,7 @@ void Game::Update(float elapsedTime)
 	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Stop();
 	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
 	//  AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DAMAGE)->Stop();
-	//  AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DIE)->Stop();
+    //  AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DIE)->Stop();
 
 	//	is_fadeSprite = true;
 	//	fade_timer++;
@@ -225,7 +223,7 @@ void Game::Update(float elapsedTime)
 		if (player->GetPosition().x > 25.0f) player->SetPosition({ 25.0f, player->GetPosition().y, player->GetPosition().z });
 		if (player->GetPosition().x < -25.0f) player->SetPosition({ -25.0f, player->GetPosition().y, player->GetPosition().z });
 		if (player->GetPosition().z > -120.0f) player->SetPosition({ player->GetPosition().x, player->GetPosition().y, -120.0f });
-		if (player->GetPosition().z < -160.0f) player->SetPosition({ player->GetPosition().x, player->GetPosition().y, -160.0f });
+		if (player->GetPosition().z < -155.0f) player->SetPosition({ player->GetPosition().x, player->GetPosition().y, -155.0f });
 
 		//マウス処理(チュートリアル)
 		//マウスボックス
@@ -526,7 +524,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0,
 			1, 1, 1, 1);
 
-		Minimap_Brave_angle = DirectX::XMConvertToRadians(brave_timer_ * 0.0375f);
+		Minimap_Brave_angle = DirectX::XMConvertToRadians(brave_timer_ * 0.0333f);
 
 		//ミニマップの勇者アイコン
 		Minimap_Brave->Render2(dc,
@@ -957,9 +955,9 @@ void Game::Load()
 
 #ifdef _DEBUG
 	//player->SetPosition(DirectX::XMFLOAT3(0, 0, kStage4_Start_Position));
-	player->SetPosition(DirectX::XMFLOAT3(0, 0, -160.0f));
+	player->SetPosition(DirectX::XMFLOAT3(0, 0, -155.0f));
 #else
-	player->SetPosition(DirectX::XMFLOAT3(0, 0, -160.0f));
+	player->SetPosition(DirectX::XMFLOAT3(0, 0, -155.0f));
 #endif
 
 	enemy_Arrangement = new Enemy_Arrangement();
