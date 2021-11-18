@@ -190,7 +190,8 @@ public:
 	float stamina = stamina_limit;
 	float health_limit{ 10 };
 
-	int kstamina_recovery{ 70 };
+	//int kstamina_recovery{ 70 };
+	int kstamina_recovery{ 140 };
 	int khealth_recovery{ 2 };
 
 	//ƒ}ƒOƒ}‚Å€–S‚µ‚½‚©
