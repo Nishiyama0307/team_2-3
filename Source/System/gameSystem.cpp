@@ -27,14 +27,14 @@ void GameSystem::SpriteRender(ID3D11DeviceContext* dc)
 
 
 
-    timer->SpriteRender(dc, { 850,0 }, { 1,1 }, color);
+    //timer->SpriteRender(dc, { 850,0 }, { 1,1 }, color);
     //score->SpriteRender(dc);
 }
 
 void GameSystem::Init()
 {
     //constexpr float time_limit_second = 80.8f;
-    constexpr float time_limit_second = 120.0f;
+    constexpr float time_limit_second = 5.0f;
 
     timer = std::make_unique<Timer>(COUNT::DOWN, time_limit_second, true);
     hitstop = std::make_unique<HitStop>();

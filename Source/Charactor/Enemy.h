@@ -93,7 +93,7 @@ public:
 	DirectX::XMFLOAT3	target = { 0, 0, 0 };	
 	DirectX::XMFLOAT3	direction = { 0,0,-1 };							// Œ©‚Ä‚¢‚é•ûŒü
 	DirectX::XMFLOAT3	random_target = { 0,0,0 };							// Œ©‚Ä‚¢‚é•ûŒü
-	float				moveSpeed = 10.0f;										// ˆÚ“®‘¬“x
+	float				moveSpeed = 25.0f;										// ˆÚ“®‘¬“x
 	float				turnSpeed = DirectX::XMConvertToRadians(180);	// ‰ñ“]‘¬“x
 	float				distance = 100;											// player‚Æenemy‚Ì‹——£
 

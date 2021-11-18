@@ -39,6 +39,9 @@ void Game::Update(float elapsedTime)
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
 		return;
 	}
+	if (pause->Update(elapsedTime)) return;
+
+	if (is_do_tutorial == false) countdown->Update(elapsedTime);
 
 	BGMStart();
 
@@ -60,12 +63,14 @@ void Game::Update(float elapsedTime)
 			ChangeNextScene(new Result);
 		}
 	}
+	if (countdown->NowCountDown() == false && brave_timer_ < brave_timelimit_) brave_timer_++;
 
-	CastleHP -= 10 * elapsedTime;
+	if (countdown->NowCountDown() == false && brave_timer_ >= brave_timelimit_ - 1) CastleHP -= 6.4 * elapsedTime;
 	//CastleHP -= 100;
 	if (CastleHP < 0) {
 		CastleHP = 0;
 	}
+
 	//プレイヤーが死んだらゲームオーバーへ(仮)
 	if (player->animdeth) {
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
@@ -102,7 +107,7 @@ void Game::Update(float elapsedTime)
 
 	StageManager::Instance().Update(elapsedTime, stage_num);
 
-	EnemyManager::Instance().Update(elapsedTime, player->GetPosition(), stage_num);
+	if (countdown->NowCountDown() == false) EnemyManager::Instance().Update(elapsedTime, player->GetPosition(), stage_num);
 
 	EnemyManager::Instance().SortLengthSq(player->GetPosition());
 
@@ -169,7 +174,7 @@ void Game::Update(float elapsedTime)
 		break;
 	}
 
-	player->Update(elapsedTime, stage_num, explaining);
+	if ((countdown->NowCountDown() == false && black_band_timer == 0.0f) || is_do_tutorial) player->Update(elapsedTime, stage_num, explaining);
 
 
 	
@@ -319,10 +324,9 @@ void Game::Update(float elapsedTime)
 
 				if (attack_[0] && attack_[1])
 				{
-					if (check_timer > 60)
+					if (check_timer > 60 && player->GetModel()->IsPlayAnimation() == false) 
 					{
 						End_of_explanation(elapsedTime);
-						//enemy_Arrangement->enemy_produce(Enemy_Arrangement::csv_file_num::TUTORIAL_NORMAL);
 						check_timer = 0;
 					}
 					else
@@ -338,17 +342,10 @@ void Game::Update(float elapsedTime)
 			break;
 		case END:
 			// シーン変更
-			//if(gamePad.GetButtonDown() & GamePad::BTN_SPACE)
-			//{ 
-			//	ChangeNextScene(new Game()); // 急にシーンが変わると不自然なので任意のタイミングで変える
-			//	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Stop();
-			//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_SUCCESS)->Stop();
-			//}
 			if (explanation == 7)
 			{
 				// はい
 				if (mouse.GetButtonDown() & Mouse::BTN_LEFT && tutorial_retry_[0])
-				//if (mouse.GetButtonDown() & Mouse::BTN_LEFT)
 				{
 					AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
 					explanation = 0; // チュートリアルをもう一度(初期化したらいい)
@@ -371,9 +368,7 @@ void Game::Update(float elapsedTime)
 
 				// いいえ
 				if (mouse.GetButtonDown() & Mouse::BTN_LEFT && tutorial_retry_[1])
-				//if (mouse.GetButtonDown() & Mouse::BTN_LEFT)
 				{
-					//ChangeNextScene(new Game()); // ゲームへ
 					AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
 					is_do_tutorial = false;
 					explaining = false;
@@ -389,7 +384,7 @@ void Game::Update(float elapsedTime)
 			break;
 		}
 	}
-	else
+	else if (countdown->NowCountDown() == false)
 	{
 		GameSystem::Instance().Update(elapsedTime);
 	}
@@ -413,6 +408,10 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 	/* 2Dスプライトの描画 */
 	GameSystem::Instance().SpriteRender(dc);
 
+	if (is_do_tutorial == false)
+	{
+		countdown->SpriteRender(dc, { 960,396 }, { 1,1 });
+	}
 
 	//UIレンダー
 	{
@@ -514,6 +513,8 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			0, 0,
 			0,
 			1, 1, 1, 1);
+
+		Minimap_Brave_angle = DirectX::XMConvertToRadians(brave_timer_ * 0.0375f);
 
 		//ミニマップの勇者アイコン
 		Minimap_Brave->Render2(dc,
@@ -936,10 +937,11 @@ void Game::Set()
 void Game::Load()
 {
 	pause		= std::make_unique<Pause>(this);
+	countdown = std::make_unique<CountDown>();
 
 	// プレイヤー初期化
 	player = new Player();
-	//player->ResetTransform();
+	player->ResetTransform();
 
 #ifdef _DEBUG
 	//player->SetPosition(DirectX::XMFLOAT3(0, 0, kStage4_Start_Position));
@@ -1130,8 +1132,7 @@ void Game::ChangeScene(float elapsedTime)
 	ChangeNextScene(new Result(), GamePad::BTN_A, false);
 #endif
 
-	if (GameSystem::Instance().NowTime() > 0.0f && smallest == false) return;
-
+	if (CastleHP > 0.0f) return;
 
 	// 黒帯の更新
 	black_band_timer += 1.0f * elapsedTime;
@@ -1140,6 +1141,8 @@ void Game::ChangeScene(float elapsedTime)
 	// 黒帯が降りきったら
 	if (black_band_timer >= 1.4f)
 	{
+
+		result = Game_over2;
 		// 残り時間がゼロになった際シーン遷移をする
 		ChangeNextScene(new Result(), false);
 
@@ -1156,8 +1159,8 @@ void Game::ClearedSpriteRender(ID3D11DeviceContext* dc)
 	// 黒帯
 	constexpr float scale = 300.0f;
 
-	black_band->Render(dc, 0, 0, 1920, scale * pow(black_band_timer, 5), 0, 0, 0, 0, 0, 1, 1, 1, 1);
-	black_band->Render(dc, 0, 1080, 1920, -scale * pow(black_band_timer, 5), 0, 0, 0, 0, 0, 1, 1, 1, 1);
+	black_band->Render(dc, 0, 0, 1920, scale * pow(black_band_timer, 5), 0, 0, 0, 0, 0, 0, 0, 0, 1);
+	black_band->Render(dc, 0, 1080, 1920, -scale * pow(black_band_timer, 5), 0, 0, 0, 0, 0, 0, 0, 0, 1);
 }
 
 

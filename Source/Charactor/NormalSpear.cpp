@@ -11,7 +11,7 @@ NormalSpear::NormalSpear()
 	model->PlayAnimation(ANIMINDEX::IDLE, true);
 
 	// {hp, attack, money}
-	par = { 10, 1, 5 };
+	par = { 10, 1 };
 }
 
 NormalSpear::~NormalSpear()
