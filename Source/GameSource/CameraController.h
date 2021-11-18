@@ -106,12 +106,23 @@ public:
     //更新処理
     void Update(float elapsedTime, bool explaining = false);
 
-    //ターゲット位置設
+
+    void init(const DirectX::XMFLOAT3 position_ = {},
+        const DirectX::XMFLOAT3 target_ = {});
+    
+    //ターゲット位置設定
+#if 0
     void SetTarget(const DirectX::XMFLOAT3& target) { this->target = target; }
+#else
+    void SetTarget(const DirectX::XMFLOAT3& new_target_) { this->new_target = new_target_; }
+#endif
 
 private:
-    DirectX::XMFLOAT3  target = { 0, 0, 0 };
+    // 姿勢表現
+    DirectX::XMFLOAT3  position = {};
+    DirectX::XMFLOAT3  target = {};
     DirectX::XMFLOAT3  angle = { 0, 0, 0 };
+
     float			   rollSpeed = DirectX::XMConvertToRadians(10);
     float			   range = 20.0f;
 
@@ -119,5 +130,9 @@ private:
     float				minAngleX = DirectX::XMConvertToRadians(-45);
 
     bool setpos = false;
+
+
+    DirectX::XMFLOAT3 new_position = {};
+    DirectX::XMFLOAT3 new_target = {};
 
 };

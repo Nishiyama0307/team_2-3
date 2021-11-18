@@ -90,14 +90,15 @@ void Game::Update(float elapsedTime)
 	EnemyManager::Instance().SortLengthSq(player->GetPosition());
 
 	//カメラコントローラー更新処理
-	//if (explanation != 7)
-	//{
-		DirectX::XMFLOAT3 target = player->GetPosition();
-		target.y += 12.0f;
-		//target.z -= 10.0f;
-		cameraController->SetTarget(target);
-		cameraController->Update(elapsedTime, explaining);
-	//}
+	DirectX::XMFLOAT3 target = player->GetPosition();
+	target.y += 12.0f;
+#if 0
+	cameraController->SetTarget(target);
+#else
+	cameraController->SetTarget(float3SUM({ target.x, target.y, target.z }, player->GetFront()));
+#endif
+	cameraController->Update(elapsedTime, explaining);
+
 	//攻撃選択
 	Mouse& mouse = Input::Instance().GetMouse();
 	if (mouse.GetButtonDown() & Mouse::BTN_RIGHT)
@@ -176,9 +177,9 @@ void Game::Update(float elapsedTime)
 	//CameraController::Instance()->SetTarget({ player->GetPosition().x, player->GetPosition().y + 10, player->GetPosition().z - 3});
 	//CameraController::Instance()->Update(elapsedTime);
 
+	// TODO: チュートリアル処理
 	if (is_do_tutorial)
 	{
-		// TODO: チュートリアル処理
 		if (explaining && explanation < 6 && mouse.GetButtonDown() & Mouse::BTN_LEFT)
 		{
 			explanation++;
@@ -1086,6 +1087,8 @@ void Game::CameraSet()
 
 	//カメラコントローラー初期化
 	cameraController = new CameraController();
+
+	cameraController->init(player->GetPosition(), player->GetPosition());
 }
 
 

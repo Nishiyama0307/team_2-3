@@ -361,6 +361,9 @@ void CameraController::SetRange(float range_)
 
 #include<Windows.h>
 
+#include "collision.h"
+#include "stageManager.h"
+
 //更新処理
 void CameraController::Update(float elapsdTime, bool explaining)
 {
@@ -565,13 +568,50 @@ void CameraController::Update(float elapsdTime, bool explaining)
     DirectX::XMFLOAT3 front;
     DirectX::XMStoreFloat3(&front, Front);
 
+#if 0
     //注意点から後ろベクトル方向にい一定距離離れたカメラ視点を求める
     DirectX::XMFLOAT3 eye;
     eye.x = target.x - front.x * range;
     eye.y = target.y - front.y * range;
     eye.z = target.z - front.z * range;
 
-    //カメラの視点と注意点を設定
+	//カメラの視点と注意点を設定
     Camera::Instance().SetLookAt(eye, target, DirectX::XMFLOAT3(0, 1, 0));
 
+#else
+
+    new_position.x = target.x - front.x * range;
+    new_position.y = target.y - front.y * range;
+    new_position.z = target.z - front.z * range;
+
+    // 地形との当たり判定を行う
+    HitResult	hitResult;
+    if (StageManager::Instance().RayCast(new_target, new_position, hitResult))
+    {
+        DirectX::XMVECTOR	p = DirectX::XMLoadFloat3(&hitResult.position);
+        DirectX::XMVECTOR	cuv = DirectX::XMVectorSet(0, 1, 0, 0);
+        p = DirectX::XMVectorMultiplyAdd(DirectX::XMVectorReplicate(4), cuv, p);
+        DirectX::XMStoreFloat3(&new_position, p);
+    }
+
+
+    // 徐々に目標に近づける
+    static	constexpr	float	Speed = 1.0f / 5.0f;
+    position.x += (new_position.x - position.x) * Speed;
+    position.y += (new_position.y - position.y) * Speed;
+    position.z += (new_position.z - position.z) * Speed;
+    target.x += (new_target.x - target.x) * Speed;
+    target.y += (new_target.y - target.y) * Speed;
+    target.z += (new_target.z - target.z) * Speed;
+
+    //カメラの視点と注意点を設定
+    Camera::Instance().SetLookAt(position, target, DirectX::XMFLOAT3(0, 1, 0));
+#endif
+
+}
+
+void CameraController::init(const DirectX::XMFLOAT3 position_, const DirectX::XMFLOAT3 target_)
+{
+    position = position_;
+    target = target_;
 }
