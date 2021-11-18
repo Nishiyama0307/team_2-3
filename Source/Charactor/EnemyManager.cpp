@@ -14,9 +14,10 @@ void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos,
 		if (enemy->is_dead_ == false && stage_num == enemy->stage_num)
 		{
 			if (enemy->stage_num == 0 && enemy->GetPosition().y <= -15) enemy->ApplyDamage(enemy->par.health, 3, 0);//‚±‚Ì3‚ÍKIND::RARE_ENEMY‚Å‚·
-
 			enemy->UpdateMove(elapsedTime, playerPos);
 		}
+		if(enemy->is_dead_)
+		enemy->attack = false;
 	}
 	for (auto& enemy : enemies)
 	{

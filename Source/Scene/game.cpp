@@ -44,6 +44,9 @@ void Game::Update(float elapsedTime)
 	//ゲームクリア
 	if (player->GetPosition().z > 2545 && player->GetPosition().x < 25.0f && player->GetPosition().x > -25.0f)
 	{
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
 		is_fadeSprite = true;
 		fade_timer++;
 		if (fade_timer > 120)
@@ -60,6 +63,9 @@ void Game::Update(float elapsedTime)
 	}
 	//プレイヤーが死んだらゲームオーバーへ(仮)
 	if (player->animdeth) {
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
 		is_fadeSprite = true;
 		fade_timer++;
 		if (fade_timer > 120)
@@ -73,6 +79,9 @@ void Game::Update(float elapsedTime)
 	}
 	//城の体力が無くなったらゲームオーバーへ(仮)
 	//if (CastleHP == 0) {
+	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
+	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Stop();
+	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
 	//	is_fadeSprite = true;
 	//	fade_timer++;
 	//	if (fade_timer > 120)

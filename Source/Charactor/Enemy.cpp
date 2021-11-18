@@ -546,34 +546,39 @@ void Enemy::HomingMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 // ƒvƒŒƒCƒ„[‚É‘Î‚µ‚Ä‚ÌUŒ‚
 void Enemy::AttackMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 {
-	if (distance < kAttack_Range)
+	//attack = false;
+	if (!is_dead_)
 	{
-		is_attacking_ = true;
-		if (model->GetIndex() != ANIMINDEX::ATTACK)
+		if (distance < kAttack_Range)
 		{
-			model->PlayAnimation(ANIMINDEX::ATTACK, false);
-			animTimer = 0;
+			is_attacking_ = true;
+			if (model->GetIndex() != ANIMINDEX::ATTACK)
+			{
+				model->PlayAnimation(ANIMINDEX::ATTACK, false);
+				animTimer = 0;
+				attack = false;
+			}
+			animTimer++;
+			if (animTimer > 38.28f /*5*/) //–ñ0.6•b 
+			{
+				attack = true;
+			}
+			//if (model->GetIndex() == ANIMINDEX::ATTACK)
+			//if (model->IsPlayAnimation() && is_dead_) //
+			//{
+			//	animTimer = 0;
+			//	attack = false;
+			//}
+		}
+		else if (is_attacking_ && model->IsPlayAnimation() == false)
+		{
 			attack = false;
+			is_attacking_ = false;
+			if (model->GetIndex() != ANIMINDEX::RUN) model->PlayAnimation(ANIMINDEX::RUN, true);
 		}
-		animTimer++;
-		if (animTimer > 38.28f /*5*/) //–ñ0.6•b 
-		{
-			attack = true;
-		}
-		//if (model->GetIndex() == ANIMINDEX::ATTACK)
-		//if (!model->IsPlayAnimation()) //‚±‚Ìif‚ğ’Ê‚Á‚Ä‚¢‚È‚¢->‰½ŒÌ•ª‚©‚ç‚È‚¢c
-		//{
-		//	animTimer = 0;
-		//	attack = false;
-		//}
 	}
-	else if(is_attacking_ && model->IsPlayAnimation() == false)
-	{
-		attack = false;
-		is_attacking_ = false;
-		if (model->GetIndex() != ANIMINDEX::RUN) model->PlayAnimation(ANIMINDEX::RUN, true);
-	}
-
+	//if (is_dead_)
+	//	attack = false;
 }
 
 // ”jŠü
