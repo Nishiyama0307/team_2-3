@@ -48,7 +48,7 @@ void Title::Update(float elapsedTime)
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENTER)->Stop();
 		AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENTER)->Play(false);
 	}*/
-	if (gamePad.GetButtonDown() & GamePad::BTN_SPACE)	ChangeNextScene(new Game());
+	//if (gamePad.GetButtonDown() & GamePad::BTN_SPACE)	ChangeNextScene(new Game());
 
 
 	//	«	@“ü—Íˆ—‚Æ‚©‚¢‚ë‚¢‚ë‘‚­@	«	@//

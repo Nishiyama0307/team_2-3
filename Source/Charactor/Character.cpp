@@ -9,6 +9,7 @@
 #include "Input/GamePad.h"
 #include "Input/Input.h"
 
+#include "audioManager.h"
 
 // 行列更新処理
 void Character::UpdateTransform()
@@ -26,7 +27,7 @@ void Character::UpdateTransform()
 }
 
 // ダメージを与える
-bool Character::ApplyDamage(int damage, float invincibleTime)
+bool Character::ApplyDamage(int damage, int kind, float invincibleTime)
 {
     // ダメージが0の場合は健康状態を変更する必要がない
     if (damage == 0) return false;
@@ -39,6 +40,12 @@ bool Character::ApplyDamage(int damage, float invincibleTime)
     {
         par.health -= damage;
         invincibleTimer = invincibleTime;
+
+
+        if(kind == KIND::PLAYER)
+            AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_DAMAGE)->Play(false);
+        if(kind == KIND::RARE_ENEMY)
+            AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DIE)->Play(false);
     }
 
     // 死亡通知

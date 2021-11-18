@@ -32,11 +32,13 @@ void AudioManager::Init()
     se_player_attack1 = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Player/Attack1.wav");
     se_player_attack2 = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Player/Attack2.wav");
     se_player_attack3 = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Player/Attack3.wav");
+    se_player_damage = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Player/Damage.wav");
 
     se_enemy_run = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/Run.wav");
     se_enemy_spear_attack = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/SpearAttack.wav");
     se_enemy_sword_attack = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/SwordAttack.wav");
     se_enemy_walk = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/Walk.wav");
+    se_enemy_die = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/Die.wav");
 }
 
 
@@ -67,11 +69,13 @@ void AudioManager::Deinit()
     se_player_attack1           .reset();
     se_player_attack2           .reset();
     se_player_attack3           .reset();
+    se_player_damage           .reset();
 
     se_enemy_run                .reset();
     se_enemy_spear_attack       .reset();
     se_enemy_sword_attack       .reset();
     se_enemy_walk               .reset();
+    se_enemy_die               .reset();
 
 
 }

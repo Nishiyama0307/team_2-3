@@ -388,28 +388,28 @@ void Result::ImGui()
 
 void Result::ChangeScene(float elapsedTime)
 {
-	if (Input::Instance().GetGamePad().GetButtonDown() & GamePad::BTN_SPACE)
-	{
-		did = true;
-	}
-
-	if (did == false) return;
-
-	// •‘Ñ‚ÌXV
-	black_band_timer += 1.0f * elapsedTime;
-
-
-	// •‘Ñ‚ª~‚è‚«‚Á‚½‚ç
-	if (black_band_timer >= 1.4f)
-	{
-		AudioManager::Instance().GetAudio(Audio_INDEX::SE_RESULT)->Stop();
-
-		if (selecting == RETRY)
-			ChangeNextScene(new Game(), true);
-
-		if (selecting == END)
-			ChangeNextScene(new Title(), true);
-	}
+	//if (Input::Instance().GetGamePad().GetButtonDown() & GamePad::BTN_SPACE)
+	//{
+	//	did = true;
+	//}
+	//
+	//if (did == false) return;
+	//
+	//// •‘Ñ‚ÌXV
+	//black_band_timer += 1.0f * elapsedTime;
+	//
+	//
+	//// •‘Ñ‚ª~‚è‚«‚Á‚½‚ç
+	//if (black_band_timer >= 1.4f)
+	//{
+	//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_RESULT)->Stop();
+	//
+	//	if (selecting == RETRY)
+	//		ChangeNextScene(new Game(), true);
+	//
+	//	if (selecting == END)
+	//		ChangeNextScene(new Title(), true);
+	//}
 }
 
 

@@ -69,15 +69,15 @@ void Game::Update(float elapsedTime)
 		}
 	}
 	//城の体力が無くなったらゲームオーバーへ(仮)
-	if (CastleHP == 0) {
-		is_fadeSprite = true;
-		fade_timer++;
-		if (fade_timer > 120)
-		{
-			result = Game_over2;
-			ChangeNextScene(new Result);
-		}
-	}
+	//if (CastleHP == 0) {
+	//	is_fadeSprite = true;
+	//	fade_timer++;
+	//	if (fade_timer > 120)
+	//	{
+	//		result = Game_over2;
+	//		ChangeNextScene(new Result);
+	//	}
+	//}
 
 	GameSystem::Instance().HitStopUpdate(elapsedTime);
 
@@ -180,7 +180,11 @@ void Game::Update(float elapsedTime)
 	{
 		// TODO: チュートリアル処理
 		if (explaining && explanation < 6 && mouse.GetButtonDown() & Mouse::BTN_LEFT)
+		{
 			explanation++;
+			if(explanation != 7)
+				AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
+		}
 
 		// 行動制限
 		if (player->GetPosition().x > 25.0f) player->SetPosition({ 25.0f, player->GetPosition().y, player->GetPosition().z });
@@ -328,6 +332,7 @@ void Game::Update(float elapsedTime)
 				if (mouse.GetButtonDown() & Mouse::BTN_LEFT && tutorial_retry_[0])
 				//if (mouse.GetButtonDown() & Mouse::BTN_LEFT)
 				{
+					AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
 					explanation = 0; // チュートリアルをもう一度(初期化したらいい)
 					tutorial_state = 0;
 
@@ -351,6 +356,7 @@ void Game::Update(float elapsedTime)
 				//if (mouse.GetButtonDown() & Mouse::BTN_LEFT)
 				{
 					//ChangeNextScene(new Game()); // ゲームへ
+					AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
 					is_do_tutorial = false;
 					explaining = false;
 
@@ -1151,7 +1157,7 @@ void Game::BGMStart()
 		break;
 	case N_STAGE4_:
 		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE3)->Stop();
-		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE4)->Play(true);
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE4)->Play(true, 0.3f);
 		break;
 	default:
 		break;

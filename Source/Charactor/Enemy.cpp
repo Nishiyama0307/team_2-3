@@ -464,6 +464,7 @@ void Enemy::HomingMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 	{
 		is_tracking_ = false; // 検知範囲外に逃げられたら追跡をやめる
 		model->PlayAnimation(ANIMINDEX::IDLE, true);
+		//AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_RUN)->Stop();
 	}
 
 	// 旋回
@@ -526,6 +527,7 @@ void Enemy::HomingMove(float elapsedTime, const DirectX::XMFLOAT3& playerPos)
 					is_group_behavior_ = false;
 					target = playerPos;
 					model->PlayAnimation(ANIMINDEX::RUN, true); // 走るモーション
+					//AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_RUN)->Play(true);
 				}
 			}
 		}

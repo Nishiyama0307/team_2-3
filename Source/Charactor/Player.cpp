@@ -10,6 +10,8 @@
 #include "Input/Mouse.h"
 #include "Scene/title.h"
 #include "Scene/scene.h"
+
+#include "audioManager.h"
 extern int attck_select_state;
 extern bool f1;
 // コンストラクタ
@@ -404,7 +406,7 @@ void Player::Turn(float elapsedTime, float vx, float vz, float speed)
 void Player::Stage1_Gimmick()
 {
 
-	if ((position.y > 22 || position.y <= -15) && isGround) ApplyDamage(1, 2.0f);
+	if ((position.y > 22 || position.y <= -15) && isGround) ApplyDamage(1, KIND::PLAYER, 2.0f);
 
 	//要らなくなるかも
 	//if (position.y >= 35) position.y = 35;
@@ -624,7 +626,7 @@ void Player::UpdateAttack1(float elapsedTime)
 			enemy->GetHeight(),
 			outPosition))
 		{
-			enemy->ApplyDamage(10, 5);
+			enemy->ApplyDamage(5, KIND::RARE_ENEMY,5);
 		}
 
 	}
@@ -674,7 +676,7 @@ void Player::UpdateAttack2(float elapsedTime)
 			enemy->GetHeight(),
 			outPosition))
 		{
-			enemy->ApplyDamage(10, 5);
+			enemy->ApplyDamage(10, KIND::RARE_ENEMY, 5);
 		}
 	}
 	if (!model->IsPlayAnimation())
@@ -719,7 +721,7 @@ void Player::UpdateAttack3(float elapsedTime)
 			enemy->GetHeight(),
 			outPosition))
 		{
-			enemy->ApplyDamage(10, 5);
+			enemy->ApplyDamage(10, KIND::RARE_ENEMY, 5);
 		}
 	}
 	if (!model->IsPlayAnimation())
@@ -736,7 +738,8 @@ void Player::Damage_change()
 	state = AnimeState::State_Damage;
 	if(model->GetIndex() != Anim_Damage)
 	model->PlayAnimation(Anim_Damage, false);
-	ApplyDamage(damage, 1.0f);
+	ApplyDamage(damage, KIND::PLAYER, 1.0f);
+
 }
 //ダメージ更新
 void Player::UpdateDamage(float elapsedTime)
@@ -913,7 +916,8 @@ void Player::EnemyAttckHit()
 						Damage_change();
 					//攻撃モーション中(アーマーがついている)時はアニメーションせずそのままダメージ
 					if (armor)
-						ApplyDamage(enemy->par.power, 1.0f);
+						ApplyDamage(enemy->par.power, KIND::PLAYER, 1.0f);
+					
 				}
 			}
 		}

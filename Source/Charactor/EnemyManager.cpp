@@ -2,7 +2,7 @@
 #include "Graphics/Graphics.h"
 #include "Collision.h"
 
-
+#include "Charactor/Character.h"
 void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos, int stage_num)
 {
 
@@ -13,7 +13,7 @@ void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos,
 		//if (enemy->is_dead_ == false)
 		if (enemy->is_dead_ == false && stage_num == enemy->stage_num)
 		{
-			if (enemy->stage_num == 0 && enemy->GetPosition().y <= -15) enemy->ApplyDamage(enemy->par.health, 0);
+			if (enemy->stage_num == 0 && enemy->GetPosition().y <= -15) enemy->ApplyDamage(enemy->par.health, 3, 0);//‚±‚Ì3‚ÍKIND::RARE_ENEMY‚Å‚·
 
 			enemy->UpdateMove(elapsedTime, playerPos);
 		}

@@ -33,11 +33,13 @@ enum class Audio_INDEX
     SE_PLAYER_ATTACK1,
     SE_PLAYER_ATTACK2,
     SE_PLAYER_ATTACK3,
+    SE_PLAYER_DAMAGE,
 
     SE_ENEMY_RUN,
     SE_ENEMY_SPEAR_ATTACK,
     SE_ENEMY_SWORD_ATTACK,
     SE_ENEMY_WALK,
+    SE_ENEMY_DIE,
 };
 
 
@@ -86,11 +88,13 @@ public: // Getä÷êî
         if (index == Audio_INDEX::SE_PLAYER_ATTACK1)            return se_player_attack1.get();
         if (index == Audio_INDEX::SE_PLAYER_ATTACK2)            return se_player_attack2.get();
         if (index == Audio_INDEX::SE_PLAYER_ATTACK3)            return se_player_attack3.get();
+        if (index == Audio_INDEX::SE_PLAYER_DAMAGE)            return se_player_damage.get();
 
         if (index == Audio_INDEX::SE_ENEMY_RUN)                 return se_enemy_run.get();
         if (index == Audio_INDEX::SE_ENEMY_SPEAR_ATTACK)        return se_enemy_spear_attack.get();
         if (index == Audio_INDEX::SE_ENEMY_SWORD_ATTACK)        return se_enemy_sword_attack.get();
         if (index == Audio_INDEX::SE_ENEMY_WALK)                return se_enemy_walk.get();
+        if (index == Audio_INDEX::SE_ENEMY_DIE)                return se_enemy_die.get();
     }
 
 public: // Setä÷êî
@@ -121,10 +125,12 @@ private:
     std::unique_ptr<AudioSource> se_player_attack1      = nullptr;
     std::unique_ptr<AudioSource> se_player_attack2      = nullptr;
     std::unique_ptr<AudioSource> se_player_attack3      = nullptr;
+    std::unique_ptr<AudioSource> se_player_damage      = nullptr;
 
     std::unique_ptr<AudioSource> se_enemy_run               = nullptr;
     std::unique_ptr<AudioSource> se_enemy_spear_attack      = nullptr;
     std::unique_ptr<AudioSource> se_enemy_sword_attack      = nullptr;
     std::unique_ptr<AudioSource> se_enemy_walk              = nullptr;
+    std::unique_ptr<AudioSource> se_enemy_die              = nullptr;
 
 };
