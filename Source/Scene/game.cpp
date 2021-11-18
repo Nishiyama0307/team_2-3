@@ -64,7 +64,10 @@ void Game::Update(float elapsedTime)
 		fade_timer++;
 		if (fade_timer > 120)
 		{
-			result = Game_over1;
+			if (player->magumaDeath == true)
+				result = Game_over3;
+			else
+				result = Game_over1;
 			ChangeNextScene(new Result);
 		}
 	}
@@ -899,6 +902,8 @@ void Game::Set()
 	kakuninPos2.y = 605;
 	framePos.x = kakuninPos.x;
 	framePos.y = kakuninPos.y;
+
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_TITLE)->Stop();
 }
 
 

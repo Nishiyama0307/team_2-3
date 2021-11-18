@@ -187,4 +187,7 @@ public:
 	//shiftダッシュのスタミナゲージ
 	float stamina = 512;
 
+	//マグマで死亡したか
+	bool magumaDeath = false;
+
 };

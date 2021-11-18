@@ -40,6 +40,7 @@ enum class Audio_INDEX
     SE_ENEMY_SWORD_ATTACK,
     SE_ENEMY_WALK,
     SE_ENEMY_DIE,
+    SE_ENEMY_DAMAGE,
 };
 
 
@@ -95,6 +96,7 @@ public: // Getä÷êî
         if (index == Audio_INDEX::SE_ENEMY_SWORD_ATTACK)        return se_enemy_sword_attack.get();
         if (index == Audio_INDEX::SE_ENEMY_WALK)                return se_enemy_walk.get();
         if (index == Audio_INDEX::SE_ENEMY_DIE)                return se_enemy_die.get();
+        if (index == Audio_INDEX::SE_ENEMY_DAMAGE)                return se_enemy_damage.get();
     }
 
 public: // Setä÷êî
@@ -132,5 +134,6 @@ private:
     std::unique_ptr<AudioSource> se_enemy_sword_attack      = nullptr;
     std::unique_ptr<AudioSource> se_enemy_walk              = nullptr;
     std::unique_ptr<AudioSource> se_enemy_die              = nullptr;
+    std::unique_ptr<AudioSource> se_enemy_damage              = nullptr;
 
 };

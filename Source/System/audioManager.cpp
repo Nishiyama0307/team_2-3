@@ -39,6 +39,7 @@ void AudioManager::Init()
     se_enemy_sword_attack = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/SwordAttack.wav");
     se_enemy_walk = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/Walk.wav");
     se_enemy_die = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/Die.wav");
+    se_enemy_damage = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/Damage.wav");
 }
 
 
@@ -76,6 +77,7 @@ void AudioManager::Deinit()
     se_enemy_sword_attack       .reset();
     se_enemy_walk               .reset();
     se_enemy_die               .reset();
+    se_enemy_damage.reset();
 
 
 }

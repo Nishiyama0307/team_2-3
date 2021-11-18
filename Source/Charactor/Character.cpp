@@ -45,13 +45,15 @@ bool Character::ApplyDamage(int damage, int kind, float invincibleTime)
         if(kind == KIND::PLAYER)
             AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_DAMAGE)->Play(false);
         if(kind == KIND::RARE_ENEMY)
-            AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DIE)->Play(false);
+            AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DAMAGE)->Play(false, 0.5f);
     }
 
     // 死亡通知
     if (par.health <= 0)
     {
         OnDead();
+        if (kind == KIND::RARE_ENEMY)
+            AudioManager::Instance().GetAudio(Audio_INDEX::SE_ENEMY_DIE)->Play(false, 0.5f);
     }
     else
         // ダメージ通知
@@ -449,8 +451,8 @@ void Character::UpdateHorizontalMove(float elapsedTime)
 
             if (wall_hit == false)
             {
-                AudioManager::Instance().GetAudio(Audio_INDEX::SE_WALLHIT)->Stop();
-                AudioManager::Instance().GetAudio(Audio_INDEX::SE_WALLHIT)->Play(false);
+               // AudioManager::Instance().GetAudio(Audio_INDEX::SE_WALLHIT)->Stop();
+               // AudioManager::Instance().GetAudio(Audio_INDEX::SE_WALLHIT)->Play(false);
             }
 
             wall_hit = true;

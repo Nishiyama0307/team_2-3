@@ -406,8 +406,13 @@ void Player::Turn(float elapsedTime, float vx, float vz, float speed)
 void Player::Stage1_Gimmick()
 {
 
-	if ((position.y > 22 || position.y <= -15) && isGround) ApplyDamage(1, KIND::PLAYER, 2.0f);
-
+	if ((position.y > 22 || position.y <= -15) && isGround)
+	{
+		ApplyDamage(1, KIND::PLAYER, 2.0f);
+		magumaDeath = true;
+	}
+	else
+	magumaDeath = false;
 	//要らなくなるかも
 	//if (position.y >= 35) position.y = 35;
 	//if (position.y >= 30) jumpCount = 100;
@@ -603,6 +608,10 @@ void Player::Attack1_change()
 //攻撃ステート更新  1
 void Player::UpdateAttack1(float elapsedTime)
 {
+	velocity.x = 0;
+	velocity.z = 0;
+
+
 	animeTimer++;
 	//colstion_check1 = true;
 	EnemyManager& enemyManager = EnemyManager::Instance();
@@ -626,7 +635,7 @@ void Player::UpdateAttack1(float elapsedTime)
 			enemy->GetHeight(),
 			outPosition))
 		{
-			enemy->ApplyDamage(5, KIND::RARE_ENEMY,5);
+			enemy->ApplyDamage(10, KIND::RARE_ENEMY,5);
 		}
 
 	}
@@ -649,6 +658,9 @@ void Player::Attack2_change()
 //攻撃ステート更新  2
 void Player::UpdateAttack2(float elapsedTime)
 {
+	velocity.x = 0;
+	velocity.z = 0;
+
 	animeTimer++;
 	EnemyManager& enemyManager = EnemyManager::Instance();
 	int enemyCount = enemyManager.GetEnemyCount();
@@ -697,6 +709,9 @@ void Player::Attack3_change()
 //攻撃ステート更新  3
 void Player::UpdateAttack3(float elapsedTime)
 {
+	velocity.x = 0;
+	velocity.z = 0;
+
 	animeTimer++;
 	EnemyManager& enemyManager = EnemyManager::Instance();
 	int enemyCount = enemyManager.GetEnemyCount();
@@ -872,7 +887,7 @@ void Player::EnemyAttckHit()
 		Enemy* enemy = enemyManager.GetEnemy(i);
 
 		DirectX::XMFLOAT3 attackPosition;
-		attackPosition = { float3SUM(enemy->GetPosition(),float3Scaling(enemy->GetFront(), enemy->GetRadius() * 4)) };
+		attackPosition = { float3SUM(enemy->GetPosition(),float3Scaling(enemy->GetFront(), enemy->GetRadius() * 6)) };
 
 		if (enemy->attack)
 		{

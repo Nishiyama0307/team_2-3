@@ -69,6 +69,8 @@ private:
     Pos tutorialPos;
     Pos framePos;
 
+    bool check_start = false;
+
     //“_–Å
     int timer1 = 0;
     int timer2 = 0;

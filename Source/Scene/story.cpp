@@ -73,6 +73,9 @@ void Story::Update(float elapsedtime)
 		posx5 -= 70;
 		posx6 -= 70;
 		is_change = true;
+
+		if (posx6 < -1920)
+			check_start = true;
 		break;
 	}
 	
@@ -102,7 +105,7 @@ void Story::Update(float elapsedtime)
 	tutorial_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
 		tutorialBox.top, tutorialBox.left, tutorialBox.bottom, tutorialBox.right);
 
-	if (story_state == 6)
+	if (story_state == 6 && check_start)
 	{
 
 		//“–‚½‚Á‚½Žž‚Ìˆ—
@@ -411,7 +414,7 @@ void Story::Set()
 	is_change = false;
 
 	//ƒ^ƒCƒgƒ‹BGMŽ~‚ß‚é
-	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_TITLE)->Stop();
+	//AudioManager::Instance().GetAudio(Audio_INDEX::BGM_TITLE)->Stop();
 }
 
 void Story::Load()
