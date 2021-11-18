@@ -192,10 +192,10 @@ void Game::Update(float elapsedTime)
 	// TODO: チュートリアル処理
 	if (is_do_tutorial)
 	{
-		if (explaining && explanation < 6 && mouse.GetButtonDown() & Mouse::BTN_LEFT)
+		if (explaining && explanation < 7 && mouse.GetButtonDown() & Mouse::BTN_LEFT)
 		{
 			explanation++;
-			if(explanation != 7)
+			if(explanation != 8)
 				AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
 		}
 
@@ -339,7 +339,7 @@ void Game::Update(float elapsedTime)
 			//	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Stop();
 			//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_SUCCESS)->Stop();
 			//}
-			if (explanation == 6)
+			if (explanation == 7)
 			{
 				// はい
 				if (mouse.GetButtonDown() & Mouse::BTN_LEFT && tutorial_retry_[0])
@@ -518,7 +518,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			248, 248,
 			124, 124,
 			Minimap_Brave_angle,
-			1, 1, 1, 1);
+			1, 1, 1, 0.8f);
 
 		Minimap_Player_angle = DirectX::XMConvertToRadians((175 + player->GetPosition().z) * 0.0648f); // (スタート地点が-175なので原点に戻すために+175 + 進んだ距離) * 0.0648f回転させる
 
@@ -530,7 +530,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			248, 248,
 			124, 124,
 			Minimap_Player_angle,
-			1, 1, 1, 1);
+			1, 1, 1, 0.8f);
 
 		//城フレーム
 		CastlebarFrame->Render2(dc,
@@ -754,6 +754,18 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			break;
 
 		case 6:
+			// 説明文
+			spr_explanation_[7]->Render2(dc,
+				0, 0,						// 表示位置
+				1.0f, 1.0f,									// スケール
+				0, 0,										// 画像切り抜き位置
+				spr_Width, spr_Height,				// 画像切り抜きサイズ
+				0, 0,	// 画像基準点
+				angle,										// 角度
+				1, 1, 1, 1);								// 色情報(r,g,b,a)
+			break;
+
+		case 7:
 			// 説明文
 			spr_explanation_[6]->Render2(dc,
 				0, 0,						// 表示位置
@@ -979,6 +991,7 @@ void Game::Load()
 		spr_explanation_[4] = std::make_unique<Sprite>("Data/Sprite/tutorial/Tutorial6.png");
 		spr_explanation_[5] = std::make_unique<Sprite>("Data/Sprite/tutorial/Tutorial7.png");
 		spr_explanation_[6] = std::make_unique<Sprite>("Data/Sprite/tutorial/Tutorial8.png");
+		spr_explanation_[7] = std::make_unique<Sprite>("Data/Sprite/tutorial/Tutorial6にして欲しい.png");
 
 		spr_check_1_[0] = std::make_unique<Sprite>("Data/Sprite/tutorial/Check1_1.png");
 		spr_check_1_[1] = std::make_unique<Sprite>("Data/Sprite/tutorial/Check1_2.png");
@@ -1183,8 +1196,8 @@ void Game::BGMStart()
 
 void Game::End_of_explanation(float elapsedTime)
 {
-	AudioManager::Instance().GetAudio(Audio_INDEX::SE_SUCCESS)->Stop();
-	AudioManager::Instance().GetAudio(Audio_INDEX::SE_SUCCESS)->Play(false);
+	//AudioManager::Instance().GetAudio(Audio_INDEX::SE_SUCCESS)->Stop();
+	//AudioManager::Instance().GetAudio(Audio_INDEX::SE_SUCCESS)->Play(false);
 
 	tutorial_state++;
 
@@ -1192,6 +1205,6 @@ void Game::End_of_explanation(float elapsedTime)
 
 	//CameraSet();
 
-	if (explanation < 7) explanation++;
+	if (explanation < 8) explanation++;
 	explaining = true;
 }

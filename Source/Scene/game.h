@@ -123,7 +123,7 @@ private:
 #if 1
     void End_of_explanation(float elapsedTime);
 
-    std::unique_ptr<Sprite> spr_explanation_[7]{ nullptr };
+    std::unique_ptr<Sprite> spr_explanation_[8]{ nullptr };
     std::unique_ptr<Sprite> spr_check_1_[4]{ nullptr };
     std::unique_ptr<Sprite> spr_check_2_[2]{ nullptr };
     std::unique_ptr<Sprite> spr_choice_arrow_[2]{ nullptr };
