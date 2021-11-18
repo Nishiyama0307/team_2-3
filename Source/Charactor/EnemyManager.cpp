@@ -20,7 +20,7 @@ void EnemyManager::Update(float elapsedTime, const DirectX::XMFLOAT3& playerPos,
 	}
 	for (auto& enemy : enemies)
 	{
-		if (stage_num == enemy->stage_num)
+		if (stage_num == enemy->stage_num || 1 == enemy->stage_num) // 
 		{
 			enemy->Update(elapsedTime, playerPos, stage_num);
 		}
