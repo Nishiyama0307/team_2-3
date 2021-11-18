@@ -27,7 +27,7 @@ void GameSystem::SpriteRender(ID3D11DeviceContext* dc)
 
 
 
-    timer->SpriteRender(dc, { 850,0 }, { 1,1 }, color);
+    //timer->SpriteRender(dc, { 850,0 }, { 1,1 }, color);
     //score->SpriteRender(dc);
 }
 
