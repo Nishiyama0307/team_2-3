@@ -188,8 +188,10 @@ public:
 	//shiftダッシュのスタミナゲージ
 	float stamina_limit{ 512 };
 	float stamina = stamina_limit;
+	float health_limit{ 10 };
 
 	int kstamina_recovery{ 70 };
+	int khealth_recovery{ 2 };
 
 	//マグマで死亡したか
 	bool magumaDeath = false;
