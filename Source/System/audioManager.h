@@ -28,6 +28,8 @@ enum class Audio_INDEX
     BGM_STAGE3,
     BGM_STAGE4,
 
+    SE_CLICK,
+
     SE_PLAYER_ATTACK1,
     SE_PLAYER_ATTACK2,
     SE_PLAYER_ATTACK3,
@@ -79,6 +81,8 @@ public: // Getä÷êî
         if (index == Audio_INDEX::BGM_STAGE3)                   return bgm_stage3.get();
         if (index == Audio_INDEX::BGM_STAGE4)                   return bgm_stage4.get();
 
+        if (index == Audio_INDEX::SE_CLICK)                     return se_click.get();
+
         if (index == Audio_INDEX::SE_PLAYER_ATTACK1)            return se_player_attack1.get();
         if (index == Audio_INDEX::SE_PLAYER_ATTACK2)            return se_player_attack2.get();
         if (index == Audio_INDEX::SE_PLAYER_ATTACK3)            return se_player_attack3.get();
@@ -111,6 +115,8 @@ private:
     std::unique_ptr<AudioSource> bgm_stage2             = nullptr;
     std::unique_ptr<AudioSource> bgm_stage3             = nullptr;
     std::unique_ptr<AudioSource> bgm_stage4             = nullptr;
+
+    std::unique_ptr<AudioSource> se_click             = nullptr;
 
     std::unique_ptr<AudioSource> se_player_attack1      = nullptr;
     std::unique_ptr<AudioSource> se_player_attack2      = nullptr;

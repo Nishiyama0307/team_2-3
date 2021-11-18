@@ -198,11 +198,11 @@ void Game::Update(float elapsedTime)
 		//リトライする為のボックス
 		RetryeBox.left = kakuninPos.x;
 		RetryeBox.top = kakuninPos.y;
-		C_OffsetBox(RetryeBox.top, RetryeBox.left, RetryeBox.bottom, RetryeBox.right, 100, 50);
+		C_OffsetBox(RetryeBox.top, RetryeBox.left, RetryeBox.bottom, RetryeBox.right, 100 * 2.2f, 50* 1.2f);
 		//終了ボックス
 		GameBox.left = kakuninPos2.x;
 		GameBox.top = kakuninPos2.y;
-		C_OffsetBox(GameBox.top, GameBox.left, GameBox.bottom, GameBox.right, 100, 50);
+		C_OffsetBox(GameBox.top, GameBox.left, GameBox.bottom, GameBox.right, 100 * 2.2f, 50 * 1.2f);
 
 		//判定 (マウスとリトライとのボックス)
 		retry_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
@@ -218,6 +218,9 @@ void Game::Update(float elapsedTime)
 			tutorial_retry_[1] = false;
 			hit = true;
 
+			timer1++;
+			timer2 = 0;
+
 			framePos.x = kakuninPos.x;
 			framePos.y = kakuninPos.y;
 		}
@@ -226,6 +229,10 @@ void Game::Update(float elapsedTime)
 			tutorial_retry_[0] = false;
 			tutorial_retry_[1] = true;
 			hit = true;
+
+			timer1 = 0;
+			timer2++;
+
 			framePos.x = kakuninPos2.x;
 			framePos.y = kakuninPos2.y;
 		}
@@ -233,6 +240,9 @@ void Game::Update(float elapsedTime)
 		{
 			tutorial_retry_[0] = false;
 			tutorial_retry_[1] = false;
+			timer1 = 0;
+			timer2 = 0;
+
 			hit = false;
 		}
 
@@ -735,11 +745,12 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 				angle,										// 角度
 				1, 1, 1, 1);								// 色情報(r,g,b,a)
 
+#if _DEBUG
 			//確認用ボックス
 			//if(hit)
 			spr_kakunin_frame->Render2(dc,
 				kakuninPos.x, kakuninPos.y,
-				1.0f, 1.0f,
+				2.2f, 1.2f,
 				0, 0,
 				100, 50,
 				0, 0,
@@ -749,7 +760,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			//if(hit)
 			spr_kakunin_frame2->Render2(dc,
 				kakuninPos2.x, kakuninPos2.y,
-				1.0f, 1.0f,
+				2.2f, 1.2f,
 				0, 0,
 				100, 50,
 				0, 0,
@@ -762,7 +773,9 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 					0, 0, 512, 256,
 					0,
 					1, 1, 1, 1);
-
+#else
+#endif
+			if (timer1 / 32 % 2 || !retry_check)
 			if (tutorial_retry_[0])
 			{
 
@@ -775,6 +788,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 					angle,										// 角度
 					1, 1, 1, 1);								// 色情報(r,g,b,a)
 			}
+			if (timer2 / 32 % 2 || !game_check)
 			if (tutorial_retry_[1])
 			{
 
@@ -872,10 +886,10 @@ void Game::Set()
 	tutorial_retry_[0] = false;
 	tutorial_retry_[1] = false;
 
-	kakuninPos.x = 1170;
-	kakuninPos.y = 550;
-	kakuninPos2.x = 1170;
-	kakuninPos2.y = 610;
+	kakuninPos.x = 1115;
+	kakuninPos.y = 540;
+	kakuninPos2.x = 1115;
+	kakuninPos2.y = 605;
 	framePos.x = kakuninPos.x;
 	framePos.y = kakuninPos.y;
 }
@@ -1124,7 +1138,7 @@ void Game::BGMStart()
 	switch (stage_num)
 	{
 	case N_STAGE1_VOLCANO:
-		//if(AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE1)->
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE2)->Stop();
 		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE1)->Play(true);
 		break;
 	case N_STAGE2_DESERT:

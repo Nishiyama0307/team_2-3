@@ -159,11 +159,19 @@ void Title::Update(float elapsedTime)
 	switch (check_state)
 	{
 	case 1:	//ゲームシーンへ
-		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new Story());
+		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)
+		{
+			AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
+			ChangeNextScene(new Story());
+		}
 		break;
 
 	case 2: //ゲーム終了	
-		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT) game_exit = true;
+		if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)
+		{
+			AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
+			game_exit = true;
+		}
 		break;
 	}
 }
@@ -279,6 +287,12 @@ void Title::Set()
 
 	scene_tag = Scene::SCENE_TITLE;
 
+	//途中で戻った時
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE4)->Stop();
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE3)->Stop();
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE2)->Stop();
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE1)->Stop();
+	//タイトルBGM
 	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_TITLE)->Play(true, 0.2f);
 }
 

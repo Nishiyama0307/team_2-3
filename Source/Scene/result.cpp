@@ -58,6 +58,8 @@ void Result::Update(float elapsedTime)
 
 	if (hit && mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	
 	{
+		//AudioManager::Instance().GetAudio(Audio_INDEX::SE_RESULT)->Stop();
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
 		ChangeNextScene(new Title());
 	}
 
@@ -90,24 +92,29 @@ void Result::Update(float elapsedTime)
 	case Game_clear:
 		backPos.x = 300;
 		backPos.y = 650;
+		//AudioManager::Instance().GetAudio(Audio_INDEX::BGM_GAMECLEAR)->Play(false);
 		break;
 
 		//自身の体力が0
 	case Game_over1:
 		//backPos.x = 700;
 		//backPos.y = 850;
+		//AudioManager::Instance().GetAudio(Audio_INDEX::BGM_GAMEOVER)->Play(false);
 		break;
 
 		//城の体力が0
 	case Game_over2:
 		//backPos.x = 300;
 		//backPos.y = 350;
+		//AudioManager::Instance().GetAudio(Audio_INDEX::BGM_GAMEOVER)->Play(false);
 		break;
 
 		//マグマに落ちた
 	case Game_over3:
 		//backPos.x = 300;
 		//backPos.y = 350;
+		//AudioManager::Instance().GetAudio(Audio_INDEX::BGM_GAMEOVER)->Play(false);
+
 		break;
 	}
 
@@ -319,7 +326,34 @@ void Result::Set()
 	backPos.y = 850;
 
 	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE4)->Stop();
-	AudioManager::Instance().GetAudio(Audio_INDEX::SE_RESULT)->Play(false);
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE3)->Stop();
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE2)->Stop();
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE1)->Stop();
+	//AudioManager::Instance().GetAudio(Audio_INDEX::SE_RESULT)->Play(false);
+
+	//音
+	switch (result)
+	{
+		//クリア
+	case Game_clear:
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_GAMECLEAR)->Play(false, 0.5f);
+		break;
+
+		//自身の体力が0
+	case Game_over1:
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_GAMEOVER)->Play(false, 0.5f);
+		break;
+
+		//城の体力が0
+	case Game_over2:
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_GAMEOVER)->Play(false, 0.5f);
+		break;
+
+		//マグマに落ちた
+	case Game_over3:
+		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_GAMEOVER)->Play(false, 0.5f);
+		break;
+	}
 }
 
 

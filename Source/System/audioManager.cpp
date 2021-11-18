@@ -23,8 +23,11 @@ void AudioManager::Init()
     bgm_stage1 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage1.wav");
     //bgm_stage2 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage2.wav");
     bgm_stage2 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage2_2.wav");
-    bgm_stage3 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage3.wav");
+    //bgm_stage3 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage3.wav");
+    bgm_stage3 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage3_2.wav");
     bgm_stage4 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage4.wav");
+
+    se_click = Audio::Instance().LoadAudioSource("Data/Audio/Result/Click.wav");
 
     se_player_attack1 = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Player/Attack1.wav");
     se_player_attack2 = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Player/Attack2.wav");
@@ -58,6 +61,8 @@ void AudioManager::Deinit()
     bgm_stage2                  .reset();
     bgm_stage3                  .reset();
     bgm_stage4                  .reset();
+
+    se_click.reset();
 
     se_player_attack1           .reset();
     se_player_attack2           .reset();

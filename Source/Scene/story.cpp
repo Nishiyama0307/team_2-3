@@ -28,6 +28,8 @@ void Story::Update(float elapsedtime)
 
 	if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)
 	{
+		if(story_state != 6)
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
 		story_state++;
 	}
 	if (story_state > 6)
@@ -136,12 +138,20 @@ void Story::Update(float elapsedtime)
 		switch (check_state)
 		{
 		case 1:	//ゲームシーンへ
-			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new Game());
+			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)
+			{
+				AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
+				ChangeNextScene(new Game());
+			}
 			is_do_tutorial = false; // チュートリアルなし
 			break;
 
 		case 2: //チュートリアルへ
-			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)ChangeNextScene(new Game());
+			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)
+			{
+				AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
+				ChangeNextScene(new Game());
+			}
 			is_do_tutorial = true; // チュートリアルあり
 			break;
 		}

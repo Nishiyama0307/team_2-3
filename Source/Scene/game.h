@@ -148,6 +148,9 @@ private:
     bool Retry_hit = false;
     bool retry_check = false;
     bool game_check = false;
+    //“_–Å
+    int timer1 = 0;
+    int timer2 = 0;
 
     int tutorial_state = 0;
     int explanation = 0;

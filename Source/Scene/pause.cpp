@@ -185,15 +185,20 @@ bool Pause::Update(float elapsedTime)
 		switch (check_state)
 		{
 		case 1:	//ゲーム続行
-			//if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	ChangeNextScene(new Story());
-			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT) now_pause = false;
+			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)
+			{
+				AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
+				now_pause = false;
+			}
 			f1 = false;
 			break;
 
 		case 2: //タイトルへ
-			//if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT) exit(EXIT_SUCCESS);
-			//if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT) game_exit = true;
-			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)	scene->ChangeNextScene(new Title());
+			if (mouseButton.GetButtonDown() & Mouse::BTN_LEFT)
+			{
+				AudioManager::Instance().GetAudio(Audio_INDEX::SE_CLICK)->Play(false);
+				scene->ChangeNextScene(new Title());
+			}
 			break;
 		}
 	}
@@ -220,7 +225,6 @@ void Pause::SpriteRender(ID3D11DeviceContext* dc)
 	float spr_playHeight = CAST_F(spr_play->GetTextureHeight());
 	float spr_endWidth = CAST_F(spr_end->GetTextureWidth());
 	float spr_endHeight = CAST_F(spr_end->GetTextureHeight());
-
 	
 
 	{
