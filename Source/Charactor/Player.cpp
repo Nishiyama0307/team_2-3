@@ -945,7 +945,7 @@ void Player::EnemyAttckHit()
 		Enemy* enemy = enemyManager.GetEnemy(i);
 
 		DirectX::XMFLOAT3 attackPosition;
-		attackPosition = { float3SUM(enemy->GetPosition(),float3Scaling(enemy->GetFront(), enemy->GetRadius() * 8)) };
+		attackPosition = { float3SUM(enemy->GetPosition(),float3Scaling(enemy->GetFront(), enemy->GetRadius() * 10)) };
 
 		if (enemy->attack)
 		{
@@ -956,7 +956,7 @@ void Player::EnemyAttckHit()
 				radius,
 				height,
 				attackPosition,
-				enemy->GetRadius() * 1.3f,
+				enemy->GetRadius() * 2.5f,
 				enemy->GetHeight(),
 				outPosition
 			))
