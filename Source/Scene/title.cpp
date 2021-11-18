@@ -278,6 +278,8 @@ void Title::Set()
 	framePos.y = 0;
 
 	scene_tag = Scene::SCENE_TITLE;
+
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_TITLE)->Play(true);
 }
 
 

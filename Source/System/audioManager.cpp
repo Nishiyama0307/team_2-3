@@ -13,6 +13,26 @@ void AudioManager::Init()
     se_growup        = Audio::Instance().LoadAudioSource("Data/Audio/SE/ê¨í∑.wav");
     se_timeup        = Audio::Instance().LoadAudioSource("Data/Audio/SE/èIóπâπ.wav");
     se_result        = Audio::Instance().LoadAudioSource("Data/Audio/SE/ÉäÉUÉãÉg.wav");
+
+
+    //í«â¡
+    bgm_title = Audio::Instance().LoadAudioSource("Data/Audio/Result/GameTitle.wav");
+    bgm_gameclear = Audio::Instance().LoadAudioSource("Data/Audio/Result/GameClear.wav");
+    bgm_gameover = Audio::Instance().LoadAudioSource("Data/Audio/Result/GameOver.wav");
+
+    bgm_stage1 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage1.wav");
+    bgm_stage2 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage2.wav");
+    bgm_stage3 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage3.wav");
+    bgm_stage4 = Audio::Instance().LoadAudioSource("Data/Audio/StageBGM/Stage4.wav");
+
+    se_player_attack1 = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Player/Attack1.wav");
+    se_player_attack2 = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Player/Attack2.wav");
+    se_player_attack3 = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Player/Attack3.wav");
+
+    se_enemy_run = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/Run.wav");
+    se_enemy_spear_attack = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/SpearAttack.wav");
+    se_enemy_sword_attack = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/SwordAttack.wav");
+    se_enemy_walk = Audio::Instance().LoadAudioSource("Data/Audio/CharacterSE/Enemy/Walk.wav");
 }
 
 
@@ -27,4 +47,25 @@ void AudioManager::Deinit()
     se_growup       .reset();
     se_timeup       .reset();
     se_result       .reset();
+    
+    //í«â¡
+    bgm_title                   .reset();
+    bgm_gameover                .reset();
+    bgm_gameclear               .reset();
+
+    bgm_stage1                  .reset();
+    bgm_stage2                  .reset();
+    bgm_stage3                  .reset();
+    bgm_stage4                  .reset();
+
+    se_player_attack1           .reset();
+    se_player_attack2           .reset();
+    se_player_attack3           .reset();
+
+    se_enemy_run                .reset();
+    se_enemy_spear_attack       .reset();
+    se_enemy_sword_attack       .reset();
+    se_enemy_walk               .reset();
+
+
 }

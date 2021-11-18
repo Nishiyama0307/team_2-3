@@ -56,6 +56,21 @@ void Result::Update(float elapsedTime)
 	if (elapsedTime) select_timer++;
 
 
+	switch (result)
+	{
+		//ƒNƒŠƒA
+	case Game_clear:
+
+		break;
+
+		//©g‚Ì‘Ì—Í‚ª0
+	case Game_over1:
+		break;
+
+		//é‚Ì‘Ì—Í‚ª0
+	case Game_over2:
+		break;
+	}
 
 
 

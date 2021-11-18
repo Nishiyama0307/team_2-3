@@ -34,8 +34,6 @@ void Game::Update(float elapsedTime)
 	// ポーズ
 	if (pause->Update(elapsedTime)) return;
 
-	// カウントダウン
-	if(is_do_tutorial == false) countdown->Update(elapsedTime);
 
 	BGMStart();
 
@@ -43,7 +41,7 @@ void Game::Update(float elapsedTime)
 
 	// TODO: ゲーム処理
 
-	if(countdown->NowCountDown() == false) CastleHP -= 10 * elapsedTime;
+	CastleHP -= 10 * elapsedTime;
 	if (CastleHP < 0) {
 		CastleHP = 0;
 	}
@@ -58,15 +56,15 @@ void Game::Update(float elapsedTime)
 		}
 	}
 	//城の体力が無くなったらゲームオーバーへ(仮)
-	if (CastleHP == 0) {
-		is_fadeSprite = true;
-		fade_timer++;
-		if (fade_timer > 120)
-		{
-			result = Game_over2;
-			ChangeNextScene(new Result);
-		}
-	}
+	//if (CastleHP == 0) {
+	//	is_fadeSprite = true;
+	//	fade_timer++;
+	//	if (fade_timer > 120)
+	//	{
+	//		result = Game_over2;
+	//		ChangeNextScene(new Result);
+	//	}
+	//}
 
 	GameSystem::Instance().HitStopUpdate(elapsedTime);
 
@@ -74,17 +72,19 @@ void Game::Update(float elapsedTime)
 
 	StageManager::Instance().Update(elapsedTime, stage_num);
 
-	if(countdown->NowCountDown() == false) EnemyManager::Instance().Update(elapsedTime, player->GetPosition(), stage_num);
+	EnemyManager::Instance().Update(elapsedTime, player->GetPosition(), stage_num);
 
 	EnemyManager::Instance().SortLengthSq(player->GetPosition());
 
 	//カメラコントローラー更新処理
-	DirectX::XMFLOAT3 target = player->GetPosition();
-	target.y += 12.0f;
-	//target.z -= 10.0f;
-	cameraController->SetTarget(target);
-	cameraController->Update(elapsedTime, explaining);
-
+	//if (explanation != 7)
+	//{
+		DirectX::XMFLOAT3 target = player->GetPosition();
+		target.y += 12.0f;
+		//target.z -= 10.0f;
+		cameraController->SetTarget(target);
+		cameraController->Update(elapsedTime, explaining);
+	//}
 	//攻撃選択
 	Mouse& mouse = Input::Instance().GetMouse();
 	if (mouse.GetButtonDown() & Mouse::BTN_RIGHT)
@@ -138,7 +138,12 @@ void Game::Update(float elapsedTime)
 		break;
 	}
 
-	if ((countdown->NowCountDown() == false && black_band_timer == 0.0f) || is_do_tutorial) player->Update(elapsedTime, stage_num, explaining);
+	player->Update(elapsedTime, stage_num, explaining);
+
+
+	
+
+
 
 #ifdef _DEBUG
 	// デバッグのみのワープキー
@@ -158,10 +163,10 @@ void Game::Update(float elapsedTime)
 	//CameraController::Instance()->SetTarget({ player->GetPosition().x, player->GetPosition().y + 10, player->GetPosition().z - 3});
 	//CameraController::Instance()->Update(elapsedTime);
 
-	// TODO: チュートリアル処理
 	if (is_do_tutorial)
 	{
-		if (explaining && explanation < 7 && mouse.GetButtonDown() & Mouse::BTN_LEFT)
+		// TODO: チュートリアル処理
+		if (explaining && explanation < 6 && mouse.GetButtonDown() & Mouse::BTN_LEFT)
 			explanation++;
 
 		// 行動制限
@@ -169,6 +174,54 @@ void Game::Update(float elapsedTime)
 		if (player->GetPosition().x < -25.0f) player->SetPosition({ -25.0f, player->GetPosition().y, player->GetPosition().z });
 		if (player->GetPosition().z > -120.0f) player->SetPosition({ player->GetPosition().x, player->GetPosition().y, -120.0f });
 		if (player->GetPosition().z < -160.0f) player->SetPosition({ player->GetPosition().x, player->GetPosition().y, -160.0f });
+
+		//マウス処理(チュートリアル)
+		//マウスボックス
+		mousePos.x = mouse.GetPositionX() - 16;
+		mousePos.y = mouse.GetPositionY() - 26;
+		MouseBox.left = mousePos.x;
+		MouseBox.top = mousePos.y;
+		C_OffsetBox(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right, 32, 32);
+		//リトライする為のボックス
+		RetryeBox.left = kakuninPos.x;
+		RetryeBox.top = kakuninPos.y;
+		C_OffsetBox(RetryeBox.top, RetryeBox.left, RetryeBox.bottom, RetryeBox.right, 100, 50);
+		//終了ボックス
+		GameBox.left = kakuninPos2.x;
+		GameBox.top = kakuninPos2.y;
+		C_OffsetBox(GameBox.top, GameBox.left, GameBox.bottom, GameBox.right, 100, 50);
+
+		//判定 (マウスとリトライとのボックス)
+		retry_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
+			RetryeBox.top, RetryeBox.left, RetryeBox.bottom, RetryeBox.right);
+		//判定 (マウスとゲームへとのボックス)
+		game_check = C_Hitcheck(MouseBox.top, MouseBox.left, MouseBox.bottom, MouseBox.right,
+			GameBox.top, GameBox.left, GameBox.bottom, GameBox.right);
+
+		//処理
+		if (retry_check)
+		{
+			tutorial_retry_[0] = true;
+			tutorial_retry_[1] = false;
+			hit = true;
+
+			framePos.x = kakuninPos.x;
+			framePos.y = kakuninPos.y;
+		}
+		else if (game_check)
+		{
+			tutorial_retry_[0] = false;
+			tutorial_retry_[1] = true;
+			hit = true;
+			framePos.x = kakuninPos2.x;
+			framePos.y = kakuninPos2.y;
+		}
+		else
+		{
+			tutorial_retry_[0] = false;
+			tutorial_retry_[1] = false;
+			hit = false;
+		}
 
 		GamePad& gamePad = Input::Instance().GetGamePad();
 		switch (tutorial_state)
@@ -197,6 +250,7 @@ void Game::Update(float elapsedTime)
 					if (check_timer > 60)
 					{
 						End_of_explanation(elapsedTime);
+						//enemy_Arrangement->enemy_produce(Enemy_Arrangement::csv_file_num::TUTORIAL_NORMAL);
 						check_timer = 0;
 					}
 					else
@@ -220,9 +274,10 @@ void Game::Update(float elapsedTime)
 
 				if (attack_[0] && attack_[1])
 				{
-					if (check_timer > 60 && player->GetModel()->IsPlayAnimation() == false) // 1秒経つか、攻撃モーションが終わった後に通す
+					if (check_timer > 60)
 					{
 						End_of_explanation(elapsedTime);
+						//enemy_Arrangement->enemy_produce(Enemy_Arrangement::csv_file_num::TUTORIAL_NORMAL);
 						check_timer = 0;
 					}
 					else
@@ -244,11 +299,11 @@ void Game::Update(float elapsedTime)
 			//	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Stop();
 			//	AudioManager::Instance().GetAudio(Audio_INDEX::SE_SUCCESS)->Stop();
 			//}
-			if (explanation == 7)
+			if (explanation == 6)
 			{
 				// はい
-				//if (mouse.GetButtonDown() & Mouse::BTN_LEFT && tutorial_retry_[0])
-				if (mouse.GetButtonDown() & Mouse::BTN_LEFT)
+				if (mouse.GetButtonDown() & Mouse::BTN_LEFT && tutorial_retry_[0])
+				//if (mouse.GetButtonDown() & Mouse::BTN_LEFT)
 				{
 					explanation = 0; // チュートリアルをもう一度(初期化したらいい)
 					tutorial_state = 0;
@@ -272,8 +327,10 @@ void Game::Update(float elapsedTime)
 				if (mouse.GetButtonDown() & Mouse::BTN_LEFT && tutorial_retry_[1])
 				//if (mouse.GetButtonDown() & Mouse::BTN_LEFT)
 				{
+					//ChangeNextScene(new Game()); // ゲームへ
 					is_do_tutorial = false;
 					explaining = false;
+
 				}
 			}
 			else
@@ -285,7 +342,7 @@ void Game::Update(float elapsedTime)
 			break;
 		}
 	}
-	else if (countdown->NowCountDown() == false)
+	else
 	{
 		GameSystem::Instance().Update(elapsedTime);
 	}
@@ -309,10 +366,6 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 	/* 2Dスプライトの描画 */
 	GameSystem::Instance().SpriteRender(dc);
 
-	if (is_do_tutorial == false)
-	{
-		countdown->SpriteRender(dc, { 960,396 }, { 1,1 });
-	}
 
 	//UIレンダー
 	{
@@ -658,6 +711,34 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 				angle,										// 角度
 				1, 1, 1, 1);								// 色情報(r,g,b,a)
 
+			//確認用ボックス
+			//if(hit)
+			spr_kakunin_frame->Render2(dc,
+				kakuninPos.x, kakuninPos.y,
+				1.0f, 1.0f,
+				0, 0,
+				100, 50,
+				0, 0,
+				(0),
+				1, 1, 1, 1);
+			//確認用ボックス
+			//if(hit)
+			spr_kakunin_frame2->Render2(dc,
+				kakuninPos2.x, kakuninPos2.y,
+				1.0f, 1.0f,
+				0, 0,
+				100, 50,
+				0, 0,
+				(0),
+				1, 1, 1, 1);
+			if (hit)
+				//確認用フレーム
+				spr_frame->Render(dc,
+					framePos.x, framePos.y, 100, 50,
+					0, 0, 512, 256,
+					0,
+					1, 1, 1, 1);
+
 			if (tutorial_retry_[0])
 			{
 
@@ -682,6 +763,13 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 					angle,										// 角度
 					1, 1, 1, 1);								// 色情報(r,g,b,a)
 			}
+
+			//マウスカーソル
+			spr_mouseCursor->Render(dc,
+				mousePos.x, mousePos.y, 64, 64,
+				0, 0, 64, 64,
+				0,
+				1, 1, 1, 1);
 			break;
 		}
 	}
@@ -752,18 +840,29 @@ void Game::Set()
 
 	if (is_do_tutorial == false) explaining = false; // チュートリアルをやらないなら最初から動けるように
 
+	//AudioManager::Instance().GetAudio(Audio_INDEX::BGM_TITLE)->Stop();
 	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Play(true);
+
+	//チュートリアルのはい、いいえ確認
+	tutorial_retry_[0] = false;
+	tutorial_retry_[1] = false;
+
+	kakuninPos.x = 1170;
+	kakuninPos.y = 550;
+	kakuninPos2.x = 1170;
+	kakuninPos2.y = 610;
+	framePos.x = kakuninPos.x;
+	framePos.y = kakuninPos.y;
 }
 
 
 void Game::Load()
 {
 	pause		= std::make_unique<Pause>(this);
-	countdown = std::make_unique<CountDown>();
 
 	// プレイヤー初期化
 	player = new Player();
-	player->ResetTransform();
+	//player->ResetTransform();
 
 #ifdef _DEBUG
 	//player->SetPosition(DirectX::XMFLOAT3(0, 0, kStage4_Start_Position));
@@ -830,6 +929,12 @@ void Game::Load()
 
 		spr_choice_arrow_[0] = std::make_unique<Sprite>("Data/Sprite/tutorial/はいの時の矢印.png");
 		spr_choice_arrow_[1] = std::make_unique<Sprite>("Data/Sprite/tutorial/いいえの時の矢印.png");
+
+
+		spr_mouseCursor = std::make_unique<Sprite>("Data/Sprite/cursor.png");
+		spr_kakunin_frame = std::make_unique<Sprite>("Data/Sprite/確認用.png");
+		spr_kakunin_frame2 = std::make_unique<Sprite>("Data/Sprite/確認用.png");
+		spr_frame = std::make_unique<Sprite>("Data/Sprite/frame.png");
 	}
 #endif
 
@@ -977,17 +1082,31 @@ void Game::ClearedSpriteRender(ID3D11DeviceContext* dc)
 
 void Game::BGMStart()
 {
-	if (bgm_normal == false && countdown->NowCountDown() == false && bgm_caution == false)
+	if (bgm_normal == false && bgm_caution == false)
 	{
 		bgm_normal = true;
 		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Play(true);
 	}
-
+	
 	if (bgm_normal == true && bgm_caution == false && GameSystem::Instance().NowTime() <= 20.0f)
 	{
 		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Stop();
 		bgm_caution = true;
 		AudioManager::Instance().GetAudio(Audio_INDEX::BGM_SPEED)->Play(true);
+	}
+
+	switch (stage_num)
+	{
+	case N_STAGE1_VOLCANO:
+		break;
+	case N_STAGE2_DESERT:
+		break;
+	case N_STAGE3_:
+		break;
+	case N_STAGE4_:
+		break;
+	default:
+		break;
 	}
 }
 

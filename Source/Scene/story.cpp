@@ -399,6 +399,9 @@ void Story::Set()
 	posx5	= 0;
 	posx6	= 0;
 	is_change = false;
+
+	//ƒ^ƒCƒgƒ‹BGMŽ~‚ß‚é
+	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_TITLE)->Stop();
 }
 
 void Story::Load()

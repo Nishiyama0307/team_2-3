@@ -127,6 +127,27 @@ private:
     std::unique_ptr<Sprite> spr_check_2_[2]{ nullptr };
     std::unique_ptr<Sprite> spr_choice_arrow_[2]{ nullptr };
 
+    //はい、いいえのマウス用確認
+    std::unique_ptr<Sprite> spr_kakunin_frame = nullptr ;
+    std::unique_ptr<Sprite> spr_kakunin_frame2 = nullptr ;
+    std::unique_ptr<Sprite> spr_frame = nullptr;
+    Pos kakuninPos;
+    Pos kakuninPos2;
+    Pos framePos;
+    bool is_kakuninn;
+    //マウスカーソル
+    std::unique_ptr<Sprite> spr_mouseCursor = nullptr;
+    Pos mousePos;
+    C_Hitbox MouseBox;
+    //当たり判定
+    C_Hitbox RetryeBox;
+    C_Hitbox GameBox;
+    //当たりのチェック
+    bool hit = false;
+    bool Retry_hit = false;
+    bool retry_check = false;
+    bool game_check = false;
+
     int tutorial_state = 0;
     int explanation = 0;
     int check_timer = 0;
