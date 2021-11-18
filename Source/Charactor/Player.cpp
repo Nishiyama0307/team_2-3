@@ -618,7 +618,11 @@ void Player::UpdateAttack1(float elapsedTime)
 
 	DirectX::XMFLOAT3 attackPosition;
 	attackPosition = { float3SUM(position,float3Scaling(GetFront(), radius * 2)) };
-	if (animeTimer > 12.0f)colstion_check1 = true;
+	if (animeTimer > 12.0f)
+	{
+		colstion_check1 = true;
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Play(false);
+	}
 	if (animeTimer > 33.0f)colstion_check1 = false;
 
 	if (colstion_check1)
@@ -649,6 +653,7 @@ void Player::UpdateAttack1(float elapsedTime)
 
 	if (!model->IsPlayAnimation())
 	{
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
 		armor = false;
 		colstion_check1 = false;
 		Idel_change();
@@ -679,7 +684,11 @@ void Player::UpdateAttack2(float elapsedTime)
 
 	//attackPosition = { float3SUM(position,float3Scaling(GetFront(), radius * 2)) };
 
-	if (animeTimer > 24.0f)colstion_check2 = true;
+	if (animeTimer > 24.0f)
+	{
+		colstion_check2 = true;
+	}
+	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Play(false);
 	if (animeTimer > 87.0f)colstion_check2 = false;
 
 	if(colstion_check2)
@@ -709,6 +718,7 @@ void Player::UpdateAttack2(float elapsedTime)
 
 	if (!model->IsPlayAnimation())
 	{
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
 		colstion_check2 = false;
 		armor = false;
 		Idel_change();
@@ -738,7 +748,7 @@ void Player::UpdateAttack3(float elapsedTime)
 	if(animeTimer > 135.98f)colstion_check3 = true;
 	if(animeTimer > 148.98f)colstion_check3 = false;
 
-
+	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Play(false);
 	if (colstion_check3)
 	{
 		for (int i = 0; i < enemyCount; ++i)
@@ -766,6 +776,7 @@ void Player::UpdateAttack3(float elapsedTime)
 
 	if (!model->IsPlayAnimation())
 	{
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Stop();
 		colstion_check3 = false;
 		armor = false;
 		Idel_change();
