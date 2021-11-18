@@ -412,10 +412,9 @@ void Player::Stage1_Gimmick()
 		magumaDeath = true;
 	}
 	else
-	magumaDeath = false;
-	//—v‚ç‚È‚­‚È‚é‚©‚à
-	//if (position.y >= 35) position.y = 35;
-	//if (position.y >= 30) jumpCount = 100;
+	{
+		magumaDeath = false;
+	}
 }
 
 void Player::Render(ID3D11DeviceContext* dc, Shader* shader)
@@ -551,6 +550,7 @@ void Player::attack_Branch()
 	if (mouse.GetButtonDown() & anyButton)
 	{
 		armor = true;
+		is_stamina_recovering = true;
 		switch (attck_select_state)
 		{
 		case 0:
@@ -577,8 +577,8 @@ void Player::Idel_change()
 void Player::UpdateIdel(float elapsedTime)
 {
 	stamina += 20 * elapsedTime;
-	if (stamina > 512)
-		stamina = 512;
+	if (stamina > stamina_limit)
+		stamina = stamina_limit;
 
 	//ƒ|[ƒY‰ðœŽžAUŒ‚‚Æƒ|[ƒY‰ðœ‚Ì¶ƒNƒŠƒbƒN‚ª“¯Žž‚Éˆ—‚³‚ê‚é‚Ì‚Å‚PƒtƒŒ[ƒ€‚¾‚¯“®‚©‚³‚È‚¢
 	if (f1)
@@ -611,7 +611,6 @@ void Player::UpdateAttack1(float elapsedTime)
 	velocity.x = 0;
 	velocity.z = 0;
 
-
 	animeTimer++;
 	//colstion_check1 = true;
 	EnemyManager& enemyManager = EnemyManager::Instance();
@@ -623,21 +622,29 @@ void Player::UpdateAttack1(float elapsedTime)
 	if (animeTimer > 33.0f)colstion_check1 = false;
 
 	if (colstion_check1)
-	for (int i = 0; i < enemyCount; ++i)
 	{
-		Enemy* enemy = enemyManager.GetEnemy(i);
-		// ‰~’Œ‚Æ‰~’Œ‚ÌÕ“Ëˆ—
-		DirectX::XMFLOAT3 outPosition;
-		if (Collision3D::IntersectCylinderVsCylinder(
-			attackPosition, radius, height,
-			enemy->GetPosition(),
-			enemy->GetRadius(),
-			enemy->GetHeight(),
-			outPosition))
+		for (int i = 0; i < enemyCount; ++i)
 		{
-			enemy->ApplyDamage(10, KIND::RARE_ENEMY,5);
-		}
+			Enemy* enemy = enemyManager.GetEnemy(i);
+			// ‰~’Œ‚Æ‰~’Œ‚ÌÕ“Ëˆ—
+			DirectX::XMFLOAT3 outPosition;
+			if (Collision3D::IntersectCylinderVsCylinder(
+				attackPosition, radius, height,
+				enemy->GetPosition(),
+				enemy->GetRadius(),
+				enemy->GetHeight(),
+				outPosition))
+			{
+				enemy->ApplyDamage(this->par.power[0], KIND::RARE_ENEMY,5);
+				if (enemy->par.health <= 0 && is_stamina_recovering)
+				{
+					stamina += kstamina_recovery;
+					if (stamina > stamina_limit) stamina = stamina_limit;
+					is_stamina_recovering = false;
+				}
+			}
 
+		}
 	}
 
 	if (!model->IsPlayAnimation())
@@ -676,21 +683,30 @@ void Player::UpdateAttack2(float elapsedTime)
 	if (animeTimer > 87.0f)colstion_check2 = false;
 
 	if(colstion_check2)
-	for (int i = 0; i < enemyCount; ++i)
 	{
-		Enemy* enemy = enemyManager.GetEnemy(i);
-		// ‰~’Œ‚Æ‰~’Œ‚ÌÕ“Ëˆ—
-		DirectX::XMFLOAT3 outPosition;
-		if (Collision3D::IntersectCylinderVsCylinder(
-			attackPosition, 12.5, height,
-			enemy->GetPosition(),
-			enemy->GetRadius(),
-			enemy->GetHeight(),
-			outPosition))
+		for (int i = 0; i < enemyCount; ++i)
 		{
-			enemy->ApplyDamage(10, KIND::RARE_ENEMY, 5);
+			Enemy* enemy = enemyManager.GetEnemy(i);
+			// ‰~’Œ‚Æ‰~’Œ‚ÌÕ“Ëˆ—
+			DirectX::XMFLOAT3 outPosition;
+			if (Collision3D::IntersectCylinderVsCylinder(
+				attackPosition, 12.5, height,
+				enemy->GetPosition(),
+				enemy->GetRadius(),
+				enemy->GetHeight(),
+				outPosition))
+			{
+				enemy->ApplyDamage(this->par.power[1], KIND::RARE_ENEMY, 5);
+				if (enemy->par.health <= 0 && is_stamina_recovering)
+				{
+					stamina += kstamina_recovery;
+					if (stamina > stamina_limit) stamina = stamina_limit;
+					is_stamina_recovering = false;
+				}
+			}
 		}
 	}
+
 	if (!model->IsPlayAnimation())
 	{
 		colstion_check2 = false;
@@ -723,22 +739,31 @@ void Player::UpdateAttack3(float elapsedTime)
 	if(animeTimer > 148.98f)colstion_check3 = false;
 
 
-	if(colstion_check3)
-	for (int i = 0; i < enemyCount; ++i)
+	if (colstion_check3)
 	{
-		Enemy* enemy = enemyManager.GetEnemy(i);
-		// ‰~’Œ‚Æ‰~’Œ‚ÌÕ“Ëˆ—
-		DirectX::XMFLOAT3 outPosition;
-		if (Collision3D::IntersectCylinderVsCylinder(
-			attackPosition, radius, height,
-			enemy->GetPosition(),
-			enemy->GetRadius(),
-			enemy->GetHeight(),
-			outPosition))
+		for (int i = 0; i < enemyCount; ++i)
 		{
-			enemy->ApplyDamage(10, KIND::RARE_ENEMY, 5);
+			Enemy* enemy = enemyManager.GetEnemy(i);
+			// ‰~’Œ‚Æ‰~’Œ‚ÌÕ“Ëˆ—
+			DirectX::XMFLOAT3 outPosition;
+			if (Collision3D::IntersectCylinderVsCylinder(
+				attackPosition, radius, height,
+				enemy->GetPosition(),
+				enemy->GetRadius(),
+				enemy->GetHeight(),
+				outPosition))
+			{
+				enemy->ApplyDamage(this->par.power[2], KIND::RARE_ENEMY, 5);
+				if (enemy->par.health <= 0 && is_stamina_recovering)
+				{
+					stamina += kstamina_recovery;
+					if (stamina > stamina_limit) stamina = stamina_limit;
+					is_stamina_recovering = false;
+				}
+			}
 		}
 	}
+
 	if (!model->IsPlayAnimation())
 	{
 		colstion_check3 = false;
@@ -809,8 +834,8 @@ void Player::UpdateWalk(float elapsedTime)
 	UpdateVelocity(elapsedTime, KIND::PLAYER);	// ‘¬—ÍXVˆ—
 
 	stamina += 20 * elapsedTime;
-	if (stamina > 512)
-		stamina = 512;
+	if (stamina > stamina_limit)
+		stamina = stamina_limit;
 
 	GamePad& pad = Input::Instance().GetGamePad();
 	const GamePadButton button = GamePad::BTN_SHIFT;
@@ -921,7 +946,7 @@ void Player::EnemyAttckHit()
 					break;
 				}
 #endif
-				damage = enemy->par.power;
+				damage = enemy->par.power[0];
 
 				//Ž€–S‚µ‚Ä‚¢‚È‚¢Žž
 				if (!is_dead_)
@@ -931,7 +956,7 @@ void Player::EnemyAttckHit()
 						Damage_change();
 					//UŒ‚ƒ‚[ƒVƒ‡ƒ“’†(ƒA[ƒ}[‚ª‚Â‚¢‚Ä‚¢‚é)Žž‚ÍƒAƒjƒ[ƒVƒ‡ƒ“‚¹‚¸‚»‚Ì‚Ü‚Üƒ_ƒ[ƒW
 					if (armor)
-						ApplyDamage(enemy->par.power, KIND::PLAYER, 1.0f);
+						ApplyDamage(enemy->par.power[0], KIND::PLAYER, 1.0f);
 					
 				}
 			}

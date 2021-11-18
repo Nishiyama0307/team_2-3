@@ -29,7 +29,7 @@ public:	// Get関数
 	DirectX::XMFLOAT3 GetRight() { return ConvertToIdentityVec(transform._11, transform._12, transform._13); }
 	DirectX::XMFLOAT3 GetVelocity() { return velocity; }
 	Model* GetModel() { return model; }
-	
+
 	DirectX::XMFLOAT3 front;
 public: // Set関数
 	void AddImpact(const DirectX::XMFLOAT3 impact_);
@@ -126,7 +126,7 @@ private:
 	};
 	AnimeState state = AnimeState::State_Idel;
 
-	float animeTimer =  0;
+	float animeTimer = 0;
 	bool colstion_check1 = false;
 	bool colstion_check2 = false;
 	bool colstion_check3 = false;
@@ -185,9 +185,13 @@ private:
 
 public:
 	//shiftダッシュのスタミナゲージ
-	float stamina = 512;
+	float stamina_limit{ 512 };
+	float stamina = stamina_limit;
+
+	int kstamina_recovery{ 50 };
+
+	bool is_stamina_recovering{ false };
 
 	//マグマで死亡したか
 	bool magumaDeath = false;
-
 };
