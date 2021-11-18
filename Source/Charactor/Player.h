@@ -3,6 +3,7 @@
 #include "Graphics/Shader.h"
 #include "Graphics/Model.h"
 #include "Character.h"
+#include "scene/pause.h"
 
 //#include "Audio/Audio.h"
 
@@ -194,4 +195,7 @@ public:
 
 	//ƒ}ƒOƒ}‚ÅŽ€–S‚µ‚½‚©
 	bool magumaDeath = false;
+
+	//private:
+		//std::unique_ptr<Pause> pause = nullptr;
 };

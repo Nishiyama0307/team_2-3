@@ -331,6 +331,10 @@ void Result::Set()
 	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_STAGE1)->Stop();
 	//AudioManager::Instance().GetAudio(Audio_INDEX::SE_RESULT)->Play(false);
 
+	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Stop();
+	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Stop();
+	AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Stop();
+
 	//‰¹
 	switch (result)
 	{

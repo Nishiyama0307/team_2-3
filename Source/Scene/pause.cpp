@@ -45,6 +45,8 @@ Pause::Pause(Scene* scene_) : scene(scene_)
 
 	framePos.x = 0;
 	framePos.y = 0;
+
+	
 }
 
 
@@ -120,10 +122,11 @@ bool Pause::Update(float elapsedTime)
 	{
 		now_pause = !now_pause;
 
-		AudioManager::Instance().GetAudio(Audio_INDEX::SE_SELECT)->Stop();
-		AudioManager::Instance().GetAudio(Audio_INDEX::SE_SELECT)->Play(false);
+		//AudioManager::Instance().GetAudio(Audio_INDEX::SE_SELECT)->Stop();
+		//AudioManager::Instance().GetAudio(Audio_INDEX::SE_SELECT)->Play(false);
 	}
 
+	
 	Mouse& mouseButton = Input::Instance().GetMouse();
 	//マウスボックス
 	Mouse& mouse = Input::Instance().GetMouse();
