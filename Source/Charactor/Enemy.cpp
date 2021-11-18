@@ -31,8 +31,8 @@ void Enemy::DrawDebugPrimitive()
 	debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 
 	if(attack)
-		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 6)) },
-			radius, height, DirectX::XMFLOAT4(1, 0, 0, 1));
+		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 8)) },
+			radius * 1.3f, height, DirectX::XMFLOAT4(1, 0, 0, 1));
 
 	switch (enemy_tag)
 	{
