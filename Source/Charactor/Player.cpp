@@ -505,16 +505,16 @@ void Player::DrawDebugPrimitive()
 
 	//UŒ‚‚P
 	if (colstion_check1)
-		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 2)) },
-			radius * 2, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 1.8f)) },
+			radius * 2.5f, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 	//UŒ‚‚Q
 	if (colstion_check2)
 		debugRenderer->DrawCylinder({ position.x,position.y,position.z },
 			15.0, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 	//UŒ‚‚R
 	if (colstion_check3)
-		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 2)) },
-			radius * 2.0f, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+		debugRenderer->DrawCylinder({ float3SUM(position,float3Scaling(GetFront(), radius * 1.8f)) },
+			radius * 2.5f, height, DirectX::XMFLOAT4(0, 0, 0, 1));
 
 }
 
@@ -616,11 +616,11 @@ void Player::UpdateAttack1(float elapsedTime)
 	int enemyCount = enemyManager.GetEnemyCount();
 
 	DirectX::XMFLOAT3 attackPosition;
-	attackPosition = { float3SUM(position,float3Scaling(GetFront(), radius * 2)) };
+	attackPosition = { float3SUM(position,float3Scaling(GetFront(), radius * 1.8f)) };
 	if (animeTimer > 12.0f)
 	{
 		colstion_check1 = true;
-		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Play(false);
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK1)->Play(false, 0.5f);
 	}
 	if (animeTimer > 33.0f)colstion_check1 = false;
 
@@ -632,7 +632,7 @@ void Player::UpdateAttack1(float elapsedTime)
 			// ‰~’Œ‚Æ‰~’Œ‚ÌÕ“Ëˆ—
 			DirectX::XMFLOAT3 outPosition;
 			if (Collision3D::IntersectCylinderVsCylinder(
-				attackPosition, radius * 2.0f, height,
+				attackPosition, radius * 2.5f, height,
 				enemy->GetPosition(),
 				enemy->GetRadius(),
 				enemy->GetHeight(),
@@ -640,7 +640,7 @@ void Player::UpdateAttack1(float elapsedTime)
 			{
 				if (enemy->is_dead_ == false)
 				{
-					enemy->ApplyDamage(this->par.power[0], KIND::RARE_ENEMY, 5);
+					enemy->ApplyDamage(this->par.power[0], KIND::RARE_ENEMY, 0.5f);
 					if (enemy->par.health <= 0 )
 					{
 						stamina += kstamina_recovery;
@@ -688,7 +688,7 @@ void Player::UpdateAttack2(float elapsedTime)
 	if (animeTimer > 24.0f)
 	{
 		colstion_check2 = true;
-		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Play(false);
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK3)->Play(false, 0.5f);
 	}
 	if (animeTimer > 87.0f)colstion_check2 = false;
 
@@ -708,7 +708,7 @@ void Player::UpdateAttack2(float elapsedTime)
 			{
 				if (enemy->is_dead_ == false)
 				{
-					enemy->ApplyDamage(this->par.power[1], KIND::RARE_ENEMY, 5);
+					enemy->ApplyDamage(this->par.power[1], KIND::RARE_ENEMY, 0.8f);
 					if (enemy->par.health <= 0)
 					{
 						stamina += kstamina_recovery;
@@ -746,12 +746,12 @@ void Player::UpdateAttack3(float elapsedTime)
 	int enemyCount = enemyManager.GetEnemyCount();
 
 	DirectX::XMFLOAT3 attackPosition;
-	attackPosition = { float3SUM(position,float3Scaling(GetFront(), radius * 2)) };
+	attackPosition = { float3SUM(position,float3Scaling(GetFront(), radius * 1.8f)) };
 
 	if (animeTimer > 135.98f)
 	{
 		colstion_check3 = true;
-		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Play(false);
+		AudioManager::Instance().GetAudio(Audio_INDEX::SE_PLAYER_ATTACK2)->Play(false, 0.5f);
 	}
 	if(animeTimer > 148.98f)colstion_check3 = false;
 
@@ -772,7 +772,7 @@ void Player::UpdateAttack3(float elapsedTime)
 
 				if (enemy->is_dead_ == false)
 				{
-					enemy->ApplyDamage(this->par.power[2], KIND::RARE_ENEMY, 5);
+					enemy->ApplyDamage(this->par.power[2], KIND::RARE_ENEMY, 0.5f);
 					if (enemy->par.health <= 0)
 					{
 						stamina += kstamina_recovery;
