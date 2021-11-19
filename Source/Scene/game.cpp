@@ -796,36 +796,6 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 				angle,										// 角度
 				1, 1, 1, 1);								// 色情報(r,g,b,a)
 
-#if _DEBUG
-			//確認用ボックス
-			//if(hit)
-			spr_kakunin_frame->Render2(dc,
-				kakuninPos.x, kakuninPos.y,
-				2.2f, 1.2f,
-				0, 0,
-				100, 50,
-				0, 0,
-				(0),
-				1, 1, 1, 1);
-			//確認用ボックス
-			//if(hit)
-			spr_kakunin_frame2->Render2(dc,
-				kakuninPos2.x, kakuninPos2.y,
-				2.2f, 1.2f,
-				0, 0,
-				100, 50,
-				0, 0,
-				(0),
-				1, 1, 1, 1);
-			if (hit)
-				//確認用フレーム
-				spr_frame->Render(dc,
-					framePos.x, framePos.y, 100, 50,
-					0, 0, 512, 256,
-					0,
-					1, 1, 1, 1);
-#else
-#endif
 			if (timer1 / 32 % 2 || !retry_check)
 			if (tutorial_retry_[0])
 			{
@@ -1027,9 +997,6 @@ void Game::Load()
 
 
 		spr_mouseCursor = std::make_unique<Sprite>("Data/Sprite/cursor.png");
-		spr_kakunin_frame = std::make_unique<Sprite>("Data/Sprite/確認用.png");
-		spr_kakunin_frame2 = std::make_unique<Sprite>("Data/Sprite/確認用.png");
-		spr_frame = std::make_unique<Sprite>("Data/Sprite/frame.png");
 	}
 #endif
 

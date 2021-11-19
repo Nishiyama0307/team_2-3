@@ -25,10 +25,6 @@ public: // Getä÷êî
 private:
     Scene* scene = nullptr;
     bool now_pause = false;
-    std::unique_ptr<Sprite> spr_back = nullptr;
-    std::unique_ptr<Sprite> spr_play = nullptr;
-    std::unique_ptr<Sprite> spr_end = nullptr;
-    std::unique_ptr<Sprite> spr_ui = nullptr;
 
     int selecting = 0;
     int select_timer = 0;
@@ -45,7 +41,6 @@ private:
     Pos mousePos;
 
     std::unique_ptr<Sprite> spr_start = nullptr;
-    std::unique_ptr<Sprite> spr_frame = nullptr;
     std::unique_ptr<Sprite> spr_endbox = nullptr;
     std::unique_ptr<Sprite> spr_back2 = nullptr;
 

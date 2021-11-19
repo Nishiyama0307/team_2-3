@@ -18,16 +18,8 @@ Pause::Pause(Scene* scene_) : scene(scene_)
 {
 	now_pause = false;
 
-	spr_back = std::make_unique<Sprite>("Data/Sprite/枠（ポーズ）.png");
-	spr_play = std::make_unique<Sprite>("Data/Sprite/つづける（ポーズ）.png");
-	spr_end	 = std::make_unique<Sprite>("Data/Sprite/やめる（ポーズ）.png");
-	spr_ui = std::make_unique<Sprite>("Data/Sprite/ポーズメニュー.png");
-
-
-
 	spr_mouseCursor = std::make_unique<Sprite>("Data/Sprite/cursor.png");
 	spr_start = std::make_unique<Sprite>("Data/Sprite/select/gamebuck.png");
-	spr_frame = std::make_unique<Sprite>("Data/Sprite/frame.png");
 	spr_endbox = std::make_unique<Sprite>("Data/Sprite/select/titlebuck.png");
 	spr_back2 = std::make_unique<Sprite>("Data/Sprite/back.png");
 
@@ -224,11 +216,6 @@ void Pause::SpriteRender(ID3D11DeviceContext* dc)
 	if (now_pause == false) return;
 
 	/* 2Dスプライトの描画 */
-	float spr_playWidth = CAST_F(spr_play->GetTextureWidth());
-	float spr_playHeight = CAST_F(spr_play->GetTextureHeight());
-	float spr_endWidth = CAST_F(spr_end->GetTextureWidth());
-	float spr_endHeight = CAST_F(spr_end->GetTextureHeight());
-	
 
 	{
 		//背面

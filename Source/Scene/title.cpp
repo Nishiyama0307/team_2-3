@@ -304,7 +304,6 @@ void Title::Load()
 
 	spr_mouseCursor		= std::make_unique<Sprite>("Data/Sprite/cursor.png");
 	spr_start			= std::make_unique<Sprite>("Data/Sprite/select/start.png");
-	spr_frame			= std::make_unique<Sprite>("Data/Sprite/frame.png");
 	spr_endbox			= std::make_unique<Sprite>("Data/Sprite/select/end.png");
 
 	spr_wood1		= std::make_unique<Sprite>("Data/Sprite/select/wood.png");

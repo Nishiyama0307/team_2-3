@@ -422,7 +422,6 @@ void Story::Load()
 	spr_mouseCursor = std::make_unique<Sprite>("Data/Sprite/cursor.png");
 	spr_haikei = std::make_unique<Sprite>("Data/Sprite/story/maou02.png");
 	spr_start = std::make_unique<Sprite>("Data/Sprite/select/no.png");
-	spr_frame = std::make_unique<Sprite>("Data/Sprite/frame.png");
 	spr_tutorial = std::make_unique<Sprite>("Data/Sprite/select/yes.png");
 
 	spr_story1 = std::make_unique<Sprite>("Data/Sprite/story/Story1.png");

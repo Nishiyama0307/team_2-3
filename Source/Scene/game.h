@@ -133,10 +133,6 @@ private:
     std::unique_ptr<Sprite> spr_check_2_[2]{ nullptr };
     std::unique_ptr<Sprite> spr_choice_arrow_[2]{ nullptr };
 
-    //はい、いいえのマウス用確認
-    std::unique_ptr<Sprite> spr_kakunin_frame = nullptr ;
-    std::unique_ptr<Sprite> spr_kakunin_frame2 = nullptr ;
-    std::unique_ptr<Sprite> spr_frame = nullptr;
     Pos kakuninPos;
     Pos kakuninPos2;
     Pos framePos;

@@ -27,7 +27,6 @@ public:
 private:
     std::unique_ptr<Sprite> spr_haikei = nullptr;
     std::unique_ptr<Sprite> spr_start = nullptr;
-    std::unique_ptr<Sprite> spr_frame = nullptr;
     std::unique_ptr<Sprite> spr_tutorial = nullptr;
     std::unique_ptr<Sprite> spr_mouseCursor = nullptr;
     std::unique_ptr<Sprite> spr_question = nullptr;

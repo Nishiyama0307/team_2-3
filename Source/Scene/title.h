@@ -46,7 +46,6 @@ private:
     Pos mousePos;
 
     std::unique_ptr<Sprite> spr_start = nullptr;
-    std::unique_ptr<Sprite> spr_frame = nullptr;
     std::unique_ptr<Sprite> spr_endbox = nullptr;
 
     std::unique_ptr<Sprite> spr_wood1 = nullptr;

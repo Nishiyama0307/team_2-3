@@ -563,7 +563,12 @@ void Player::attack_Branch()
 			Attack2_change();
 			break;
 		case 2:
-			Attack3_change();
+			if (par.health > kself_harm)
+			{
+				par.health -= kself_harm;
+				if (par.health < 0) par.health = 0;
+				Attack3_change();
+			}
 			break;
 		}
 	}
@@ -647,11 +652,14 @@ void Player::UpdateAttack1(float elapsedTime)
 					enemy->ApplyDamage(this->par.power[0], KIND::RARE_ENEMY, 0.5f);
 					if (enemy->par.health <= 0 )
 					{
-						stamina += kstamina_recovery;
-						if (stamina > stamina_limit) stamina = stamina_limit;
+						if (this->is_dead_ == false)
+						{
+							stamina += kstamina_recovery;
+							if (stamina > stamina_limit) stamina = stamina_limit;
 
-						par.health += khealth_recovery;
-						if (par.health > health_limit) par.health = health_limit;
+							par.health += khealth_recovery;
+							if (par.health > health_limit) par.health = health_limit;
+						}
 					}
 				}
 			}
@@ -718,11 +726,14 @@ void Player::UpdateAttack2(float elapsedTime)
 					enemy->ApplyDamage(this->par.power[1], KIND::RARE_ENEMY, 0.8f);
 					if (enemy->par.health <= 0)
 					{
-						stamina += kstamina_recovery;
-						if (stamina > stamina_limit) stamina = stamina_limit;
+						if (this->is_dead_ == false)
+						{
+							stamina += kstamina_recovery;
+							if (stamina > stamina_limit) stamina = stamina_limit;
 
-						par.health += khealth_recovery;
-						if (par.health > health_limit) par.health = health_limit;
+							par.health += khealth_recovery;
+							if (par.health > health_limit) par.health = health_limit;
+						}
 					}
 				}
 			}
@@ -785,11 +796,14 @@ void Player::UpdateAttack3(float elapsedTime)
 					enemy->ApplyDamage(this->par.power[2], KIND::RARE_ENEMY, 0.5f);
 					if (enemy->par.health <= 0)
 					{
-						stamina += kstamina_recovery;
-						if (stamina > stamina_limit) stamina = stamina_limit;
+						if (this->is_dead_ == false)
+						{
+							stamina += kstamina_recovery;
+							if (stamina > stamina_limit) stamina = stamina_limit;
 
-						par.health += khealth_recovery;
-						if (par.health > health_limit) par.health = health_limit;
+							par.health += khealth_recovery;
+							if (par.health > health_limit) par.health = health_limit;
+						}
 					}
 				}
 			}

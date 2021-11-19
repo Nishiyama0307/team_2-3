@@ -193,6 +193,7 @@ public:
 	//int kstamina_recovery{ 70 };
 	int kstamina_recovery{ 140 };
 	int khealth_recovery{ 2 };
+	int kself_harm{ 3 };
 
 	//ƒ}ƒOƒ}‚ÅŽ€–S‚µ‚½‚©
 	bool magumaDeath = false;

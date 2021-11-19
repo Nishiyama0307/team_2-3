@@ -59,10 +59,6 @@ void Loading::SpriteRender(ID3D11DeviceContext* dc)
 
 	float screenWidth = CAST_F(graphics.GetScreenWidth());
 	float screenHeight = CAST_F(graphics.GetScreenHeight());
-	float textureWidth = CAST_F(spr_icon->GetTextureWidth());
-	float textureHeight = CAST_F(spr_icon->GetTextureHeight());
-	float positionX = screenWidth - textureWidth;
-	float positionY = screenHeight - textureHeight;
 
 	//spr_back->Render2(dc,
 	//	0, 0,						// 表示位置
@@ -116,8 +112,6 @@ void Loading::SpriteRender(ID3D11DeviceContext* dc)
 
 void Loading::DeInit()
 {
-	safe_delete(spr_icon);
-
 	if (scene == nullptr) return;
 	scene->DeInit();
 	safe_delete(scene);
@@ -140,8 +134,6 @@ void Loading::Set()
 
 void Loading::Load()
 {
-	spr_back = std::make_unique<Sprite>("Data/Sprite/タイトルロゴなし背景画像（リザルト）.png");
-	spr_icon = new Sprite("Data/Sprite/ローディング.png");
 
 	spr_load		= std::make_unique<Sprite>("Data/Sprite/scene/road.png");
 	spr_load_word	= std::make_unique<Sprite>("Data/Sprite/scene/road_moji3.png");
