@@ -228,6 +228,18 @@ void Player::Update(float elapsedTime, int stage_num, bool explaining)
 
 		if (stage_num == 0) Stage1_Gimmick();
 
+		if (is_dead_ == false && par.health < health_limit)
+		{
+			regen_timer++;
+			if (regen_timer >= regen_timer_limit)
+			{
+				par.health += 1;
+				if (par.health > health_limit) par.health = health_limit;
+
+				regen_timer = 0;
+			}
+		}
+
 		front = GetFront();
 
 		EnemyAttckHit();
@@ -554,6 +566,7 @@ void Player::attack_Branch()
 	if (mouse.GetButtonDown() & anyButton)
 	{
 		armor = true;
+		attack_count = 0;
 		switch (attck_select_state)
 		{
 		case 0:
@@ -649,16 +662,21 @@ void Player::UpdateAttack1(float elapsedTime)
 			{
 				if (enemy->is_dead_ == false)
 				{
-					enemy->ApplyDamage(this->par.power[0], KIND::RARE_ENEMY, 0.5f);
-					if (enemy->par.health <= 0 )
+					if (attack_count < attack1_limit)
 					{
-						if (this->is_dead_ == false)
-						{
-							stamina += kstamina_recovery;
-							if (stamina > stamina_limit) stamina = stamina_limit;
+						attack_count++;
+						enemy->ApplyDamage(this->par.power[0], KIND::RARE_ENEMY, 0.5f);
 
-							par.health += khealth_recovery;
-							if (par.health > health_limit) par.health = health_limit;
+						if (enemy->par.health <= 0)
+						{
+							if (this->is_dead_ == false)
+							{
+								stamina += kstamina_recovery;
+								if (stamina > stamina_limit) stamina = stamina_limit;
+
+								par.health += khealth_recovery;
+								if (par.health > health_limit) par.health = health_limit;
+							}
 						}
 					}
 				}
@@ -724,6 +742,7 @@ void Player::UpdateAttack2(float elapsedTime)
 				if (enemy->is_dead_ == false)
 				{
 					enemy->ApplyDamage(this->par.power[1], KIND::RARE_ENEMY, 0.8f);
+
 					if (enemy->par.health <= 0)
 					{
 						if (this->is_dead_ == false)
@@ -793,16 +812,21 @@ void Player::UpdateAttack3(float elapsedTime)
 
 				if (enemy->is_dead_ == false)
 				{
-					enemy->ApplyDamage(this->par.power[2], KIND::RARE_ENEMY, 0.5f);
-					if (enemy->par.health <= 0)
+					if(attack_count < attack3_limit)
 					{
-						if (this->is_dead_ == false)
-						{
-							stamina += kstamina_recovery;
-							if (stamina > stamina_limit) stamina = stamina_limit;
+						attack_count++;
+						enemy->ApplyDamage(this->par.power[2], KIND::RARE_ENEMY, 0.5f);
 
-							par.health += khealth_recovery;
-							if (par.health > health_limit) par.health = health_limit;
+						if (enemy->par.health <= 0)
+						{
+							if (this->is_dead_ == false)
+							{
+								stamina += kstamina_recovery;
+								if (stamina > stamina_limit) stamina = stamina_limit;
+
+								par.health += khealth_recovery;
+								if (par.health > health_limit) par.health = health_limit;
+							}
 						}
 					}
 				}

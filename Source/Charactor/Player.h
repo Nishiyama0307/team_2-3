@@ -188,12 +188,18 @@ public:
 	//shiftƒ_ƒbƒVƒ…‚ÌƒXƒ^ƒ~ƒiƒQ[ƒW
 	float stamina_limit{ 512 };
 	float stamina = stamina_limit;
-	float health_limit{ 10 };
+	float health_limit{ 20 };
 
 	//int kstamina_recovery{ 70 };
 	int kstamina_recovery{ 140 };
 	int khealth_recovery{ 2 };
 	int kself_harm{ 3 };
+	int attack1_limit{ 1 }; // UŒ‚1 = 1,UŒ‚2 = –³ŒÀ, UŒ‚3 = 3
+	int attack3_limit{ 3 }; // UŒ‚1 = 1,UŒ‚2 = –³ŒÀ, UŒ‚3 = 3
+	int attack_count{ 0 };
+
+	int regen_timer{ 0 }; 
+	int regen_timer_limit{ 180 }; // 5 * 60
 
 	//ƒ}ƒOƒ}‚Å€–S‚µ‚½‚©
 	bool magumaDeath = false;

@@ -128,7 +128,7 @@ protected:
 
 	struct Parameter
 	{
-		int health{ 10 };
+		int health{ 20 };
 		int power[3]{ 5 , 3 , 10 };
 	};
 

@@ -444,7 +444,7 @@ void Game::SpriteRender(ID3D11DeviceContext* dc)
 			20, 30,
 			1.0f, 1.0f,
 			0, 0,
-			player->par.health * 64, 64,
+			player->par.health * 32, 64,
 			0, 0,
 			0,
 			1, 1, 1, 1);
@@ -899,10 +899,6 @@ void Game::Set()
 
 	if (is_do_tutorial == false) explaining = false; // チュートリアルをやらないなら最初から動けるように
 
-	//AudioManager::Instance().GetAudio(Audio_INDEX::BGM_TITLE)->Stop();
-	//AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Play(true);
-	//AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Play(true);
-
 	//チュートリアルのはい、いいえ確認
 	tutorial_retry_[0] = false;
 	tutorial_retry_[1] = false;
@@ -1050,15 +1046,43 @@ void Game::DebugRender()
 
 void Game::StageNumUpdate()
 {
+	// number決定
+	switch (stage_num)
+	{
+	case N_STAGE1_VOLCANO:
+		if (player->GetPosition().z >= kStage2_Start_Position) stage_num = N_STAGE2_DESERT; // 1240 > p >= 565
+		break;
 
-	if (kStage3_Start_Position > player->GetPosition().z && player->GetPosition().z >= kStage2_Start_Position) stage_num = N_STAGE2_DESERT; // 1240 > p >= 565
-	if (player->GetPosition().z < kStage2_Start_Position) stage_num = N_STAGE1_VOLCANO;						  // p < 565
+	case N_STAGE2_DESERT:
+		if (player->GetPosition().z >= kStage3_Start_Position) stage_num = N_STAGE3_;	  // 1910 > p >= 1240
+		break;
 
-	if (kStage4_Start_Position > player->GetPosition().z && player->GetPosition().z >= kStage3_Start_Position) stage_num = N_STAGE3_;	  // 1910 > p >= 1240
-	if (kStage2_Start_Position < player->GetPosition().z && player->GetPosition().z < kStage3_Start_Position) stage_num = N_STAGE2_DESERT; // 565 < p < 1240
+	case N_STAGE3_:
+		if (player->GetPosition().z >= kStage4_Start_Position) stage_num = N_STAGE4_;							  // p >= 1920
+		break;
 
-	if (player->GetPosition().z >= kStage4_Start_Position) stage_num = N_STAGE4_;							  // p >= 1920
-	if (kStage3_Start_Position < player->GetPosition().z && player->GetPosition().z < kStage4_Start_Position) stage_num = N_STAGE3_;		  // 1240 < p < 1920
+	//case N_STAGE4_:
+	//	break;
+
+	}
+
+	// 移動制限
+
+	switch (stage_num)
+	{
+	case N_STAGE2_DESERT:
+		if (player->GetPosition().z < kStage2_Start_Position) player->SetPosition({ player->GetPosition().x, player->GetPosition().y, kStage2_Start_Position });
+		break;
+		
+	case N_STAGE3_:
+		if (player->GetPosition().z < kStage3_Start_Position) player->SetPosition({ player->GetPosition().x, player->GetPosition().y, kStage3_Start_Position });
+		break;
+		
+	case N_STAGE4_:
+		if (player->GetPosition().z < kStage4_Start_Position) player->SetPosition({ player->GetPosition().x, player->GetPosition().y, kStage4_Start_Position });
+		break;
+
+	}
 }
 
 void Game::CameraSet()
@@ -1147,18 +1171,6 @@ void Game::ClearedSpriteRender(ID3D11DeviceContext* dc)
 
 void Game::BGMStart()
 {
-	//if (bgm_normal == false && bgm_caution == false)
-	//{
-	//	bgm_normal = true;
-	//	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Play(true);
-	//}
-	//
-	//if (bgm_normal == true && bgm_caution == false && GameSystem::Instance().NowTime() <= 20.0f)
-	//{
-	//	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Stop();
-	//	bgm_caution = true;
-	//	AudioManager::Instance().GetAudio(Audio_INDEX::BGM_SPEED)->Play(true);
-	//}
 
 	switch (stage_num)
 	{
