@@ -1151,8 +1151,8 @@ void Game::ChangeScene(float elapsedTime)
 		// Žc‚èŽžŠÔ‚ªƒ[ƒ‚É‚È‚Á‚½ÛƒV[ƒ“‘JˆÚ‚ð‚·‚é
 		ChangeNextScene(new Result(), false);
 
-		if(bgm_caution == false)AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Stop();
-		if (bgm_caution == true)AudioManager::Instance().GetAudio(Audio_INDEX::BGM_SPEED)->Stop();
+		/*if(bgm_caution == false)AudioManager::Instance().GetAudio(Audio_INDEX::BGM_NORMAL)->Stop();
+		if (bgm_caution == true)AudioManager::Instance().GetAudio(Audio_INDEX::BGM_SPEED)->Stop();*/
 	}
 }
 
